@@ -188,7 +188,8 @@ real stellar_evolution_constants::parameters(pulsar_initial_conditions pp) {
              break;                               
         case kanonical_neutron_star_mass:        return 1.34;   // [msun]
              break;                                
-	case maximum_neutron_star_mass:          return 2.1;    // [Msun] //Updated Andrei Igoshev, 2020, see e.g. Cromartie et al. 2019 (NA 4, 72)
+	// (SilT: 7 Nov 2020) updated to accommodate Fryer NS mass prescription
+	case maximum_neutron_star_mass:          return 2.25;    // [Msun] 
              break;                                
 	case minimum_neutron_star_mass:          return 0.0925; // [Msun]
              break;                              // Newtonian polytrope 
@@ -225,7 +226,7 @@ real stellar_evolution_constants::parameters(stellar_mass_limits pm) {
              break;                                
 	case helium2neutron_star:                return 2.2;
              break;                                
-        case COcore2black_hole:                  return 5; // was 10
+        case COcore2black_hole:                  return 4.5; // was 5, before that 10
              break;                                
 	case super_giant2neutron_star:           return 8;
              break;                                
