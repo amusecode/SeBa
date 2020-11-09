@@ -19,6 +19,32 @@ make
 
 ## Simple examples of runs
 
+### Single system
+
+To eveolve a single system with the parameters primary mass M=2 solar mass, secondary mass m= 1 solar mass, eccentricy e, orbital separation a=200 solar radii, time T=13500 Myrs, metallicity z=0.001, you need to run:
+```
+./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500 -z 0.001
+```
+
+### Multiple systems with specified parameters
+
+If you need to follow the binary stellar evolution for multiple systems with parameters which are already specified you can start SeBa multiple times, e.g.
+```
+./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500 -z 0.001
+./SeBa -M 2.5 -m 1.5 -e 0.5 -a 500 -T 500 -z 0.02
+```
+This is probably not handy for more than 5 systems. Although this can be added in e.g. Python script.
+
+Another option is to use an input file:
+```
+./SeBa -I 'SeBa_input.txt'
+```
+which contains following information a e M m z, e.g. 
+
+```
+200 0.2 2 1 0.001
+500 0.5 2.5 1.5 0.02
+```
 
 ## Understanding the SeBa output
 
