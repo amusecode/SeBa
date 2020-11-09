@@ -21,31 +21,21 @@ Normally SeBa adds evolution history of individual binaries in SeBa.data file. E
 
 ### Structure of SeBa.data file
 
+```
 columns (starting at column 1):
-
 column 1 binary identity number (if multiple binaries are computed)
-
 column 2 binary type
-
 column 3 mass transfer type
-
 column 4 time
-
 column 5 separation in Solar radii
-
 column 6 eccentricity
-
 column 7 & 13 stellar identity number (either 0 or 1)
-
 column 8 & 14 star type
-
 column 9 & 15 stellar mass in Solar mass
-
 column 10 & 16 stellar radius in Solar radii
-
 column 11 & 17 log of effective temperature
-
 column 12 & 18 core mass in Solar mass
+```
 
 ### Options for binary type
 
