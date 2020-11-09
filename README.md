@@ -46,6 +46,61 @@ which contains following information a e M m z, e.g.
 500 0.5 2.5 1.5 0.02
 ```
 
+### Random population
+
+Monte Carlo based approach
+```
+./SeBa -R -n 200
+./SeBa -R -n 250000 -m 0.96 -M 11 -q 1e-4 -Q 1 -A 1e6 -f 4 -T 13500
+```
+with following parameters:
+
+```
+-R SeBa generates randomly the initial parameters -n number of systems simulated
+-m -M min/max primary mass
+-q -Q min/max mass ratio
+-e -E min/max eccentricy
+-a -A min/max orbital separation
+-T time in Myr in the simulation of the binaries. Same time for all binaries -z metalicity of binary stars. Same metalicity for all binaries.
+```
+
+The initial parameters are drawn from distributions:
+
+```
+-x mass function exponent in case of power law [-2.35] -F/f mass function option: 0) Equal mass
+	1) Power-law [default] 2) Miller & Scalo
+	3) Scalo
+	4) Kroupa
+
+Option -F requires one of the following strings: (mf_Power_Law, Miller_Scalo, Scalo, Kroupa)
+
+-f requires the appropriate interger (see mkmass.C)
+
+-y
+
+-G/g Semi major axis option: 
+	0) Equal_sma exponent for a power-law distribution [0] (flat in log)
+	1) Power Law [default]
+	2) Duquennoy & Mayor (1987) Option -G requires one of the following strings:
+	(Equal_sma, sma_Power_Law, Duquennoy_Mayor) -g requires appropriate interger (see double_star.h)
+
+-v
+-U/u eccentricity option: 0) Equal eccentricity
+exponent for a power-law distribution
+	1) Power Law
+	2) Thermal distribution [default] Option -U requires one of the following strings:
+	(Equal_ecc, ecc_Power_Law, Thermal_Distribution) -u requires appropriate interger (see double_star.h)
+-w
+-P/p mass ratio option: 0) constant mass ratio
+exponent for a power-law distribution
+	1) Flat_q
+	2) Power Law
+	3) Hogeveen (1992)
+Option -P requires one of the following strings: (Equal_q, Flat_q, qf_Power_Law, Hogeveen)
+-p requires appropriate interger (see double_star.h)
+```
+
+
 ## Understanding the SeBa output
 
 Normally SeBa adds evolution history of individual binaries in SeBa.data file. Every line represents a moment in the evolution of the binary when something interesting happened, for example one of the star transitions from the main-sequence to the hertzsprung gap, or mass transfer starts or stops. The meaning of the columns is defined below. The first column represents a unique identifier for each binary.
@@ -68,19 +123,19 @@ column 11 & 17 log of effective temperature
 column 12 & 18 core mass in Solar mass
 ```
 
-### Options for binary type
+### Binary types
 
 ```
 2 detached
 3 semi detached + stable mass transfer 4 contact
 5 CE (gamma)
-6 double\_spiral\_in
+6 double spiral-in
 7 merged
 8 disrupted
 9 CE (alpha)
 ```
 
-### Options for mass transfer type
+### Mass transfer types
 
 ```
 1 on nucleair time scale
