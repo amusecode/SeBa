@@ -8,7 +8,7 @@ This document contains following parts:
 
 [Simple examples](#Simple-examples-of-runs)
 
-[Understanding the SeBa output](#Understanding the SeBa output)
+[Understanding the SeBa output](#Understanding-the-SeBa-output)
 
 [References](#References)
 
