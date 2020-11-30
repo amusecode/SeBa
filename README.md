@@ -3,7 +3,14 @@ It is valid for masses in the range 0.01-1000 Msun with variable metallicity.
 SeBa includes prescriptions for mass loss by stellar winds, supernova and supports binary evolution.
 
 This document contains following parts:
+
+[Compilation](#Compilation)
+
 [Simple examples](#Simple-examples-of-runs)
+
+[Understanding the SeBa output](#Understanding the SeBa output)
+
+[References](#References)
 
 
 ## Compilation
@@ -61,7 +68,8 @@ with following parameters:
 -q -Q min/max mass ratio
 -e -E min/max eccentricy
 -a -A min/max orbital separation
--T time in Myr in the simulation of the binaries. Same time for all binaries -z metalicity of binary stars. Same metalicity for all binaries.
+-T time in Myr in the simulation of the binaries. Same time for all binaries 
+-z metalicity of binary stars. Same metalicity for all binaries.
 ```
 
 The initial parameters are drawn from distributions:
@@ -154,11 +162,14 @@ magnetic braking)
 3 main sequence
 5 hertzsprung gap
 6 sub-giant
-7 core helium burning star 8 agb
+7 core helium burning star 
+8 agb
 10 helium star
 11 helium giant
-12 carbon-oxygen white dwarf 13 helium white dwarf
-14 oxygen-neon white dwarf 18 neutron star
+12 carbon-oxygen white dwarf 
+13 helium white dwarf
+14 oxygen-neon white dwarf 
+18 neutron star
 19 black hole
 20 disintegrated
 ```
