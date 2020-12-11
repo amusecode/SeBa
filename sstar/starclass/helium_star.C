@@ -178,7 +178,7 @@ real helium_star::get_evolve_timestep() {
    
 //     (SilT Dec 10 2020) extra safety measure for large L
     real dt_mdot = timestep * pow(10000/luminosity, 0.75) / pow(metalicity/cnsts.parameters(solar_metalicity), 0.85) ;    
-    PRL(pow(50000/luminosity, 0.75));
+
    return min(max(timestep, cnsts.safety(minimum_timestep)), dt_mdot);
    
 }
@@ -610,7 +610,6 @@ void helium_star::update_wind_constant() {
     // (SilT Jan 2020) metallicity dependence on average with (Z/Z_sun)^0.85
     // Vink & de Koter 2005
     wind_constant *= pow(metalicity/cnsts.parameters(solar_metalicity),0.85);	
-    PRC(relative_mass);PRC(dm_r);PRC(dm_wr);PRC(wind_constant);PRC(luminosity);PRL(get_total_mass());
 
 }
 
