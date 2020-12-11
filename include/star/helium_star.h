@@ -54,6 +54,7 @@ class helium_star : public single_star {
 
 	 void instantaneous_element();
 	 void evolve_element(const real);
+ 	real get_evolve_timestep();	 
     real nucleair_evolution_timescale();
 
 	 void update();

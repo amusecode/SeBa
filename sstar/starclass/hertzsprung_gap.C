@@ -653,6 +653,21 @@ void hertzsprung_gap::evolve_element(const real end_time) {
 }
 
 
+// (SilT Dec 10 2020) 
+real hertzsprung_gap::get_evolve_timestep() {
+
+  real timestep = min((next_update_age - last_update_age )/ cnsts.safety(number_of_steps), 
+                      next_update_age - relative_age - 0.5 * cnsts.safety(minimum_timestep));   
+   
+   
+//     (SilT Dec 10 2020) extra safety measure
+//     For large L, large Mdot, that can fluctuate due to bi-instability jumps in the line driven winds of Vink
+    real dt_mdot = timestep * pow(50000/luminosity, 0.75) / pow(metalicity/cnsts.parameters(solar_metalicity), 0.85) ;    
+
+   return min(max(timestep, cnsts.safety(minimum_timestep)), dt_mdot);
+   
+}
+
 
 //Eq.7+
 real hertzsprung_gap::terminal_hertzsprung_gap_luminosity(const real mass, 
