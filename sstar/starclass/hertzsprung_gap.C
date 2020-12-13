@@ -664,7 +664,7 @@ real hertzsprung_gap::get_evolve_timestep() {
 //     For large L, large Mdot, that can fluctuate due to bi-instability jumps in the line driven winds of Vink
     real dt_mdot = timestep * pow(50000/luminosity, 0.75) / pow(metalicity/cnsts.parameters(solar_metalicity), 0.85) ;    
 
-   return min(max(timestep, cnsts.safety(minimum_timestep)), dt_mdot);
+   return max(min(timestep, dt_mdot), cnsts.safety(minimum_timestep));
    
 }
 

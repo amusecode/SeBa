@@ -179,7 +179,7 @@ real helium_star::get_evolve_timestep() {
 //     (SilT Dec 10 2020) extra safety measure for large L
     real dt_mdot = timestep * pow(10000/luminosity, 0.75) / pow(metalicity/cnsts.parameters(solar_metalicity), 0.85) ;    
 
-   return min(max(timestep, cnsts.safety(minimum_timestep)), dt_mdot);
+   return max(min(timestep, dt_mdot), cnsts.safety(minimum_timestep));
    
 }
 
