@@ -1,6 +1,5 @@
-SeBa is a package of semi-analytical formulae which covers all phases of evolution from the zero-age main-sequence up to and including remnant phases.
-It is valid for masses in the range 0.01-1000 Msun with variable metallicity.
-SeBa includes prescriptions for mass loss by stellar winds, supernova and supports binary evolution.
+SeBa is a software package to simulate the evolution of single and binary stars from the zero-age main-sequence up to and including remnant phases.It is valid for masses in the range 0.01-100 Msun with variable metallicity.
+SeBa includes prescriptions for mass loss by stellar winds, supernova and binary interactions.
 
 This document contains following parts:
 
@@ -28,7 +27,7 @@ make
 
 ### Single system
 
-To eveolve a single system with the parameters primary mass M=2 solar mass, secondary mass m= 1 solar mass, eccentricy e, orbital separation a=200 solar radii, time T=13500 Myrs, metallicity z=0.001, you need to run:
+To evolve a single system with the parameters primary mass M=2 solar mass, secondary mass m=1 solar mass, eccentricy e=0.2, orbital separation a=200 solar radii, time T=13500 Myrs, metallicity z=0.001, you need to run:
 ```
 ./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500 -z 0.001
 ```
@@ -40,7 +39,7 @@ If you need to follow the binary stellar evolution for multiple systems with par
 ./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500 -z 0.001
 ./SeBa -M 2.5 -m 1.5 -e 0.5 -a 500 -T 500 -z 0.02
 ```
-This is probably not handy for more than 5 systems. Although this can be added in e.g. Python script.
+This is probably not handy for more than 5 systems. Although this can be added in e.g. a shell or Python script.
 
 Another option is to use an input file:
 ```
@@ -66,41 +65,42 @@ with following parameters:
 -R SeBa generates randomly the initial parameters -n number of systems simulated
 -m -M min/max primary mass
 -q -Q min/max mass ratio
--e -E min/max eccentricy
+-e -E min/max eccentricity
 -a -A min/max orbital separation
 -T time in Myr in the simulation of the binaries. Same time for all binaries 
--z metalicity of binary stars. Same metalicity for all binaries.
+-z metallicity of binary stars. Same metallicity for all binaries.
 ```
 
 The initial parameters are drawn from distributions:
 
 ```
--x mass function exponent in case of power law [-2.35] -F/f mass function option: 0) Equal mass
-	1) Power-law [default] 2) Miller & Scalo
+-x mass function exponent in case of power law [-2.35] 
+-F/f mass function option: 
+	0) Equal mass
+	1) Power-law [default] 
+	2) Miller & Scalo
 	3) Scalo
 	4) Kroupa
 
 Option -F requires one of the following strings: (mf_Power_Law, Miller_Scalo, Scalo, Kroupa)
-
 -f requires the appropriate interger (see mkmass.C)
 
--y
-
+-y exponent for a power-law distribution [0] (flat in log)
 -G/g Semi major axis option: 
-	0) Equal_sma exponent for a power-law distribution [0] (flat in log)
+	0) Equal_sma 
 	1) Power Law [default]
 	2) Duquennoy & Mayor (1987) Option -G requires one of the following strings:
-	(Equal_sma, sma_Power_Law, Duquennoy_Mayor) -g requires appropriate interger (see double_star.h)
+	(Equal_sma, sma_Power_Law, Duquennoy_Mayor) -g requires appropriate integer (see double_star.h)
 
--v
--U/u eccentricity option: 0) Equal eccentricity
-exponent for a power-law distribution
+-v exponent for a power-law distribution
+-U/u eccentricity option: 
+	0) Equal eccentricity
 	1) Power Law
 	2) Thermal distribution [default] Option -U requires one of the following strings:
 	(Equal_ecc, ecc_Power_Law, Thermal_Distribution) -u requires appropriate interger (see double_star.h)
--w
+
+-w exponent for a power-law distribution
 -P/p mass ratio option: 0) constant mass ratio
-exponent for a power-law distribution
 	1) Flat_q
 	2) Power Law
 	3) Hogeveen (1992)
@@ -111,7 +111,7 @@ Option -P requires one of the following strings: (Equal_q, Flat_q, qf_Power_Law,
 
 ## Understanding the SeBa output
 
-Normally SeBa adds evolution history of individual binaries in SeBa.data file. Every line represents a moment in the evolution of the binary when something interesting happened, for example one of the star transitions from the main-sequence to the hertzsprung gap, or mass transfer starts or stops. The meaning of the columns is defined below. The first column represents a unique identifier for each binary.
+SeBa adds the evolutionary history of each binary in the SeBa.data file. Every line represents a moment in the evolution of the binary when something interesting happened, for example one of the star transitions from the main-sequence to the hertzsprung gap, or mass transfer starts or stops. The meaning of the columns is defined below. The first column represents a unique identifier for each binary.
 
 ### Structure of SeBa.data file
 
@@ -146,7 +146,7 @@ column 12 & 18 core mass in Solar mass
 ### Mass transfer types
 
 ```
-1 on nucleair time scale
+1 on nuclear time scale
 2 on angular momentum loss timescale (either gravitational waves &
 magnetic braking)
 3 on thermal time scale
