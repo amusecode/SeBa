@@ -49,7 +49,11 @@
 //  addstar  -- for all particles, add a star part using "new star()".
 //-----------------------------------------------------------------------------
 
-void  addstar(node * b, real t_current, stellar_type type, real z,int id, bool verbose)
+void  addstar(node * b, real t_current, stellar_type type, real z,int id, 
+		bool verbose, real m_rel = 1, real m_env = 0, 
+		real m_core = 0.0, real mco_core = 0, real t_rel = 0,
+		real t_cur = 0)
+
 {
   //    if(!((star*)b->get_starbase())->get_seba_counters()) {
   //      cerr << "Initialize SeBa counters" << endl;
