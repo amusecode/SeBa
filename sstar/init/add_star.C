@@ -51,8 +51,7 @@
 
 void  addstar(node * b, real t_current, stellar_type type, real z,int id, 
 		bool verbose, real m_rel = 1, real m_env = 0, 
-		real m_core = 0.0, real mco_core = 0, real t_rel = 0,
-		real t_cur = 0)
+		real m_core = 0.0, real mco_core = 0, real t_rel = 0)
 
 {
   //    if(!((star*)b->get_starbase())->get_seba_counters()) {
@@ -92,7 +91,8 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	if (b->get_starbase()->get_element_type() != NAS) return;
 	
 	//int id = b->get_index();
-        real t_cur=0, t_rel=0, m_rel=1, m_env=0, m_core=0.0;//0.01;
+        //real t_cur=0, t_rel=0, m_rel=1, m_env=0, m_core=0.0;//0.01;
+	real t_cur=0;
 	real T_eff, L_eff;
 	real p_rot=0, b_fld=0;
 	real m_tot;
@@ -104,7 +104,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	starbase * old_starbase = b->get_starbase();
 	story * s = old_starbase->get_star_story();
 
-	real mco_core = 0;
+	//real mco_core = 0;
 	extract_story_chapter(local_type, z, t_cur, t_rel,
 			      m_rel, m_env, m_core, mco_core, T_eff, L_eff,
 			      p_rot, b_fld, *s);
@@ -136,7 +136,8 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 
 	    // Create a default star of the specified type.
 
-	    real t_cur=0, t_rel = 0, m_rel = 1, m_core = 0.0;//0.01;
+	    //real t_cur=0, t_rel = 0, m_rel = 1, m_core = 0.0;//0.01;
+	    real t_cur=0;
 	    real p_rot=0, b_fld=0;
 	    real m_tot;
 	    t_cur = t_current;
