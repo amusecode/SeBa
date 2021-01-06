@@ -50,8 +50,8 @@
 //-----------------------------------------------------------------------------
 
 void  addstar(node * b, real t_current, stellar_type type, real z,int id, 
-		bool verbose, real m_rel = 1, real m_env = 0, 
-		real m_core = 0.0, real mco_core = 0, real t_rel = 0)
+		bool verbose, real m_rel, real m_env, 
+		real m_core, real mco_core, real t_rel)
 
 {
   //    if(!((star*)b->get_starbase())->get_seba_counters()) {
