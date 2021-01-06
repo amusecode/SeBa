@@ -68,7 +68,8 @@ with following parameters:
 -e -E min/max eccentricity
 -a -A min/max orbital separation
 -T time in Myr in the simulation of the binaries. Same time for all binaries 
--z metallicity of binary stars. Same metallicity for all binaries.
+-z metallicity of binary stars. All binaries have the same metallicity.
+   To vary the metallicity, multiple simulations should be run. 
 ```
 
 The initial parameters are drawn from distributions:
