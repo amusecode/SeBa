@@ -493,11 +493,16 @@ void extract_line_text(stellar_type&, real& z, real&, real&, real&,
 bool merge_elements(single_star* primary, single_star *secondary);
 
 void  addstar(node*,
-	      real t_rel=0,
+	      real t_cur=0,
 	      stellar_type type=Main_Sequence,
 	      real z = cnsts.parameters(Zsun),
               int id = 1,
-	      bool verbose = false);
+	      bool verbose = false,
+	      real m_rel = 1,
+	      real m_env = 0,
+	      real m_core = 0.0,
+	      real mco_core = 0,
+	      real t_rel = 0);
 
 
 #endif		// _SINGLE_STAR
