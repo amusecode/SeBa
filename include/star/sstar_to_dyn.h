@@ -27,9 +27,14 @@
  */
 
 void  addstar(dyn*,
-	      real t_rel=0,
+	      real t_cur=0,
 	      stellar_type type=Main_Sequence,
-	      bool verbose = false);
+	      bool verbose = false,
+	      real m_rel = 1,
+	      real m_env = 0,
+	      real m_core = 0.0,
+	      real mco_core = 0,
+	      real t_rel = 0);
 void sstar_stats(dyn*, bool, vec, bool);
 
 vec conv_v_star_to_dyn(vec&, real, real);
