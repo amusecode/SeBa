@@ -183,8 +183,10 @@ real brown_dwarf::gyration_radius_sq() {
 
 
 stellar_type brown_dwarf::get_element_type() {
-  
-  if (get_total_mass() < 0.1*cnsts.parameters(minimum_main_sequence))
+
+    // (SilT January 18 2021) 
+    if (get_total_mass() < cnsts.parameters(brown_dwarf_mass_limit))
+//  if (get_total_mass() < 0.1*cnsts.parameters(minimum_main_sequence))
       return Planet;
     else
       return Brown_Dwarf;

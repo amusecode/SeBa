@@ -216,8 +216,12 @@ real stellar_evolution_constants::parameters(stellar_mass_limits pm) {
              break;                               
 	case upper_ZAMS_mass_for_degenerate_core: return 2.3;
              break;                                
-        case minimum_main_sequence:              return 0.075;  //Msun
+    case minimum_main_sequence:              return 0.075;  //Msun
              break;                              // for pop III: 0.095 [Msun] 
+    // (SilT January 18 2021) minimum mass for a Brown dwarf ~13 Jupiter masses
+    // based on Spiegel, Burrows, Milsom, 2011, 727, 57S
+    case brown_dwarf_mass_limit:              return 0.0124; //Msun // 0.075;  
+            break;
 	case helium_dwarf_mass_limit:            return 0.45;
              break;                                
 	case carbon_dwarf_mass_limit:            return 1.2;
