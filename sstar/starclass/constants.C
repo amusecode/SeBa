@@ -129,7 +129,21 @@ real stellar_evolution_constants::parameters(astronomical_scale_parameter pa) {
              break;                                
 	case AU:                      
 	case astronomical_unit:                  return 1.496e+13; 
-             break;                                
+             break; 
+             
+
+// (SilT May 26 2021) 
+    case earth_mass:
+    case Mearth:                           return 1./1047.35/317.828; //[Solar mass]             
+             break;
+    case jupiter_mass:
+    case Mjupiter:                           return 1./1047.35; //[Solar mass]             
+             break;
+    case jupiter_radius:
+    case Rjupiter:                           return 0.10045; //[Solar radius]             
+             break;
+                
+                                       
         default:
 	     cerr << "\nNo recognized option in "
 		     "stellar_evolution_constants::"
