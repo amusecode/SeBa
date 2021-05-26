@@ -46,7 +46,7 @@ void brown_dwarf::instantaneous_element() {
 
      luminosity = 1.e-4; 
 
-     core_radius = radius = 0.1;
+     core_radius = radius = brown_dwarf_radius();
        
      update();
 }
@@ -79,7 +79,7 @@ void brown_dwarf::evolve_element(const real end_time) {
 	if(relative_age>1)
 	  luminosity = 938 * pow(relative_mass, 2.64) / pow(relative_age, 1.3);
 
-        core_radius = radius = 0.1;
+        core_radius = radius = brown_dwarf_radius();
        
         update();
      }
@@ -92,6 +92,26 @@ void brown_dwarf::update() {
      effective_radius = radius;
 
      }
+
+
+
+// (SilT May 26 2021) 
+// fit to Chen & Kipping (2017)
+real brown_dwarf::brown_dwarf_radius() {
+
+    real m_earth = cnsts.parameters(Mearth);
+    real m_jupiter = cnsts.parameters(Mjupiter);
+    real r_jupiter = cnsts.parameters(Rjupiter);           
+       
+    if (get_total_mass() > 0.414 * m_jupiter) // Jovian planets & brown dwarfs
+        return (0.027095 + 1.205219* pow(get_total_mass()/m_jupiter,-0.044))*r_jupiter;
+    else if (get_total_mass() >2.04 * m_earth) // Neptunian planets
+        return  2.151774*r_jupiter * pow(get_total_mass()/m_jupiter, 0.589); 
+    else // Terran planets
+        return 0.31832 * pow(get_total_mass(), 0.28); 
+    
+     }
+
 
 real brown_dwarf::brown_dwarf_core_mass() {
     

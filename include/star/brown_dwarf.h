@@ -51,6 +51,9 @@ class brown_dwarf : public single_star {
         real add_mass_to_accretor(real, bool,const real = -1.);
         void adjust_next_update_age() {/* do nothing */}
         void accrete_from_envelope(const real);
+        
+        real brown_dwarf_radius();
+        
 
         star* merge_elements(star*);
         real zeta_thermal();

@@ -468,6 +468,7 @@ void sub_giant::update_wind_constant() {
     // Reimers 1975
     // GB like stars
     real neta = 0.5; 
+    //note that neta may be metallicity dependent: see Tailo+ 2020, 498, 5745T
     real dm_r = neta * 4.E-13 * radius * luminosity / get_total_mass();
 
 //    //Schroder & Cuntz

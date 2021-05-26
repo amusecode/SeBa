@@ -81,7 +81,10 @@ enum physics_constants{G, gravitational_constant,
 };
 
 enum astronomical_scale_parameter {PC, parsec,
-				   AU, astronomical_unit
+				   AU, astronomical_unit,
+				   earth_mass, Mearth,
+				   jupiter_mass, Mjupiter,
+				   jupiter_radius, Rjupiter,
 				};
 
 enum solar_parameter {Msun, solar_mass,
