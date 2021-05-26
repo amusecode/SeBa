@@ -70,6 +70,8 @@ with following parameters:
 -T time in Myr in the simulation of the binaries. Same time for all binaries 
 -z metallicity of binary stars. All binaries have the same metallicity.
    To vary the metallicity, multiple simulations should be run. 
+-N initial ID number of first simulated binary
+(Default: 0, may come in handy for stitching together production runs)   
 ```
 
 The initial parameters are drawn from distributions:

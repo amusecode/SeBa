@@ -83,6 +83,7 @@
 ////                        -R the number of binaries indicated.
 ////                        oterwise one binary is simulated with
 ////                        -M, -m, -a, -e as initial conditions.
+////            -N initial ID number of first simulated binary 
 ////            -T or -t  binary end time. [13500] Myr
 ////            -s Random seed
 ////            -z select metallicity of binaries to be simulated. [0.02] Solar
