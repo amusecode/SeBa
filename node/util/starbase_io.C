@@ -101,6 +101,8 @@ real starbase::get_relative_age() {return 0;}
 real starbase::get_relative_mass() {return 0;}
 real starbase::get_evolve_timestep() {return 0;}
 
+real starbase::get_rotation_period() {return 0;}
+void starbase::set_rotation_period(real a) {}
 
 real starbase::get_time_offset() {return 0;}
 void starbase::set_time_offset(real t) {}
