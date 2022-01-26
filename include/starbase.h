@@ -92,7 +92,10 @@ class  starbase
         virtual real get_current_time();
         virtual real get_relative_age();
         virtual real get_relative_mass();
-	
+
+        virtual real get_rotation_period();
+        virtual void set_rotation_period(real);
+
         virtual real temperature();
         virtual real get_luminosity();
 
