@@ -107,6 +107,8 @@ class  single_star : public star
         vec  get_anomal_velocity()  	{return anomal_velocity;}
 	real  get_magnetic_field()      {return magnetic_field;}
 	real  get_rotation_period()     {return rotation_period;}
+    real get_fallback(){return 0;}// only meaningful for BHs    
+
         real  get_total_mass()		{return envelope_mass + core_mass;}
         
         void  set_current_time(real t) 		{current_time=t;}

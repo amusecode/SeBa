@@ -95,6 +95,7 @@ class  starbase
 
         virtual real get_rotation_period();
         virtual void set_rotation_period(real);
+        virtual real get_fallback();
 
         virtual real temperature();
         virtual real get_luminosity();
