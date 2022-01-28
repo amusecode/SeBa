@@ -295,7 +295,7 @@ real black_hole::aic_binding_energy() {
 real black_hole::black_hole_mass(const real COcore_mass) {
 
     int bhm_param = cnsts.use_black_hole_mass_method();
-    PRC(fallback);PRL(bhm_param);
+    PRL(bhm_param);
     
     if (bhm_param == 1){
         return black_hole_mass_seba(COcore_mass);}
@@ -630,6 +630,7 @@ bool black_hole::super_nova() {
       // Reduce kick with fallback 
       if(cnsts.parameters(fallback_kick_for_black_holes)) {
 	   mass_correction *= (1-fallback);}
+      PRL(fallback);
       mass_correction = min(max(mass_correction, 0.),1.);	
 
       real v_kick  = mass_correction*cnsts.super_nova_kick();
