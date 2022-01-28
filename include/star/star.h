@@ -107,7 +107,8 @@ class  star : public starbase
 	virtual void  set_magnetic_field(real){}
 	virtual real  get_rotation_period(){return 0;}
 	virtual void  set_rotation_period(real){}
-
+    virtual real get_fallback(){return 0;}
+    
         virtual mass_transfer_type get_current_mass_transfer_type() {
 	  return Unknown;} 
       

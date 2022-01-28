@@ -67,6 +67,7 @@ class black_hole : public single_star {
         bool super_nova();
         void direct_hit();
         real aic_binding_energy();
+        real  get_fallback(){return fallback;}
 	
 	real gyration_radius_sq();
 	real angular_momentum();
