@@ -29,8 +29,12 @@ class black_hole : public single_star {
       private:
 
 	real suddenly_lost_mass;
-
+	real fallback;
 	real black_hole_mass(const real);
+	real black_hole_mass_seba(const real);
+	real black_hole_mass_delayed(const real);
+	real black_hole_mass_rapid(const real);
+	real black_hole_mass_startrack(const real);
 
       public :
          black_hole(hyper_giant &);
@@ -67,7 +71,7 @@ class black_hole : public single_star {
 	real gyration_radius_sq();
 	real angular_momentum();
 	
-        real sudden_mass_loss();
+    real sudden_mass_loss();
 
 	real get_radius();
 	real get_effective_radius() {return get_radius();}

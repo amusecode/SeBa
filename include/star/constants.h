@@ -129,6 +129,7 @@ enum boolean_parameter {hyper_critical,
 			super_giant_disintegration,
 			proto_star_to_binary,
 			impulse_kick_for_black_holes,
+			fallback_kick_for_black_holes,
 			use_angular_momentum_tidal,
 			use_common_envelope_gamma_gamma,
 			use_common_envelope_alpha_alpha
@@ -221,6 +222,7 @@ class stellar_evolution_constants {  // Easy to have a name for compiling.
   real parameters(stellar_mass_limits);
   
   int use_common_envelope_method();
+  int use_black_hole_mass_method();  
 
   bool parameters(boolean_parameter);
   real parameters(accretion_parameter);
