@@ -54,7 +54,7 @@ black_hole::black_hole(super_giant & g) : single_star(g) {
       delete &g;
     
       suddenly_lost_mass = 0;
-      real m_tot = get_total_mass();
+      real m_tot = get_total_mass();            
       core_mass = black_hole_mass(COcore_mass);
       envelope_mass = m_tot - core_mass;
 
@@ -130,8 +130,8 @@ black_hole::black_hole(helium_giant & h) : single_star(h) {
       // so core_mass = m_tot, but set envelope_mass = 0 to avoid creating mass out of thin air.	
       core_mass = m_tot;	
       envelope_mass = 0.;	
-	
-      core_mass = black_hole_mass(COcore_mass);
+	      
+      core_mass = black_hole_mass(COcore_mass);           
       envelope_mass = m_tot - core_mass;
 
 // (GN+SPZ May  4 1999) last update age is time of previous type change
@@ -290,6 +290,29 @@ real black_hole::aic_binding_energy() {
       return GM2_RC2*core_mass/(4.25e-6*cnsts.parameters(solar_mass));
    }
 
+
+
+real black_hole::black_hole_mass(const real COcore_mass) {
+
+    int bhm_param = cnsts.use_black_hole_mass_method();
+    PRC(fallback);PRL(bhm_param);
+    
+    if (bhm_param == 1){
+        return black_hole_mass_seba(COcore_mass);}
+    else if (bhm_param == 2){
+        return black_hole_mass_delayed(COcore_mass);}
+    else if (bhm_param == 3){
+        return black_hole_mass_rapid(COcore_mass);}
+    else if (bhm_param == 4){
+        return black_hole_mass_startrack(COcore_mass);}
+    else {
+	     cerr << "\nNo recognized option in "
+		     "black_hole::black_hole_mass for"
+		     "black_hole_mass_method "
+	          << bhm_param << ")" << endl;
+             exit(1);}
+}        
+
 // SPZ&GN 17April 2003
 // Black hole mass determination based on
 // CO core mass plus 
@@ -297,8 +320,9 @@ real black_hole::aic_binding_energy() {
 // The latter two depend on the supernova explosion energy and the
 // binding energy of both envelopes.
 // Based on: Fryer & Kalogera, 2001ApJ...554..548F
-real black_hole::black_hole_mass(const real COcore_mass) {
-
+real black_hole::black_hole_mass_seba(const real COcore_mass) {
+    
+    
   // (GN Apr 13 2004) test only 3 Msun collapses initially (like FK01)
   real initial_bh_mass = 1.000*COcore_mass;
   //real initial_bh_mass = 3.0;
@@ -384,13 +408,121 @@ real black_hole::black_hole_mass(const real COcore_mass) {
 
   real final_bh_mass = initial_bh_mass  + fallback_CO
                      + fallback_helium + fallback_hydrogen;
-
+  fallback = fallback_CO+fallback_helium+fallback_hydrogen;
+  
 //  PRC(E_supernova); PRC(Ebinding_CO);PRC(Ebinding_helium); PRL(Ebinding_hydrogen);
 //  PRC(fallback_CO);PRC(fallback_helium); PRC(fallback_hydrogen); PRL(final_bh_mass);
 
   return final_bh_mass;
 
 }
+
+
+// SilT&AD 28January 2022
+// Fryer et al. 2012ApJ...749...91F
+real black_hole::black_hole_mass_delayed(const real m_co) {
+
+    real m_proto;
+    real m_fallback;
+    
+    if (m_co < 3.5) {
+        m_proto = 1.2;}
+    else if (m_co < 6.0) {
+        m_proto = 1.3;}
+    else if (m_co < 11.0){
+        m_proto = 1.4; }
+    else{
+        m_proto = 1.6;}   
+
+
+    //Fallback, Fryer 2012, Delayed model
+    if (m_co < 2.5) {
+        m_fallback = 0.2;
+        fallback = m_fallback/(get_total_mass() - m_proto);
+    }
+    else if (m_co <3.5) {
+        m_fallback = 0.5 * m_co - 1.05;
+        fallback = m_fallback/(get_total_mass() - m_proto);
+    }
+    else if (m_co <11.0) {
+        real a2 = 0.133 - 0.093/(get_total_mass()-m_proto);
+        real b2 = -11*a2 + 1;
+        fallback = a2*m_co + b2;
+        m_fallback = fallback*(get_total_mass() - m_proto);
+    
+    }
+    else{
+        fallback = 1.0;
+        m_fallback = fallback*(get_total_mass() - m_proto);
+    }
+    
+//    PRC(get_total_mass());PRC(core_mass);PRC(m_co);PRC(m_proto);PRC(m_fallback);PRL(fallback);
+    
+    real final_bh_mass = 0.9 * (m_proto + m_fallback);
+    
+    return final_bh_mass;   
+}    
+
+// SilT&AD 28January 2022
+// Fryer et al. 2012ApJ...749...91F
+real black_hole::black_hole_mass_rapid(const real m_co) {
+
+    real m_proto = 1;
+    real m_fallback;
+        
+    // Fryer 2012, Startrek SN prescription fallback
+    if (m_co < 2.5) {
+        m_fallback = 0.2;
+        fallback = m_fallback/(get_total_mass() - m_proto);}
+    else if (m_co <6.0) {
+        m_fallback = 0.286*m_co - 0.514;
+        fallback = m_fallback/(get_total_mass() - m_proto);}
+    else if (m_co <7.0) {
+        fallback = 1.0;
+        m_fallback = fallback*(get_total_mass() - m_proto);}
+    else if (m_co <11.0) {
+        real a1 = 0.25 - 1.275/(get_total_mass() - m_proto);
+        real b1 = -11*a1+1;        
+        fallback = a1*m_co + b1;
+        m_fallback = fallback*(get_total_mass() - m_proto);}
+    else{
+        fallback = 1.0;
+        m_fallback = fallback*(get_total_mass() - m_proto);}
+    
+    real final_bh_mass = 0.9 * (m_proto + m_fallback);
+    
+    return final_bh_mass;   
+    
+}    
+
+// SilT&AD 28January 2022
+// Fryer et al. 2012ApJ...749...91F
+real black_hole::black_hole_mass_startrack(const real m_co) {
+
+    real m_proto;
+    
+    if (m_co < 4.82) {
+        m_proto = 1.5;}
+    else if (m_co < 6.31) {
+        m_proto = 2.11;}
+    else if (m_co < 6.75){
+        m_proto = 0.69*m_co - 2.26; }
+    else{
+        m_proto = 0.37*m_co - 0.07;}    
+    
+    // Fryer 2012, Startrek SN prescription fallback
+    if (m_co < 5) {
+        fallback = 0;}
+    else if (m_co <7.6) {
+        fallback = 0.378*m_co - 1.889;}
+    else{
+        fallback = 1.0;}
+    
+    real m_fallback = fallback*(get_total_mass() - m_proto);
+    real final_bh_mass = 0.9 * (m_proto + m_fallback);
+    
+    return final_bh_mass;   
+}    
 
 // Allow black_hole star to accrete from a disc.
 // Mass accreted by the hole is first put into a storage disk
@@ -494,8 +626,11 @@ bool black_hole::super_nova() {
       
       // Impulse kick
       if(cnsts.parameters(impulse_kick_for_black_holes)) {
-	  mass_correction = cnsts.parameters(kanonical_neutron_star_mass)/core_mass;
-      }
+	   mass_correction *= cnsts.parameters(kanonical_neutron_star_mass)/core_mass;}
+      // Reduce kick with fallback 
+      if(cnsts.parameters(fallback_kick_for_black_holes)) {
+	   mass_correction *= (1-fallback);}
+
 
       real v_kick  = mass_correction*cnsts.super_nova_kick();
       real theta_kick = acos(1-2*random_angle(0, 1));

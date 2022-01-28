@@ -120,6 +120,25 @@ PRC(pk);
     }
 }  
 
+// SilT&AD 28January 2022
+int stellar_evolution_constants::use_black_hole_mass_method() {
+    int bhm_parameter = 1; // SeBa model based on Fryer 2001
+    bhm_parameter = 2; // Fryer 2012 delayed model
+//    bhm_parameter = 3; // Fryer 2012 rapid model 
+//    bhm_parameter = 4; // Fryer 2012 Startrack model
+       
+  return bhm_parameter;
+}
+
+
+int stellar_evolution_constants::use_common_envelope_method() {
+  int cc_parameter = 1; // default (use alpha-gamma)
+  // cc_parameter = 2;     // default (use gamma-gamma)
+  //cc_parameter = 3;     // default (use alpha-alpha)
+  return cc_parameter;
+}
+
+
 real stellar_evolution_constants::parameters(astronomical_scale_parameter pa) {
 
     // Astronomical distance scale parameters in centimeters [cm]
@@ -268,12 +287,6 @@ real stellar_evolution_constants::parameters(stellar_mass_limits pm) {
     }
 }
 
-int stellar_evolution_constants::use_common_envelope_method() {
-  int cc_parameter = 1; // default (use alpha-gamma)
-  // cc_parameter = 2;     // default (use gamma-gamma)
-  //cc_parameter = 3;     // default (use alpha-alpha)
-  return cc_parameter;
-}
 
 bool stellar_evolution_constants::parameters(boolean_parameter pb) {
 
@@ -286,6 +299,8 @@ bool stellar_evolution_constants::parameters(boolean_parameter pb) {
         case proto_star_to_binary:                     return false;
              break;						    
         case impulse_kick_for_black_holes:             return true;
+             break;				
+        case fallback_kick_for_black_holes:             return true;
              break;				
         case use_angular_momentum_tidal:               return false;
 	     break;
