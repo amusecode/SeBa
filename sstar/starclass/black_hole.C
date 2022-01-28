@@ -630,7 +630,7 @@ bool black_hole::super_nova() {
       // Reduce kick with fallback 
       if(cnsts.parameters(fallback_kick_for_black_holes)) {
 	   mass_correction *= (1-fallback);}
-
+      mass_correction = min(max(mass_correction, 0.),1);	
 
       real v_kick  = mass_correction*cnsts.super_nova_kick();
       real theta_kick = acos(1-2*random_angle(0, 1));
