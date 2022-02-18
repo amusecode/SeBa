@@ -643,9 +643,9 @@ void main_sequence::detect_spectral_features() {
 	spec_type[Blue_Straggler]=Blue_Straggler;
    }
 
-// Fit to Claret & Gimenez 1990, ApSS 196,215, (SPZ+GN:24 Sep 1998)
 real main_sequence::gyration_radius_sq() {
 
+// Fit to Claret & Gimenez 1990, ApSS 196,215, (SPZ+GN:24 Sep 1998)
 
   real m = get_total_mass();
 
@@ -665,8 +665,143 @@ real main_sequence::gyration_radius_sq() {
   }
 
   real k = pow(10., (A + B*log10(g)));
+//    PRL(k*k);
+//  return k*k;
 
-  return k*k;
+
+
+// (SilT 13 Feb 22) 
+// based on 
+
+    real t_ms = main_sequence_time();
+//    PRL(relative_age/t_ms);
+    real tau = relative_age/t_ms;
+//    PRL(tau);
+    tau = max(min(tau,1.),0.);
+
+    const int size_mbins = 19;
+	const int size_tbins = 4;
+	real mass_array [size_mbins] = {0.6, 0.8, 0.85, 0.92, 1., 1.2, 1.4, 1.6,1.8, 2., 2.5, 3., 4., 5., 6., 7., 8., 9., 10.}; 
+
+    int im_l, im_u; 
+    if (relative_mass <= mass_array[0]) return k*k;
+    else if (relative_mass >= mass_array[size_mbins-1]) return k*k;
+    else {
+        for (im_u = 0; im_u < size_mbins; im_u++){
+                if (relative_mass < mass_array[im_u]) break; }
+        im_l = im_u-1;
+    }
+    real m_u = mass_array[im_u];
+    real m_l = mass_array[im_l];
+//    PRC(m_u);PRC(m_l);PRL(relative_mass);
+
+
+
+    real timestamp_array[size_mbins][size_tbins] =  {{ 
+        0.0 , 3861677402.15 , 39730265543.9 , 75741300000.0 }, {
+        0.0 , 10798734826.1 , 24013477080.7 , 26518300000.0 }, {
+        0.0 , 8624693876.21 , 17093077948.2 , 20847300000.0 }, {
+        0.0 , 5361004783.92 , 11645015020.0 , 15229700000.0 }, {
+        0.0 , 294091259.739 , 7196960116.99 , 11003100000.0 }, {
+        0.0 , 2827832057.43 , 5280744202.19 , 5615540000.0 }, {
+        0.0 , 1800726350.22 , 2989494935.47 , 3371530000.0 }, {
+        0.0 , 1418588207.28 , 2117036272.52 , 2245330000.0 }, {
+        0.0 , 1479280545.95 , 1545193289.91 , 1582920000.0 }, {
+        0.0 , 1082847089.33 , 1114471616.12 , 1164160000.0 }, {
+        0.0 , 347992921.728 , 591399906.129 , 619370000.0 }, {
+        0.0 , 214736260.079 , 364362801.127 , 377537000.0 }, {
+        0.0 , 97553744.1988 , 173563696.631 , 179236000.0 }, {
+        0.0 , 57835637.2665 , 102488429.812 , 104016000.0 }, {
+        0.0 , 67340378.9801 , 67647888.0965 , 68374100.0 }, {
+        0.0 , 26387708.3966 , 48260678.2795 , 48900700.0 }, {
+        0.0 , 32891732.9053 , 36857066.8092 , 37183500.0 }, {
+        0.0 , 29189266.488 , 29371496.4512 , 29555300.0 }, {
+        0.0 , 23665450.7819 , 24166043.317 , 24305900.0 }};
+
+
+
+
+    real beta_array[size_mbins][size_tbins] =  {{
+        0.389488 , 0.391319 , 0.35145 , 0.299535 }, {
+        0.343582 , 0.32401 , 0.283582 , 0.277057 }, {
+        0.335904 , 0.314192 , 0.282804 , 0.269815 }, {
+        0.323863 , 0.303582 , 0.273876 , 0.258695 }, {
+        0.308607 , 0.304342 , 0.26442 , 0.244822 }, {
+        0.265591 , 0.231438 , 0.229852 , 0.20762 }, {
+        0.214015 , 0.200415 , 0.210474 , 0.177592 }, {
+        0.205041 , 0.186206 , 0.189847 , 0.161864 }, {
+        0.208441 , 0.175768 , 0.16064 , 0.155747 }, {
+        0.211653 , 0.172891 , 0.170795 , 0.153653 }, {
+        0.218554 , 0.196226 , 0.174042 , 0.152961 }, {
+        0.224413 , 0.200764 , 0.176401 , 0.153845 }, {
+        0.2341 , 0.2102 , 0.1815 , 0.1549 }, {
+        0.2417 , 0.2167 , 0.1844 , 0.153 }, {
+        0.2478 , 0.1846 , 0.1821 , 0.1461 }, {
+        0.2529 , 0.2264 , 0.1873 , 0.1433 }, {
+        0.2572 , 0.2002 , 0.1852 , 0.1403 }, {
+        0.2606 , 0.1901 , 0.1771 , 0.1366 }, {
+        0.2639 , 0.1895 , 0.1797 , 0.1309 }};
+        
+    
+
+    //find time for m_u
+    real time_yrs_u = timestamp_array[im_u][0] + tau*(timestamp_array[im_u][size_tbins-1] - timestamp_array[im_u][0]);
+    int it_uu, it_ul;
+    if (time_yrs_u <=  timestamp_array[im_u][0]) it_uu = it_ul = 0 ;
+    else if (time_yrs_u >=  timestamp_array[im_u][size_tbins-1]) it_uu = it_ul = size_tbins-1 ;
+    else{
+        for (it_uu = 0; it_uu < size_tbins; it_uu++){
+                if (time_yrs_u < timestamp_array[im_u][it_uu]) break; }
+        it_ul = it_uu-1;        
+    } 
+    real t_uu = timestamp_array[im_u][it_uu];
+    real t_ul = timestamp_array[im_u][it_ul];
+//    PRC(t_uu);PRC(t_ul);PRC(relative_age);PRL(time_yrs_u);
+
+
+    //find time for m_l
+    real time_yrs_l = timestamp_array[im_l][0] + tau*(timestamp_array[im_l][size_tbins-1] - timestamp_array[im_l][0]);
+    int it_lu, it_ll;
+    if (time_yrs_l <=  timestamp_array[im_l][0]) it_lu = it_ll = 0 ;
+    else if (time_yrs_l >=  timestamp_array[im_l][size_tbins-1]) it_lu = it_ll = size_tbins-1 ;
+    else{
+        for (it_lu = 0; it_lu < size_tbins; it_lu++){
+                if (time_yrs_l < timestamp_array[im_l][it_lu]) break; }
+        it_ll = it_lu-1;        
+    } 
+    real t_lu = timestamp_array[im_l][it_lu];
+    real t_ll = timestamp_array[im_l][it_ll];
+//    PRC(t_lu);PRC(t_ll);PRC(relative_age);PRL(time_yrs_l);
+    
+
+    // for readibility keep this separate from previous two loops            
+    //step three, interpolation in mass and time...
+    real beta_m_l_at_t, beta_m_u_at_t, beta;
+
+    if (it_uu == it_ul){
+        beta_m_u_at_t = beta_array[im_u][it_uu];
+    }
+    else {
+        beta_m_u_at_t = beta_array[im_u][it_ul] + (beta_array[im_u][it_uu] - beta_array[im_u][it_ul]) * (time_yrs_u - t_ul) / (t_uu - t_ul);
+    }
+    if (it_lu == it_ll){
+        beta_m_l_at_t = beta_array[im_l][it_lu];
+    }
+    else {
+        beta_m_l_at_t = beta_array[im_l][it_ll] + (beta_array[im_l][it_lu] - beta_array[im_l][it_ll]) * (time_yrs_l - t_ll) / (t_lu - t_ll);
+    }
+
+
+    if (im_u==im_l)
+        beta = beta_m_u_at_t;
+    else    
+        beta = beta_m_l_at_t + (beta_m_u_at_t - beta_m_l_at_t) * (relative_mass - m_l) / (m_u - m_l);
+        
+        
+     return beta*beta;           
+
+
+
 
 }
 
