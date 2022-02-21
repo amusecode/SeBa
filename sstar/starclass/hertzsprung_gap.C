@@ -421,7 +421,7 @@ real hertzsprung_gap::gyration_radius_sq() {
 
   
   
-// (SilT 13 Feb 22) 
+// (SilT & AD 13 Feb 22) 
 // based on 
 
     real t_ms = main_sequence_time();
@@ -541,6 +541,130 @@ real hertzsprung_gap::gyration_radius_sq() {
 
   
 }
+
+
+
+//absidal motion constant
+real hertzsprung_gap::amc() {
+
+  
+// (SilT & AD 13 Feb 22) 
+// based on 
+
+    real t_ms = main_sequence_time();
+    real t_bgb = base_giant_branch_time(relative_mass, metalicity);
+//    PRL((relative_age - t_ms)/(t_bgb-t_ms));
+    real tau = (relative_age - t_ms)/(t_bgb-t_ms);
+    tau = max(min(tau,1.),0.);
+
+
+
+    const int size_mbins = 19;
+	const int size_tbins = 4;
+	real mass_array [size_mbins] = {0.6, 0.8, 0.85, 0.92, 1., 1.2, 1.4, 1.6,1.8, 2., 2.5, 3., 4., 5., 6., 7., 8., 9., 10.}; 
+
+    int im_l, im_u; 
+    if (relative_mass <= mass_array[0]) im_l = im_u = 0;
+    else if (relative_mass >= mass_array[size_mbins-1]) im_l = im_u = size_mbins-1;
+    else {
+        for (im_u = 0; im_u < size_mbins; im_u++){
+                if (relative_mass < mass_array[im_u]) break; }
+        im_l = im_u-1;
+    }
+    real m_u = mass_array[im_u];
+    real m_l = mass_array[im_l];
+//    PRC(m_u);PRC(m_l);PRL(relative_mass);
+
+
+
+    real timestamp_array[size_mbins][size_tbins] =  {{ 75741300000.0 , 77257131625.6 , 78969864419.1 , 79733800000.0 }, { 26518300000.0 , 27114270661.8 , 27657265899.2 , 27915800000.0 }, {20847300000.0 , 21321153499.0 , 21744367312.3 , 21945800000.0 }, {15229700000.0 , 15591061040.5 , 15883890570.0 , 16032100000.0 }, {11003100000.0 , 11257154503.0 , 11466963383.2 , 11582700000.0 }, {5615540000.0 , 5783000053.66 , 5849741001.99 , 5911260000.0 }, {3371530000.0 , 3406562666.61 , 3443368437.44 , 3502810000.0 }, {2245330000.0 , 2252296758.5 , 2264108571.6 , 2289900000.0 }, {1582920000.0 , 1584938154.99 , 1588669835.1 , 1600400000.0 }, {1164160000.0 , 1165089484.55 , 1167178336.27 , 1173580000.0 }, {619370000.0 , 620547256.574 , 621598319.144 , 623600000.0 }, {377537000.0 , 378326688.348 , 378752266.532 , 379788000.0 }, {179236000.0 , 179926477.152 , 180029442.673 , 180102000.0 }, {104016000.0 , 104326729.76 , 104358147.878 , 104444000.0 }, {68374100.0 , 68487683.8658 , 68533114.8176 , 68621800.0 }, {48900700.0 , 49001667.0953 , 49043677.7384 , 49060300.0 }, {37183500.0 , 37215242.4738 , 37240648.6147 , 37295000.0 }, {29555300.0 , 29586259.3519 , 29607085.8442 , 29637500.0 }, {24305900.0 , 24333846.5383 , 24346878.3625 , 24369000.0 }};
+
+
+
+    real log_amc_array[size_mbins][size_tbins] =  {{
+        -1.48349 , -1.44886 , -1.32666 , -1.34959 }, {
+        -1.61411 , -1.53849 , -1.26137 , -1.37944 }, {
+        -1.65803 , -1.57528 , -1.24994 , -1.35702 }, {
+        -1.72681 , -1.61859 , -1.23502 , -1.32911 }, {
+        -1.81868 , -1.69714 , -1.22329 , -1.30484 }, {
+        -2.16676 , -1.97095 , -1.23762 , -1.25455 }, {
+        -2.42488 , -2.08001 , -1.1946 , -1.22001 }, {
+        -2.65183 , -2.42559 , -1.18402 , -1.19294 }, {
+        -2.71129 , -2.51957 , -1.14582 , -1.17928 }, {
+        -2.72355 , -2.51642 , -1.14473 , -1.15679 }, {
+        -2.72092 , -2.65267 , -2.35303 , -1.48817 }, {
+        -2.71356 , -2.68395 , -2.49147 , -1.5618 }, {
+        -2.709 , -2.67 , -2.609 , -2.484 }, {
+        -2.734 , -2.644 , -2.537 , -1.952 }, {
+        -2.795 , -2.734 , -2.302 , -1.34 }, {
+        -2.802 , -2.759 , -2.713 , -2.675 }, {
+        -2.765 , -2.684 , -2.503 , -1.947 }, {
+        -2.852 , -2.78 , -2.628 , -1.913 }, {
+        -2.904 , -2.784 , -2.617 , -1.858 }};
+
+    
+
+    //find time for m_u
+    real time_yrs_u = timestamp_array[im_u][0] + tau*(timestamp_array[im_u][size_tbins-1] - timestamp_array[im_u][0]);
+    int it_uu, it_ul;
+    if (time_yrs_u <=  timestamp_array[im_u][0]) it_uu = it_ul = 0 ;
+    else if (time_yrs_u >=  timestamp_array[im_u][size_tbins-1]) it_uu = it_ul = size_tbins-1 ;
+    else{
+        for (it_uu = 0; it_uu < size_tbins; it_uu++){
+                if (time_yrs_u < timestamp_array[im_u][it_uu]) break; }
+        it_ul = it_uu-1;        
+    } 
+    real t_uu = timestamp_array[im_u][it_uu];
+    real t_ul = timestamp_array[im_u][it_ul];
+//    PRC(t_uu);PRC(t_ul);PRC(relative_age);PRL(time_yrs_u);
+
+
+    //find time for m_l
+    real time_yrs_l = timestamp_array[im_l][0] + tau*(timestamp_array[im_l][size_tbins-1] - timestamp_array[im_l][0]);
+    int it_lu, it_ll;
+    if (time_yrs_l <=  timestamp_array[im_l][0]) it_lu = it_ll = 0 ;
+    else if (time_yrs_l >=  timestamp_array[im_l][size_tbins-1]) it_lu = it_ll = size_tbins-1 ;
+    else{
+        for (it_lu = 0; it_lu < size_tbins; it_lu++){
+                if (time_yrs_l < timestamp_array[im_l][it_lu]) break; }
+        it_ll = it_lu-1;        
+    } 
+    real t_lu = timestamp_array[im_l][it_lu];
+    real t_ll = timestamp_array[im_l][it_ll];
+//    PRC(t_lu);PRC(t_ll);PRC(relative_age);PRL(time_yrs_l);
+    
+
+    // for readibility keep this separate from previous two loops            
+    //step three, interpolation in mass and time...
+    real log_amc_m_l_at_t, log_amc_m_u_at_t, log_amc;
+
+    if (it_uu == it_ul){
+        log_amc_m_u_at_t = log_amc_array[im_u][it_uu];
+    }
+    else {
+        log_amc_m_u_at_t = log_amc_array[im_u][it_ul] + (log_amc_array[im_u][it_uu] - log_amc_array[im_u][it_ul]) * (time_yrs_u - t_ul) / (t_uu - t_ul);
+    }
+    if (it_lu == it_ll){
+        log_amc_m_l_at_t = log_amc_array[im_l][it_lu];
+    }
+    else {
+        log_amc_m_l_at_t = log_amc_array[im_l][it_ll] + (log_amc_array[im_l][it_lu] - log_amc_array[im_l][it_ll]) * (time_yrs_l - t_ll) / (t_lu - t_ll);
+    }
+
+
+    if (im_u==im_l)
+        log_amc = log_amc_m_u_at_t;
+    else    
+        log_amc = log_amc_m_l_at_t + (log_amc_m_u_at_t - log_amc_m_l_at_t) * (relative_mass - m_l) / (m_u - m_l);
+        
+        
+//    PRC( log_amc_array[im_l][it_ll]);PRC(log_amc_array[im_l][it_lu]);       
+//    PRC( log_amc_array[im_u][it_ul]);PRL(log_amc_array[im_u][it_uu]);       
+//    PRC(log_amc_m_l_at_t);PRC(log_amc_m_u_at_t);PRL(log_amc); 
+    return pow(10,log_amc);           
+ 
+}
+
 
 
 // Section 7.2 in Hurley, Pols & Tout 2000
@@ -749,6 +873,7 @@ void hertzsprung_gap::evolve_element(const real end_time) {
       current_time = end_time;
       relative_age += dt;
 
+      
       if (relative_age<=next_update_age) {
           instantaneous_element();
           evolve_core_mass();

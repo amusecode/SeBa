@@ -38,10 +38,11 @@ class hertzsprung_gap : public single_star
         void instantaneous_element();
         void evolve_element(const real);
      	real get_evolve_timestep();        
-        real gyration_radius_sq();
 
+        real gyration_radius_sq();
         real convective_envelope_mass();
         real convective_envelope_radius();
+        real amc();
 
 //           Mass transfer utilities.
         star* reduce_mass(const real);

@@ -357,7 +357,7 @@ real sub_giant::gyration_radius_sq() {
 
 //  return cnsts.parameters(convective_star_gyration_radius_sq); 
   
-// (SilT 13 Feb 22) 
+// (SilT & AD 13 Feb 22) 
 // based on 
 
     real t_bgb = base_giant_branch_time(relative_mass, metalicity);
@@ -493,6 +493,149 @@ real sub_giant::gyration_radius_sq() {
     return beta*beta;           
 
 //  return cnsts.parameters(convective_star_gyration_radius_sq); 
+  
+}
+
+
+
+
+//absidal motion constant
+real sub_giant::amc() {
+
+//  return cnsts.parameters(convective_star_gyration_radius_sq); 
+  
+// (SilT & AD 13 Feb 22) 
+// based on 
+
+    real t_bgb = base_giant_branch_time(relative_mass, metalicity);
+    real t_HeI = helium_ignition_time();
+//    PRL((relative_age - t_bgb)/(t_HeI-t_bgb));
+    real tau = (relative_age - t_bgb)/(t_HeI-t_bgb);
+//    PRL(tau);
+    tau = max(min(tau,1.),0.);
+
+    const int size_mbins = 19;
+	const int size_tbins = 4;
+	real mass_array [size_mbins] = {0.6, 0.8, 0.85, 0.92, 1., 1.2, 1.4, 1.6,1.8, 2., 2.5, 3., 4., 5., 6., 7., 8., 9., 10.}; 
+
+    int im_l, im_u; 
+    if (relative_mass <= mass_array[0]) im_l = im_u = 0;
+    else if (relative_mass >= mass_array[size_mbins-1]) im_l = im_u = size_mbins-1;
+    else {
+        for (im_u = 0; im_u < size_mbins; im_u++){
+                if (relative_mass < mass_array[im_u]) break; }
+        im_l = im_u-1;
+    }
+    real m_u = mass_array[im_u];
+    real m_l = mass_array[im_l];
+//    PRC(m_u);PRC(m_l);PRL(relative_mass);
+
+
+
+    real timestamp_array[size_mbins][size_tbins] =  {{ 
+        79733800000.0 , 81682357094.0 , 81895411959.6 , 81955700000.0 }, {
+        27915800000.0 , 28821515903.6 , 28958403483.4 , 29018600000.0 }, {
+        21945800000.0 , 22752210967.1 , 22868110489.0 , 22928900000.0 }, {
+        16032100000.0 , 16732549786.1 , 16882723436.7 , 16887600000.0 }, {
+        11582700000.0 , 11961426108.0 , 12166234690.9 , 12326200000.0 }, {
+        5911260000.0 , 6127365274.19 , 6257638889.97 , 6377620000.0 }, {
+        3502810000.0 , 3604296211.5 , 3666271307.69 , 3731050000.0 }, {
+        2289900000.0 , 2366716027.53 , 2381545648.25 , 2399630000.0 }, {
+        1600400000.0 , 1636152397.78 , 1644015490.43 , 1652930000.0 }, {
+        1173580000.0 , 1188876486.78 , 1193081647.81 , 1196510000.0 }, {
+        623600000.0 , 624007984.544 , 624573821.604 , 628977000.0 }, {
+        379788000.0 , 379998740.889 , 380267071.251 , 382211000.0 }, {
+        180102000.0 , 180207491.291 , 180288660.365 , 180775000.0 }, {
+        104444000.0 , 104466999.747 , 104491116.433 , 104691000.0 }, {
+        68621800.0 , 68630268.7357 , 68641122.82 , 68729200.0 }, {
+        49060300.0 , 49066107.0962 , 49070710.6037 , 49112900.0 }, {
+        37295000.0 , 37296895.8916 , 37298541.3082 , 37323100.0 }, {
+        29637500.0 , 29638339.7343 , 29639089.7458 , 29653300.0 }, {
+        24369000.0 , 24369521.1326 , 24370126.5052 , 24378300.0 }};
+
+
+
+
+    real log_amc_array[size_mbins][size_tbins] =  {{
+        -1.34959 , -1.58007 , -1.86698 , -2.53196 }, {
+        -1.37944 , -1.6362 , -1.8509 , -2.14636 }, {
+        -1.35702 , -1.60697 , -1.79761 , -2.06209 }, {
+        -1.32911 , -1.56991 , -1.86808 , -1.96714 }, {
+        -1.30484 , -1.38474 , -1.50859 , -1.79649 }, {
+        -1.25455 , -1.31769 , -1.41399 , -1.67401 }, {
+        -1.22001 , -1.27604 , -1.35635 , -1.59824 }, {
+        -1.19294 , -1.31458 , -1.38744 , -1.53594 }, {
+        -1.17928 , -1.28928 , -1.35718 , -1.4805 }, {
+        -1.15679 , -1.24871 , -1.31844 , -1.41677 }, {
+        -1.48817 , -1.23447 , -1.14781 , -1.16663 }, {
+        -1.5618 , -1.28407 , -1.18009 , -1.15733 }, {
+        -2.484 , -1.535 , -1.245 , -1.177 }, {
+        -1.952 , -1.437 , -1.269 , -1.215 }, {
+        -1.34 , -1.292 , -1.276 , -1.244 }, {
+        -2.675 , -1.648 , -1.317 , -1.253 }, {
+        -1.947 , -1.436 , -1.323 , -1.264 }, {
+        -1.913 , -1.429 , -1.326 , -1.262 }, {
+        -1.858 , -1.413 , -1.325 , -1.268 }};
+    
+
+    //find time for m_u
+    real time_yrs_u = timestamp_array[im_u][0] + tau*(timestamp_array[im_u][size_tbins-1] - timestamp_array[im_u][0]);
+    int it_uu, it_ul;
+    if (time_yrs_u <=  timestamp_array[im_u][0]) it_uu = it_ul = 0 ;
+    else if (time_yrs_u >=  timestamp_array[im_u][size_tbins-1]) it_uu = it_ul = size_tbins-1 ;
+    else{
+        for (it_uu = 0; it_uu < size_tbins; it_uu++){
+                if (time_yrs_u < timestamp_array[im_u][it_uu]) break; }
+        it_ul = it_uu-1;        
+    } 
+    real t_uu = timestamp_array[im_u][it_uu];
+    real t_ul = timestamp_array[im_u][it_ul];
+//    PRC(t_uu);PRC(t_ul);PRC(relative_age);PRL(time_yrs_u);
+
+
+    //find time for m_l
+    real time_yrs_l = timestamp_array[im_l][0] + tau*(timestamp_array[im_l][size_tbins-1] - timestamp_array[im_l][0]);
+    int it_lu, it_ll;
+    if (time_yrs_l <=  timestamp_array[im_l][0]) it_lu = it_ll = 0 ;
+    else if (time_yrs_l >=  timestamp_array[im_l][size_tbins-1]) it_lu = it_ll = size_tbins-1 ;
+    else{
+        for (it_lu = 0; it_lu < size_tbins; it_lu++){
+                if (time_yrs_l < timestamp_array[im_l][it_lu]) break; }
+        it_ll = it_lu-1;        
+    } 
+    real t_lu = timestamp_array[im_l][it_lu];
+    real t_ll = timestamp_array[im_l][it_ll];
+//    PRC(t_lu);PRC(t_ll);PRC(relative_age);PRL(time_yrs_l);
+    
+
+    // for readibility keep this separate from previous two loops            
+    //step three, interpolation in mass and time...
+    real log_amc_m_l_at_t, log_amc_m_u_at_t, log_amc;
+
+    if (it_uu == it_ul){
+        log_amc_m_u_at_t = log_amc_array[im_u][it_uu];
+    }
+    else {
+        log_amc_m_u_at_t = log_amc_array[im_u][it_ul] + (log_amc_array[im_u][it_uu] - log_amc_array[im_u][it_ul]) * (time_yrs_u - t_ul) / (t_uu - t_ul);
+    }
+    if (it_lu == it_ll){
+        log_amc_m_l_at_t = log_amc_array[im_l][it_lu];
+    }
+    else {
+        log_amc_m_l_at_t = log_amc_array[im_l][it_ll] + (log_amc_array[im_l][it_lu] - log_amc_array[im_l][it_ll]) * (time_yrs_l - t_ll) / (t_lu - t_ll);
+    }
+
+
+    if (im_u==im_l)
+        log_amc = log_amc_m_u_at_t;
+    else    
+        log_amc = log_amc_m_l_at_t + (log_amc_m_u_at_t - log_amc_m_l_at_t) * (relative_mass - m_l) / (m_u - m_l);
+        
+        
+//    PRC( log_amc_array[im_l][it_ll]);PRC(log_amc_array[im_l][it_lu]);       
+//    PRC( log_amc_array[im_u][it_ul]);PRL(log_amc_array[im_u][it_uu]);       
+//    PRC(log_amc_m_l_at_t);PRC(log_amc_m_u_at_t);PRL(log_amc); 
+    return pow(10,log_amc);           
   
 }
 
@@ -659,7 +802,7 @@ void sub_giant::evolve_element(const real end_time) {
       real dt = end_time - current_time;
       current_time = end_time;
       relative_age += dt;
-
+    
       if (relative_age<=next_update_age) {
           instantaneous_element();
           evolve_core_mass();

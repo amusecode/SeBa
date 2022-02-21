@@ -126,6 +126,7 @@ class  starbase
         virtual real gyration_radius_sq();
         virtual real convective_envelope_mass();
         virtual real convective_envelope_radius();
+        virtual real amc();
 
         virtual real get_wind_constant();
         virtual void refresh_memory();
