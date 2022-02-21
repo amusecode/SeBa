@@ -81,6 +81,7 @@ class white_dwarf : public single_star {
         real zeta_thermal();
         real zeta_adiabatic();
         real gyration_radius_sq();
+        real amc();
 
         friend neutron_star::neutron_star(white_dwarf&);
       };
