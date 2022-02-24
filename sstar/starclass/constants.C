@@ -1060,3 +1060,36 @@ real stellar_model_constants::c(int index, real z) {
 }     
 
 
+local real cpol(real zeta, real a, real b=0, real c=0, real d=0, real e=0, real f=0) {
+
+  real ci = a + zeta*(b + zeta*(c + zeta*(d + zeta*(e + zeta)*f)));
+
+  return ci;
+
+}
+
+
+// (GN May 14 2020) constants for sub_giant core radius fits from Hall & Tout 2014
+real stellar_model_constants::c_Hall(int index, real z) {
+
+  real zeta = log10(z/cnsts.parameters(solar_metalicity));
+    
+  real c = -1;
+  switch(index) {
+     case 0: c = cpol(zeta, 2.817859, 4.331671E-01, -8.152041E-01,
+		    -1.329429, -3.502317E-01, 0);
+             break;
+     case 1: c = cpol(zeta, -1.454750E+01, -3.844703, 8.279414,
+		    1.252224E+01, 3.256815, 0 );
+             break;
+     case 2: c = cpol(zeta, 4.947425E+01, 1.369688E+01, -2.513380E+01,
+		   -3.773333E+01, -9.791961, 0 );  
+             break;
+     case 3: c = cpol(zeta, -4.914713E+01, -1.326969E+01, 4.137217E+01,
+		    6.525871E+01, 2.617208E+01, 3.184125);
+             break;
+     default:  cerr << "Not a valid index for "
+		    << "constant.stellar_model_constant::c_Hall(int i= " 
+		    << index << ")" << endl;
+  }
+}

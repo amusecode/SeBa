@@ -631,7 +631,17 @@ real sub_giant::helium_core_radius(const real mass, const real m_core, const rea
     else{
         // due to small nucleair burning layer 
         // r_c > white_dwarf_radius
-        r_c = 5.*white_dwarf_radius(m_core, 10000.);
+        //r_c = 5.*white_dwarf_radius(m_core, 10000.);
+
+      // Hall & Tout 2015 (GN Feb 24 2022)
+      real c0 = smc.c_Hall(0,z);
+      real c1 = smc.c_Hall(1,z);
+      real c2 = smc.c_Hall(2,z);
+      real c3 = smc.c_Hall(3,z);
+
+      r_c = (c0 + c1*m_core + c2*m_core*m_core + c3*pow(m_core,3))
+           * white_dwarf_radius(m_core, 10000.); 
+	
     }
     return r_c;
 }

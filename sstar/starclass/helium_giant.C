@@ -828,7 +828,10 @@ real helium_giant::small_envelope_mu(const real lum, const real mass_tot, const 
 real helium_giant::co_core_radius(const real m_core){
     // due to small nucleair burning layer 
     // r_c > white_dwarf_radius
-    real r_c = 5.*white_dwarf_radius(m_core, 10000.);
+    //real r_c = 5.*white_dwarf_radius(m_core, 10000.);
+    // (GN+SilT Feb 24 2022) NOTE THIS NEEDS UPDATING FOR NON-DEGENERATE CORES
+    real r_c = (2.7 - 1.129*m_core)*white_dwarf_radius(m_core, 10000.);
+  
     return r_c;
 }
 

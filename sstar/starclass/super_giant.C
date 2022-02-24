@@ -796,7 +796,16 @@ real super_giant::helium_core_radius(const real time, const real mass, const rea
         //TPAGB
         // due to small nucleair burning layer 
         // r_c > white_dwarf_radius
-        r_c = 5.*white_dwarf_radius(m_core, 10000.); 
+        //r_c = 5.*white_dwarf_radius(m_core, 10000.);
+        // Hall & Tout 2014 (GN Sep 24 2015) Independent of metallicity
+        real c0 = 7.342054e0;
+	real c1 = -1.328317e1;
+	real c2 = 1.020264e1;
+	real c3 = -2.786524e0;
+
+      r_c = (c0 + c1*m_core + c2*m_core*m_core + c3*pow(m_core,3))
+           * white_dwarf_radius(m_core, 10000.); 
+
     }
     return r_c;
 }

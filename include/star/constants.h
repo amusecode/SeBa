@@ -243,6 +243,8 @@ class stellar_model_constants {  // Easy to have a name for compiling.
   real a(int, real);
   real b(int, real);
   real c(int, real);
+  real c_Hall(int, real);
+
 } smc;
 
 
