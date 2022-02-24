@@ -79,6 +79,7 @@ class helium_star : public single_star {
         real zeta_adiabatic();
         real zeta_thermal();
         real gyration_radius_sq();
+        real amc();        
 
         // not private because of super_giant::initial_CO_core_mass()
         real final_CO_core_mass(const real initial_mass);

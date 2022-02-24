@@ -56,7 +56,8 @@ class horizontal_branch : public single_star {
         real zeta_adiabatic();
         real zeta_thermal();
         real gyration_radius_sq();
-
+        real amc();
+        
 //              Friend constructors
 	 friend super_giant::super_giant(horizontal_branch &);
 	 friend helium_star::helium_star(horizontal_branch &);

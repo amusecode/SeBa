@@ -69,6 +69,7 @@ class black_hole : public single_star {
         real aic_binding_energy();
         real  get_fallback(){return fallback;}
 	
+    real amc();
 	real gyration_radius_sq();
 	real angular_momentum();
 	

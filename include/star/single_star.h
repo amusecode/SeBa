@@ -280,6 +280,7 @@ class  single_star : public star
 //      real convective_envelope_mass(const real z);
       real  convective_envelope_mass(){return 0;}
       real  convective_envelope_radius(){return 0;}
+      real  amc(){return 0;}
 
       //+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // These functions are part of main_sequence.C

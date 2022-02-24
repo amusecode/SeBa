@@ -55,11 +55,11 @@ class sub_giant : public single_star
 //           Mass transfer Stability.
         real zeta_adiabatic();
         real zeta_thermal();
+        
     	real gyration_radius_sq();
-
         real convective_envelope_mass();
         real convective_envelope_radius();
-
+        real amc();
          
 //              Friend constructors
 	 friend horizontal_branch::horizontal_branch(sub_giant &);

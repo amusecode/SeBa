@@ -623,6 +623,17 @@ real helium_giant::gyration_radius_sq() {
 }
 
 
+//absidal motion constant
+real helium_giant::amc() {
+
+// (SilT 13 Feb 22) 
+//    based on Brooke & Olle 1955, for n=3 polytrope
+//    return 0.143 
+//    based on Claret & Gimenez 1992, 96, 225 the value should be smaller, try:
+    return 0.05;
+}
+
+
 // Section 7.2 in Hurley, Pols & Tout 2000
 real helium_giant::convective_envelope_mass(){
     return envelope_mass;

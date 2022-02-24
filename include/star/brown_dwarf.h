@@ -57,7 +57,8 @@ class brown_dwarf : public single_star {
 
         star* merge_elements(star*);
         real zeta_thermal();
-	real gyration_radius_sq();
+    	real gyration_radius_sq();
+    	real amc();
 
       };
 #endif 		// _BROWN_DWARF
