@@ -971,6 +971,18 @@ real neutron_star::gyration_radius_sq() {
   
 }
 
+
+
+//absidal motion constant
+real neutron_star::amc() {
+
+// (SilT 13 Feb 22) 
+//    based on Brooke & Olle 1955, for n=1 polytrope
+    return 0.260;
+
+}
+
+
 stellar_type neutron_star::get_element_type() {
 
   // (SPZ+GN:  1 Aug 2000)

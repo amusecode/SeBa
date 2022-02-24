@@ -436,7 +436,8 @@ real super_giant::gyration_radius_sq() {
     
     
 // (SilT & AD 13 Feb 22)  
-// based on  
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
+
     real t_tagb = TAGB_time(relative_mass, get_total_mass(), metalicity);
     real t_bagb = base_AGB_time(relative_mass, metalicity);
 //    PRL((relative_age - t_bagb)/(t_tagb-t_bagb));
@@ -578,10 +579,10 @@ real super_giant::gyration_radius_sq() {
 real super_giant::amc() {
 
 //    return cnsts.parameters(convective_star_gyration_radius_sq); 
-    
-    
+        
 // (SilT & AD 13 Feb 22)  
-// based on  
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
+
     real t_tagb = TAGB_time(relative_mass, get_total_mass(), metalicity);
     real t_bagb = base_AGB_time(relative_mass, metalicity);
 //    PRL((relative_age - t_bagb)/(t_tagb-t_bagb));

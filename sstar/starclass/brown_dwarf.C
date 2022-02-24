@@ -201,7 +201,7 @@ star* brown_dwarf::reduce_mass(const real mdot) {
 
 
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 real brown_dwarf::gyration_radius_sq() {
 
 //    return cnsts.parameters(convective_star_gyration_radius_sq); 
@@ -277,7 +277,7 @@ real brown_dwarf::gyration_radius_sq() {
 
 
 // (SilT & AD 13 Feb 22)  
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 real brown_dwarf::amc() {
 
 //    return cnsts.parameters(convective_star_gyration_radius_sq); 

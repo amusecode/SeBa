@@ -358,7 +358,7 @@ real sub_giant::gyration_radius_sq() {
 //  return cnsts.parameters(convective_star_gyration_radius_sq); 
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_bgb = base_giant_branch_time(relative_mass, metalicity);
     real t_HeI = helium_ignition_time();
@@ -505,7 +505,7 @@ real sub_giant::amc() {
 //  return cnsts.parameters(convective_star_gyration_radius_sq); 
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_bgb = base_giant_branch_time(relative_mass, metalicity);
     real t_HeI = helium_ignition_time();

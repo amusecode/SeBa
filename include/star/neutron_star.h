@@ -85,6 +85,7 @@ class neutron_star : public single_star {
       real period_derivative();
       real spindown_luminosity();
       real gyration_radius_sq();
+      real amc();      
       
       real sudden_mass_loss();
       

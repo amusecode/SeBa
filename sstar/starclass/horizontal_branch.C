@@ -411,7 +411,7 @@ real horizontal_branch::gyration_radius_sq() {
 //  return cnsts.parameters(radiative_star_gyration_radius_sq); 
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_HeI = helium_ignition_time();
     real dt_cHe = core_helium_burning_timescale();
@@ -552,11 +552,9 @@ real horizontal_branch::gyration_radius_sq() {
 
 //absidal motion constant
 real horizontal_branch::amc() {
-
-//  return cnsts.parameters(radiative_star_gyration_radius_sq); 
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_HeI = helium_ignition_time();
     real dt_cHe = core_helium_burning_timescale();

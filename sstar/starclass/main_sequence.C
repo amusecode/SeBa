@@ -674,8 +674,7 @@ real main_sequence::gyration_radius_sq() {
 
 
 // (SilT & AD 13 Feb 22)  
-// based on 
-
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
     real t_ms = main_sequence_time();
 //    PRL(relative_age/t_ms);
     real tau = relative_age/t_ms;
@@ -812,7 +811,7 @@ real main_sequence::amc() {
 
 
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_ms = main_sequence_time();
 //    PRL(relative_age/t_ms);

@@ -808,6 +808,19 @@ real black_hole::gyration_radius_sq() {
   return a/(cnsts.physics(C)*pow(radius, 2));
 }
 
+
+
+
+//absidal motion constant
+real black_hole::amc() {
+
+// (SilT 13 Feb 22) 
+//    Hamers et al. 2013
+    return 0;
+
+}
+
+
 // Angular momentum of homogeneous sphere.
 real black_hole::angular_momentum() {
        

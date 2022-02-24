@@ -590,6 +590,18 @@ real helium_star::gyration_radius_sq() {
   return cnsts.parameters(radiative_star_gyration_radius_sq); 
 }
 
+
+
+//absidal motion constant
+real helium_star::amc() {
+
+// (SilT 13 Feb 22) 
+//    based on Brooke & Olle 1955, for n=3 polytrope
+    return 0.0144;           
+
+}
+
+
 void helium_star::update_wind_constant() {
 // (GN+SPZ May  3 1999) NOT USED!, but called by post_constructor // (SilT June 15th 2012) Used again!
 //  wind_constant = (1 - cnsts.parameters(helium_star_final_core_fraction)) 

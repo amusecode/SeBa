@@ -417,12 +417,9 @@ void hertzsprung_gap::detect_spectral_features() {
 real hertzsprung_gap::gyration_radius_sq() {
 
 //  return cnsts.parameters(radiative_star_gyration_radius_sq); 
-
-
-  
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_ms = main_sequence_time();
     real t_bgb = base_giant_branch_time(relative_mass, metalicity);
@@ -546,10 +543,9 @@ real hertzsprung_gap::gyration_radius_sq() {
 
 //absidal motion constant
 real hertzsprung_gap::amc() {
-
   
 // (SilT & AD 13 Feb 22) 
-// based on 
+// priv. comm. Antonio Claret, Gabriele Columba, Camilla Danielski (see Claret 2019, 628, 29
 
     real t_ms = main_sequence_time();
     real t_bgb = base_giant_branch_time(relative_mass, metalicity);
