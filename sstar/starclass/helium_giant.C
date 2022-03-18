@@ -39,9 +39,13 @@ helium_giant::helium_giant(super_giant & g) : single_star(g) {
     if (relative_age >= next_update_age) {
         // this can happen when mc_max = 1.45*get_total_mass()-0.31        
         // or mc_max = 0.773*m_he_rel - 0.35 --> in this case should m_he_rel be updated?
-        
+                
         // happens in evolve_element
         // create_remnant(relative_helium_mass, get_total_mass(), core_mass);  
+
+        //reset radius to prevent continues CE 
+        radius = core_radius; 
+
         return;
     }
 
