@@ -1061,7 +1061,6 @@ real stellar_model_constants::c(int index, real z) {
 
 
 local real cpol(real zeta, real a, real b=0, real c=0, real d=0, real e=0, real f=0) {
-
   real ci = a + zeta*(b + zeta*(c + zeta*(d + zeta*(e + zeta)*f)));
 
   return ci;
@@ -1092,4 +1091,5 @@ real stellar_model_constants::c_Hall(int index, real z) {
 		    << "constant.stellar_model_constant::c_Hall(int i= " 
 		    << index << ")" << endl;
   }
+  return c;
 }
