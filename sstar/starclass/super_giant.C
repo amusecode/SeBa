@@ -766,6 +766,10 @@ void super_giant::update_wind_constant() {
         dm_dj = x_dj * 9.6310E-15 * pow(radius, 0.81) * pow(luminosity, 1.24) * 
         pow(get_total_mass(), 0.16)*pow(metalicity/cnsts.parameters(solar_metalicity), 0.85)/2.;
     }
+
+    // also decrease Jager winds by a factor 3 to be consistent with change in Vink winds (e.g. see Bjorklund et al. 2020)
+    // (SilT 21 Apr 2022)
+    dm_dj = dm_dj/3.;
     
     // Reimers 1975
     // GB like stars
@@ -812,7 +816,11 @@ void super_giant::update_wind_constant() {
     real dm_lbv = 0;
     real x_lbv = 1.0E-5*radius*sqrt(luminosity);
     if(luminosity > 6.0E5 && x_lbv > 1.0) {
-        dm_lbv = 0.1 * pow(x_lbv-1.0, 3)*(luminosity/6.0E5-1.0);
+//        dm_lbv = 0.1 * pow(x_lbv-1.0, 3)*(luminosity/6.0E5-1.0);
+        // (AD: 21 Apr 2022) Belczynski 2010
+        dm_lbv = 1.5e-4; 
+        wind_constant = dm_lbv;        
+        return;
     }
         
     wind_constant = max(max(max(max(dm_wr, dm_dj), dm_r), dm_vw), 0.0) +dm_lbv;
