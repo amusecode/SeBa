@@ -667,7 +667,22 @@ void helium_giant::update_wind_constant() {
 
     //HPT2000
     //Reduced WR-like mass loss for small H-envelope mass
-    real dm_wr = 1.E-13 * pow(luminosity, 1.5);
+//    real dm_wr = 1.E-13 * pow(luminosity, 1.5);
+
+    //(AD: 21 Apr 2022) added WR wind-prescription from Sanders & Vink 2020 (2009.01849)
+    real dm_wr = 0;
+    real alpha_sv = 0.32 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 1.40;
+    real loglum10 = -0.87 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 5.06;
+    real logdm10 = -0.75 * log10(metalicity/cnsts.parameters(solar_metalicity)) - 4.06;
+    real lum10 = pow(10, loglum10);
+    real dm10 = pow(10, logdm10);
+    if (luminosity > lum10){
+        dm_wr = dm10 * pow((log10(luminosity/lum10)), alpha_sv) * pow((luminosity/(10*lum10)), 0.75);
+        dm_wr = max(dm_wr,1.E-8);
+    } else {
+        dm_wr = 1.E-8;   
+    }
+
     
     wind_constant = max(max(dm_wr, dm_r), 0.0);   
 

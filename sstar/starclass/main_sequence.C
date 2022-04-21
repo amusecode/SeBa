@@ -201,9 +201,9 @@ void main_sequence::update_wind_constant() {
                 +cnsts_dm_v[8]*log10(metalicity/cnsts.parameters(solar_metalicity));
             
             dm_v = pow(10, arg_dm_v);
-	    // decrease Vink winds by a factor 3 (e.g. see Bjorklund et al. 2020)
+	        // decrease Vink winds by a factor 3 (e.g. see Bjorklund et al. 2020)
             // (FK 7 Oct 2021)
-	    dm_v = dm_v / 3.;
+	        dm_v = dm_v / 3.;
             wind_constant = dm_v;
             
             if (temp < 8000){
@@ -215,7 +215,10 @@ void main_sequence::update_wind_constant() {
         }
     }
     else 
-        wind_constant = dm_dj;
+//        wind_constant = dm_dj;
+        // also decrease Jager winds by a factor 3 to be consistent with change in Vink winds (e.g. see Bjorklund et al. 2020)
+        // (SilT 21 Apr 2022)
+        wind_constant = dm_dj/3.;
 }
 
 
