@@ -143,7 +143,7 @@ void helium_star::evolve_element(const real end_time) {
     relative_age += dt;
 
 //    for a helium star relative_helium_mass = get_total_mass()  
-    if (get_total_mass() < cnsts.parameters(minimum_helium_star)) {    
+    if (get_total_mass() < cnsts.parameters(minimum_helium_star)) {   
         // Helium Main_sequence star will not ignite core helium burning.
         cerr<<"Warning: not homogeneous WD"<<endl;
         if(!update_core_and_envelope_mass(get_total_mass())) {
@@ -163,7 +163,7 @@ void helium_star::evolve_element(const real end_time) {
         new helium_giant(*this);
         return;
     }
-    
+
     update();
     stellar_wind(dt);
 }
@@ -310,7 +310,6 @@ star* helium_star::reduce_mass(const real mdot) {
        if(!update_core_and_envelope_mass(get_total_mass())) {
            cerr << "Update core mass failed in helium_star()"<<endl;
        }
-           
         star_transformation_story(Helium_Dwarf);
         return dynamic_cast(star*, new white_dwarf(*this, Helium_Dwarf));
     }
@@ -612,33 +611,33 @@ void helium_star::update_wind_constant() {
     // GB like stars
     real neta = 0.5; 
     real dm_r = neta * 4.E-13 * radius * luminosity / get_total_mass();
+    dm_r *= pow(metalicity/cnsts.parameters(solar_metalicity),0.85);	
     
     //HPT2000
     //Reduced WR-like mass loss for small H-envelope mass
-//    real dm_wr = 1.E-13 * pow(luminosity, 1.5);
+    real dm_wr = 1.E-13 * pow(luminosity, 1.5);
+    // (SilT Jan 2020) metallicity dependence on average with (Z/Z_sun)^0.85
+    // Vink & de Koter 2005
+    dm_wr *= pow(metalicity/cnsts.parameters(solar_metalicity),0.85);	
 
 
     //(AD: 21 Apr 2022) added WR wind-prescription from Sanders & Vink 2020 (2009.01849)
-    real dm_wr = 0;
-    real alpha_sv = 0.32 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 1.40;
-    real loglum10 = -0.87 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 5.06;
-    real logdm10 = -0.75 * log10(metalicity/cnsts.parameters(solar_metalicity)) - 4.06;
-    real lum10 = pow(10, loglum10);
-    real dm10 = pow(10, logdm10);
-    if (luminosity > lum10){
-        dm_wr = dm10 * pow((log10(luminosity/lum10)), alpha_sv) * pow((luminosity/(10*lum10)), 0.75);
-        dm_wr = max(dm_wr,1.E-8);
-    } else {
-        dm_wr = 1.E-8;   
-    }
+//    real dm_wr = 0;
+//    real alpha_sv = 0.32 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 1.40;
+//    real loglum10 = -0.87 * log10(metalicity/cnsts.parameters(solar_metalicity)) + 5.06;
+//    real logdm10 = -0.75 * log10(metalicity/cnsts.parameters(solar_metalicity)) - 4.06;
+//    real lum10 = pow(10, loglum10);
+//    real dm10 = pow(10, logdm10);
+//    if (luminosity > lum10){
+//        dm_wr = dm10 * pow((log10(luminosity/lum10)), alpha_sv) * pow((luminosity/(10*lum10)), 0.75);
+//        dm_wr = max(dm_wr,1.E-8);
+//    } else {
+//        dm_wr = 1.E-8;   
+//    }
 
 
 
     wind_constant = max(max(dm_wr, dm_r), 0.0);
-
-    // (SilT Jan 2020) metallicity dependence on average with (Z/Z_sun)^0.85
-    // Vink & de Koter 2005
-    wind_constant *= pow(metalicity/cnsts.parameters(solar_metalicity),0.85);	
 
 }
 
