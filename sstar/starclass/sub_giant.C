@@ -219,6 +219,13 @@ star* sub_giant::reduce_mass(const real mdot) {
 //        
         real m_HeF = helium_flash_mass(metalicity);
         if (relative_mass< m_HeF || core_mass < cnsts.parameters(minimum_helium_star)){
+
+//            following Han+ 02, forming SdB stars if stripping happens close to HeI  
+//            if (core_mass > 0.95 * helium_ignition_core_mass(relative_mass, metallicity)){
+//                star_transformation_story(Helium_Star);
+//                return dynamic_cast(star*, new helium_star(*this));                
+//            }
+                        
             star_transformation_story(Helium_Dwarf);
             return dynamic_cast(star*, new white_dwarf(*this, Helium_Dwarf));
         }
@@ -257,6 +264,13 @@ star* sub_giant::subtrac_mass_from_donor(const real dt, real& mdot) {
 
           real m_HeF = helium_flash_mass(metalicity);
           if (relative_mass< m_HeF || core_mass < cnsts.parameters(minimum_helium_star)){
+//            following Han+ 02, forming SdB stars if stripping happens close to HeI  
+//            if (core_mass > 0.95 * helium_ignition_core_mass(relative_mass, metallicity)){
+//                star_transformation_story(Helium_Star);
+//                return dynamic_cast(star*, new helium_star(*this));                
+//            }
+                        
+                            
               star_transformation_story(Helium_Dwarf);
               return dynamic_cast(star*, new white_dwarf(*this, Helium_Dwarf));
           }
@@ -745,6 +759,12 @@ void sub_giant::update_wind_constant() {
         dm_dj = x_dj * 9.6310E-15 * pow(radius, 0.81) * pow(luminosity, 1.24) * 
         pow(get_total_mass(), 0.16)*pow(metalicity/cnsts.parameters(solar_metalicity), 0.85);
     }
+    
+    // also decrease Jager winds by a factor 3 to be consistent with change in Vink winds (e.g. see Bjorklund et al. 2020)
+    // (SilT 21 Apr 2022)
+    dm_dj = dm_dj/3.;
+    
+    
     
     // Reimers 1975
     // GB like stars
