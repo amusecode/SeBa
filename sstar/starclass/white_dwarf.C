@@ -583,9 +583,9 @@ real white_dwarf::gyration_radius_sq() {
         beta = beta_m_l_at_t + (beta_m_u_at_t - beta_m_l_at_t) * (get_total_mass() - m_l) / (m_u - m_l);
         
     
-    PRC( beta_array[im_l][it_ll]);PRC(beta_array[im_l][it_lu]);       
-    PRC( beta_array[im_u][it_ul]);PRL(beta_array[im_u][it_uu]);       
-//    PRC(beta_m_l_at_t);PRC(beta_m_u_at_t);PRL(beta); 
+//    PRC( beta_array[im_l][it_ll]);PRC(beta_array[im_l][it_lu]);       
+//    PRC( beta_array[im_u][it_ul]);PRL(beta_array[im_u][it_uu]);       
+////    PRC(beta_m_l_at_t);PRC(beta_m_u_at_t);PRL(beta); 
 //    PRL(cnsts.parameters(homogeneous_sphere_gyration_radius_sq));
     return beta*beta;           
 
