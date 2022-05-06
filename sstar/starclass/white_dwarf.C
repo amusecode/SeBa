@@ -272,11 +272,11 @@ real white_dwarf::add_mass_to_accretor(real mdot, bool hydrogen, const real dt) 
 	
 // (GN+SPZ May  3 1999)
 	real mu =1;
-	if (is_binary_component() && 
-	    !get_companion()->hydrogen_envelope_star()) mu =2;
-	
+//	if (is_binary_component() && 
+//	    !get_companion()->hydrogen_envelope_star()) mu =2;
+	if (!hydrogen) mu =2;	
 
-	if (mdot >= eddington_limit(radius, dt, mu)) {
+	if (is_binary_component() && mdot >= eddington_limit(radius, dt, mu)) {
 	  effective_radius = min(10., get_binary()->roche_radius(this));
 	}
 
