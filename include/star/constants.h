@@ -223,6 +223,7 @@ class stellar_evolution_constants {  // Easy to have a name for compiling.
   
   int use_common_envelope_method();
   int use_black_hole_mass_method();  
+  int use_jloss_method();  
 
   bool parameters(boolean_parameter);
   real parameters(accretion_parameter);

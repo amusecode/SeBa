@@ -120,6 +120,17 @@ PRC(pk);
     }
 }  
 
+
+// SilT 8June 2022
+int stellar_evolution_constants::use_jloss_method() {
+    int jloss_parameter = 1; // SeBa default model
+//    jloss_parameter = 2; // specific J of orbit
+//    jloss_parameter = 3; // specific J of donor i.e. Jeans mode
+//    jloss_parameter = 4; // specific J of accretor i.e isotropic re-emission
+       
+  return jloss_parameter;
+}
+
 // SilT&AD 28January 2022
 int stellar_evolution_constants::use_black_hole_mass_method() {
     int bhm_parameter = 1; // SeBa model based on Fryer 2001

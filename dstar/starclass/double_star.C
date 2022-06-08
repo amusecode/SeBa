@@ -882,15 +882,18 @@ void double_star::perform_mass_transfer(const real dt,
         //PRC(M_new);PRC(new_donor_mass);PRC(new_accretor_mass);
     
         real a_fr;
-        if (!accretor->remnant()) {
-            // General case: semi-conservative mass transfer.
-            a_fr  = pow(old_donor_mass*old_accretor_mass
-                    / (new_donor_mass*new_accretor_mass), 2);
-            semi *= pow(M_new/M_old,
-                2*cnsts.parameters(specific_angular_momentum_loss)
-                + 1)*a_fr;	
+        // SilT 8June 2022        
+        int jloss_param = cnsts.use_jloss_method();
+//        PRL(jloss_param);
+        if (jloss_param == 3){//jeans mode
+//            cerr<<"jeans mode"<<endl;
+            real eta = ma_dot/md_dot; 
+            a_fr = (old_accretor_mass/new_accretor_mass) *
+                    pow(old_donor_mass/new_donor_mass, eta);
+            semi *= M_old/M_new*pow(a_fr,2);
         }
-        else {
+        else if ((jloss_param == 4) || (jloss_param == 1 && accretor->remnant() )){//isotropic re-emission
+//            cerr<<"isotropic re-emission mode"<<endl;
             // Special case: mass transfer to compact object as accretor.
             //               Two possibilities:
             //               1) eta>0: mass lost as wind from accretor.
@@ -908,32 +911,71 @@ void double_star::perform_mass_transfer(const real dt,
                     / pow(new_donor_mass/old_donor_mass, 2);
             }
         
+        }
+        else{   //specific orbital jloss * factor
+            real beta = cnsts.parameters(specific_angular_momentum_loss);        
+            a_fr  = pow(old_donor_mass*old_accretor_mass
+                    / (new_donor_mass*new_accretor_mass), 2);
+            semi *= pow(M_new/M_old, 2*beta + 1)*a_fr;
+        }
+        
+                
+	        
+//        if (!accretor->remnant()) {
+//            // General case: semi-conservative mass transfer.
+//            a_fr  = pow(old_donor_mass*old_accretor_mass
+//                    / (new_donor_mass*new_accretor_mass), 2);
+//            semi *= pow(M_new/M_old,
+//                2*cnsts.parameters(specific_angular_momentum_loss)
+//                + 1)*a_fr;	
+//        }
+//        else {
+            // Special case: mass transfer to compact object as accretor.
+            //               Two possibilities:
+            //               1) eta>0: mass lost as wind from accretor.
+            //               2) eta==0: exponential spiral-in.
+//            real eta = ma_dot/md_dot; 
+//            if (eta>0) {
+//                a_fr  = (new_donor_mass/old_donor_mass)
+//                    * pow(new_accretor_mass/old_accretor_mass, 1/eta);
+//                semi *= (M_old/M_new)/pow(a_fr, 2); 
+//            }
+//            else {
+//                a_fr  = exp(2*(new_donor_mass-old_donor_mass)
+//            	 /new_accretor_mass); 
+//                semi *= (M_old/M_new)*a_fr
+//                    / pow(new_donor_mass/old_donor_mass, 2);
+//            }
+        
             //   Let outer component accrete from mass lost of inner binary.
             //	Routine block for triple evolution.
             //	Tricky but fun!
             //   if (is_binary_component()) 
-            if (is_star_in_binary()) {
-                real mdot_triple = M_old - M_new;
-                if (mdot_triple>0) {
-                    get_binary()->adjust_triple_after_wind_loss(this,
-            					   mdot_triple, dt);
-                }
-                else if (is_binary_component()) {
-                    if(mdot_triple<0) {
-                        cerr << "enter perform_mass_transfer(" << dt << ", "
-                        << donor->get_element_type()<<", "
-                        <<accretor->get_element_type()
-                        <<")"<<endl;
-                        cerr<<"Mass lost during non-conservative mass transfer is negative."
-                        <<"mlost ="<<mdot_triple<<endl;
-                    }
-                }
-            else {
-                cerr<<"Presumed binary component is not a binary root, "
-                << "nor a hierarchical root"<<endl;
-            }
-        }
-    }
+//            if (is_star_in_binary()) {
+//                real mdot_triple = M_old - M_new;
+//                if (mdot_triple>0) {
+//                    get_binary()->adjust_triple_after_wind_loss(this,
+//            					   mdot_triple, dt);
+//                }
+//                else if (is_binary_component()) {
+//                    if(mdot_triple<0) {
+//                        cerr << "enter perform_mass_transfer(" << dt << ", "
+//                        << donor->get_element_type()<<", "
+//                        <<accretor->get_element_type()
+//                        <<")"<<endl;
+//                        cerr<<"Mass lost during non-conservative mass transfer is negative."
+//                        <<"mlost ="<<mdot_triple<<endl;
+//                    }
+//                }
+//            else {
+//                cerr<<"Presumed binary component is not a binary root, "
+//                << "nor a hierarchical root"<<endl;
+//            }
+//        }
+//    }
+    
+    
+    
     // md_dot2 is equal to md_dot
     real md_dot2 = 0 ;
     donor = donor->subtrac_mass_from_donor(dt, md_dot2);
@@ -2474,38 +2516,76 @@ real double_star::zeta(star * donor,
        real q_new = new_accretor_mass/new_donor_mass;
 
        real a_fr, new_semi;
-       real beta = cnsts.parameters(specific_angular_momentum_loss);
+        // SilT 8June 2022        
+        int jloss_param = cnsts.use_jloss_method();
+//        PRL(jloss_param);
+        if (jloss_param == 3){//jeans mode
+//            cerr<<"jeans mode"<<endl;
+            real eta = ma_dot/md_dot; 
+            a_fr = (old_accretor_mass/new_accretor_mass) *
+                    pow(old_donor_mass/new_donor_mass, eta);
+            new_semi = semi * M_old/M_new*pow(a_fr,2);
+        }
+        else if ((jloss_param == 4) || (jloss_param == 1 && accretor->remnant() )){//isotropic re-emission
+//            cerr<<"isotropic re-emission mode"<<endl;
+            // Special case: mass transfer to compact object as accretor.
+            //               Two possibilities:
+            //               1) eta>0: mass lost as wind from accretor.
+            //               2) eta==0: exponential spiral-in.
+            real eta = ma_dot/md_dot; 
+            if (eta>0) {
+                a_fr  = (new_donor_mass/old_donor_mass)
+                    * pow(new_accretor_mass/old_accretor_mass, 1/eta);
+                new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+            }
+            else {
+                a_fr  = exp(2*(new_donor_mass-old_donor_mass)
+            	 /new_accretor_mass); 
+                new_semi = semi * (M_old/M_new)*a_fr
+                    / pow(new_donor_mass/old_donor_mass, 2);
+            }
+        
+        }
+        else{   //specific orbital jloss * factor
+           real beta = cnsts.parameters(specific_angular_momentum_loss);    
+            a_fr  = pow(old_donor_mass*old_accretor_mass
+                    / (new_donor_mass*new_accretor_mass), 2);
+            new_semi = semi * pow(M_new/M_old,2*beta+ 1)*a_fr;
+        }
+        
 
-       if (!accretor->remnant()) {
 
-	 // General case: semi-conservative mass transfer.
-	 a_fr  = pow(old_donor_mass*old_accretor_mass
-		  / (new_donor_mass*new_accretor_mass), 2);
-	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
-       }
-       else {
+
+//       if (!accretor->remnant()) {
+//
+//	 // General case: semi-conservative mass transfer.
+//	 a_fr  = pow(old_donor_mass*old_accretor_mass
+//		  / (new_donor_mass*new_accretor_mass), 2);
+//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
+//       }
+//       else {
 
 	 // Special case: mass transfer to compact object as accretor.
 	 //               Two possibilities:
 	 //               1) eta>0: mass lost as wind from accretor.
 	 //               2) eta==0: exponential spiral-in.
 	 
-	 real eta = ma_dot/md_dot; 
+//	 real eta = ma_dot/md_dot; 
 
-	 if (eta>0) {
-
-	   a_fr  = (new_donor_mass/old_donor_mass)
-	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
-	 }
-	 else {
-
-	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-		       /new_accretor_mass); 
-	   new_semi = semi * (M_old/M_new)*a_fr
-	            / pow(new_donor_mass/old_donor_mass, 2);
-	 }
-       }
+//	 if (eta>0) {
+//
+//	   a_fr  = (new_donor_mass/old_donor_mass)
+//	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
+//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+//	 }
+//	 else {
+//
+//	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
+//		       /new_accretor_mass); 
+//	   new_semi = semi * (M_old/M_new)*a_fr
+//	            / pow(new_donor_mass/old_donor_mass, 2);
+//	 }
+//       }
        
 //        real a_dot=0;
 //
@@ -2586,38 +2666,81 @@ real double_star::zeta_scaled(star * donor,
        real q_new = new_accretor_mass/new_donor_mass;
 
        real a_fr, new_semi;
-       real beta = cnsts.parameters(specific_angular_momentum_loss);
+       
+        // SilT 8June 2022        
+        int jloss_param = cnsts.use_jloss_method();
+//        PRL(jloss_param);
+        if (jloss_param == 3){//jeans mode
+//            cerr<<"jeans mode"<<endl;
+            real eta = ma_dot/md_dot; 
+            a_fr = (old_accretor_mass/new_accretor_mass) *
+                    pow(old_donor_mass/new_donor_mass, eta);
+            new_semi = semi * M_old/M_new*pow(a_fr,2);
+        }
+        else if ((jloss_param == 4) || (jloss_param == 1 && accretor->remnant() )){//isotropic re-emission
+//            cerr<<"isotropic re-emission mode"<<endl;
+            // Special case: mass transfer to compact object as accretor.
+            //               Two possibilities:
+            //               1) eta>0: mass lost as wind from accretor.
+            //               2) eta==0: exponential spiral-in.
+            real eta = ma_dot/md_dot; 
+            if (eta>0) {
+                a_fr  = (new_donor_mass/old_donor_mass)
+                    * pow(new_accretor_mass/old_accretor_mass, 1/eta);
+                new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+            }
+            else {
+                a_fr  = exp(2*(new_donor_mass-old_donor_mass)
+            	 /new_accretor_mass); 
+                new_semi = semi * (M_old/M_new)*a_fr
+                    / pow(new_donor_mass/old_donor_mass, 2);
+            }
+        
+        }
+        else{   //specific orbital jloss * factor
+           real beta = cnsts.parameters(specific_angular_momentum_loss);    
+            a_fr  = pow(old_donor_mass*old_accretor_mass
+                    / (new_donor_mass*new_accretor_mass), 2);
+            new_semi = semi * pow(M_new/M_old,2*beta+ 1)*a_fr;
+        }
+ 
+ 
+ 
+ 
+        
+       
+//       real beta = cnsts.parameters(specific_angular_momentum_loss);
 
-       if (!accretor->remnant()) {
-
-	 // General case: semi-conservative mass transfer.
-	 a_fr  = pow(old_donor_mass*old_accretor_mass
-		  / (new_donor_mass*new_accretor_mass), 2);
-	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
-       }
-       else {
+//       if (!accretor->remnant()) {
+//
+//	 // General case: semi-conservative mass transfer.
+//	 a_fr  = pow(old_donor_mass*old_accretor_mass
+//		  / (new_donor_mass*new_accretor_mass), 2);
+//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
+//       }
+//       else {
 
 	 // Special case: mass transfer to compact object as accretor.
 	 //               Two possibilities:
 	 //               1) eta>0: mass lost as wind from accretor.
 	 //               2) eta==0: exponential spiral-in.
 	 
-	 real eta = ma_dot/md_dot; 
-
-	 if (eta>0) {
-
-	   a_fr  = (new_donor_mass/old_donor_mass)
-	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
-	 }
-	 else {
-
-	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-		       /new_accretor_mass); 
-	   new_semi = semi * (M_old/M_new)*a_fr
-	            / pow(new_donor_mass/old_donor_mass, 2);
-	 }
-       }
+//	 real eta = ma_dot/md_dot; 
+//
+//	 if (eta>0) {
+//
+//	   a_fr  = (new_donor_mass/old_donor_mass)
+//	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
+//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+//	 }
+//	 else {
+//
+//	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
+//		       /new_accretor_mass); 
+//	   new_semi = semi * (M_old/M_new)*a_fr
+//	            / pow(new_donor_mass/old_donor_mass, 2);
+//	 }
+//       }
        
         real a_dot=0;
 
