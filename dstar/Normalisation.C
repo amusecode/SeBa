@@ -234,7 +234,7 @@ int main(int argc, char ** argv) {
 
     char *mfc = new char[64];
     mass_function mf = mf_Power_Law;
-    real m_min = 0.1, m_min_std = 0.08;
+    real m_min = 0.1, m_min_std = 0.1;
     real m_max = 100, m_max_std = 100;
     real m_exp = -2.35;
     real sigma = 0;
