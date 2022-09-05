@@ -221,7 +221,7 @@ star* sub_giant::reduce_mass(const real mdot) {
         if (relative_mass< m_HeF || core_mass < cnsts.parameters(minimum_helium_star)){
 
 //            following Han+ 02, forming SdB stars if stripping happens close to HeI  
-//            if (core_mass > 0.95 * helium_ignition_core_mass(relative_mass, metallicity)){
+//            if (core_mass > 0.95 * helium_ignition_core_mass(relative_mass, metalicity)){
 //                star_transformation_story(Helium_Star);
 //                return dynamic_cast(star*, new helium_star(*this));                
 //            }
