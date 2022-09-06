@@ -1010,7 +1010,7 @@ void main_sequence::instantaneous_element() {
 					      relative_mass, metalicity);
   radius           = main_sequence_radius(relative_age, 
 					  relative_mass, metalicity);
-    
+					      
   // effective_radius = radius;
   effective_radius = max(effective_radius, radius);
   // eventhough the MS radius decreases slightly at the very end of the MS phase, we r_eff=max(r,r_eff)
@@ -1162,8 +1162,8 @@ real main_sequence::main_sequence_radius(const real time,
     
     real X = get_hydrogen_fraction(z);
     
-    if (mass<0.1)
-        r_ms = max(r_ms, 0.0258*pow(1+X, 5./3.)/pow(mass, 1./3.));
+//    if (mass<0.1)
+//        r_ms = max(r_ms, 0.0258*pow(1+X, 5./3.)/pow(mass, 1./3.));
     
     return r_ms;
 }

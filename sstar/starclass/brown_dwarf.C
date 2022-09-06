@@ -67,20 +67,18 @@ real brown_dwarf::get_evolve_timestep() {
 
 
 void brown_dwarf::evolve_element(const real end_time) {
-
         real dt = end_time - current_time;
         current_time = end_time;
         relative_age += dt;
 
         next_update_age = relative_age + cnsts.safety(maximum_timestep);
 
-	//Burrows & Libert 1993, J. Rev. Mod. Phys. 65, 301
-	luminosity = 938 * pow(relative_mass, 2.64); 
-	if(relative_age>1)
-	  luminosity = 938 * pow(relative_mass, 2.64) / pow(relative_age, 1.3);
+	   //Burrows & Libert 1993, J. Rev. Mod. Phys. 65, 301
+	   luminosity = 938 * pow(relative_mass, 2.64); 
+	   if(relative_age>1)
+	       luminosity = 938 * pow(relative_mass, 2.64) / pow(relative_age, 1.3);
 
         core_radius = radius = brown_dwarf_radius();
-       
         update();
      }
 
@@ -101,14 +99,23 @@ real brown_dwarf::brown_dwarf_radius() {
 
     real m_earth = cnsts.parameters(Mearth);
     real m_jupiter = cnsts.parameters(Mjupiter);
-    real r_jupiter = cnsts.parameters(Rjupiter);           
+    real r_jupiter = cnsts.parameters(Rjupiter);   
+//    PRC(m_earth);PRC(m_jupiter);PRL(r_jupiter);        
        
-    if (get_total_mass() > 0.414 * m_jupiter) // Jovian planets & brown dwarfs
-        return (0.027095 + 1.205219* pow(get_total_mass()/m_jupiter,-0.044))*r_jupiter;
-    else if (get_total_mass() >2.04 * m_earth) // Neptunian planets
+    if (get_total_mass() > 0.414 * m_jupiter){ // Jovian planets & brown dwarfs
+//        return (0.027095 + 1.205219* pow(get_total_mass()/m_jupiter,-0.044))*r_jupiter;
+//      (SilT Sep 6 2022) avoid discontinuity with MS radius 
+        real r_minms = base_main_sequence_radius(cnsts.parameters(minimum_main_sequence), metalicity);
+        real b = (0.12857594557960378-r_minms)/(log10(0.414 * m_jupiter) - log10(cnsts.parameters(minimum_main_sequence)));
+        real a = 0.12857594557960378 - b*log10(0.414 * m_jupiter);
+           return a+b*log10(get_total_mass());
+    }
+    else if (get_total_mass() >2.04 * m_earth) {// Neptunian planets
         return  2.151774*r_jupiter * pow(get_total_mass()/m_jupiter, 0.589); 
-    else // Terran planets
+    }
+    else {// Terran planets
         return 0.31832 * pow(get_total_mass(), 0.28); 
+    }
     
      }
 
