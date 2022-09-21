@@ -127,6 +127,8 @@ class  starbase
         virtual real convective_envelope_mass();
         virtual real convective_envelope_radius();
         virtual real amc();
+        virtual real zeta_thermal();
+        virtual real zeta_adiabatic();
 
         virtual real get_wind_constant();
         virtual void refresh_memory();

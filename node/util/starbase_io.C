@@ -131,6 +131,8 @@ real starbase::gyration_radius_sq() {return 0;}
 real starbase::convective_envelope_mass() {return 0;}
 real starbase::convective_envelope_radius() {return 0;}
 real starbase::amc() {return 0;}
+real starbase::zeta_thermal() {return 0;}
+real starbase::zeta_adiabatic() {return 0;}
 
 real starbase::get_wind_constant() {return 0;}
 void starbase::refresh_memory(){};
