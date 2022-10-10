@@ -189,7 +189,7 @@ real get_random_semimajor_axis(real a_lower, real a_upper,
 			       sma_distribution smaf, 
 			       real exponent, real m_prim, real m_sec);
 
-enum ecc_distribution {Unknown_eccf, 
+enum ecc_distribution {Unknown_eccf=-1, 
 		       Equal_ecc, ecc_Power_Law, Thermal_Distribution};
 char* type_string(ecc_distribution eccf);
 ecc_distribution 
