@@ -557,7 +557,7 @@ void mkrandom_binary( real m_min,  real m_max,
     real a_min_org = a_min;
     do {
       a_min = a_min_org;
-      ecc = get_random_eccentricity(e_min, e_max, ef, m_prim+m_sec);
+      ecc = get_random_eccentricity(e_min, e_max, ef, e_exp);
       //      PRL(ecc);
 
       // The Initial orbital separation is chosen flat in log a.
