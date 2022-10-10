@@ -413,6 +413,8 @@ real stellar_evolution_constants::parameters(model_parameter pm) {
         case spiral_in_time:                           return 0.00001;//Ricker&Taam07
 							//0.0005; // Myr
 	      break;
+	    case include_CHE:                              return false; //(SilT+AD Oct 4 2022)
+	       break;
         default:
 	     cerr << "\nNo recognized option in "
 		     "stellar_evolution_constants::"

@@ -10,6 +10,29 @@
 #include "super_giant.h"
 #include "hertzsprung_gap.h"
 
+// (AD Oct 4 2022)
+helium_star::helium_star(main_sequence & h) : single_star(h) {
+
+    delete &h;
+    real m_tot = get_total_mass();
+    core_mass = m_tot;
+    COcore_mass = 0.;
+    envelope_mass = 0;
+//    lose_envelope_decent(); //assume all helium has been converted to hydrogen 
+    accreted_mass = 0;
+    
+    // (GN+SPZ May  4 1999) last update age is time of previous type change
+    // in NEW relative_age units
+    last_update_age = 0.;
+    adjust_next_update_age();
+    relative_age = 0.;
+    
+    instantaneous_element();
+    update();
+    
+    post_constructor();
+
+}
 
 helium_star::helium_star(hertzsprung_gap & h) : single_star(h) {
 
