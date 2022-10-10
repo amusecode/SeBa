@@ -60,8 +60,8 @@
 ////             -w   exponent for a power-law distribution  
 ////             -P/p eccentricity option: 0) constant mass ratio
 ////                                       1) Flat distribution
-////                                       1) Power Law 
-////                                       2) Hogeveen (1992)
+////                                       2) Power Law 
+////                                       3) Hogeveen (1992)
 ////            Option -P requires one of the following strings:
 ////                      (Equal_q, Flat_q, qf_Power_Law, Hogeveen)
 ////                   -p requires appropriate interger (see double_star.h)
@@ -175,7 +175,7 @@ char* type_string(mass_ratio_distribution qf) {
        case qf_Power_Law:
             sprintf(qf_name, "Power_Law"); 
 	    break;	    
-       case Thermal_Distribution:
+       case Hogeveen:
             sprintf(qf_name, "Hogeveen"); 
 	    break;	    
        default:
