@@ -33,7 +33,7 @@
 ////                                        4) Kroupa
 ////            Option -F requires one of the following strings:
 ////                      (mf_Power_Law, Miller_Scalo, Scalo, Kroupa)
-////                   -f requires the appropriate interger (see mkmass.C)
+////                   -f requires the appropriate integer (see mkmass.C)
 ////             -A   maximum semi-major axis limit [1000000[Rsun]]   
 ////             -a   minimum semi-major axis limit [0] 
 ////             -y   exponent for a power-law distribution  [0] (flat in log)
@@ -44,7 +44,7 @@
 ////                                          4) Eggleton (1999)
 ////            Option -G requires one of the following strings:
 ////                      (Equal_sma, sma_Power_Law, Duquennoy_Mayor, Raghavan, Eggleton)
-////                   -g requires appropriate interger (see double_star.h)
+////                   -g requires appropriate integer (see starbase.h)
 ////             -E   maximum eccentricity [1] 
 ////             -e   minimum eccentricity [0] 
 ////             -v   exponent for a power-law distribution 
@@ -53,18 +53,18 @@
 ////                                       2) Thermal distribution [default]
 ////            Option -U requires one of the following strings:
 ////                      (Equal_ecc, ecc_Power_Law, Thermal_Distribution)
-////                   -u requires appropriate interger (see double_star.h)
+////                   -u requires appropriate integer (see starbase.h)
 ////             -Q   maximum mass ratio [1]
 ////             -q   minimum mass ratio [0]
 ////                    extra option: q_min<0 : q_min=0.1/selected primary mass
 ////             -w   exponent for a power-law distribution  
 ////             -P/p eccentricity option: 0) constant mass ratio
 ////                                       1) Flat distribution
-////                                       1) Power Law 
-////                                       2) Hogeveen (1992)
+////                                       2) Power Law 
+////                                       3) Hogeveen (1992)
 ////            Option -P requires one of the following strings:
 ////                      (Equal_q, Flat_q, qf_Power_Law, Hogeveen)
-////                   -p requires appropriate interger (see double_star.h)
+////                   -p requires appropriate integer (see starbase.h)
 ////
 ////             -n   number of output steps. [1]
 ////
@@ -175,7 +175,7 @@ char* type_string(mass_ratio_distribution qf) {
        case qf_Power_Law:
             sprintf(qf_name, "Power_Law"); 
 	    break;	    
-       case Thermal_Distribution:
+       case Hogeveen:
             sprintf(qf_name, "Hogeveen"); 
 	    break;	    
        default:
@@ -440,8 +440,10 @@ ecc_distribution
         type = Equal_ecc;
      else if (!strcmp(type_string, "Unknown_eccf")) 
         type = Unknown_eccf;
-     else if (!strcmp(type_string, "Power_Law")) 
+     else if (!strcmp(type_string, "ecc_Power_Law")) 
         type = ecc_Power_Law;
+     else if (!strcmp(type_string, "Thermal_Distribution")) 
+        type = Thermal_Distribution;
      else {
 	 cerr << "No proper eccentricity distribution indicated"
 	      << " in extract_eccentricity_type_string." << endl;
@@ -462,7 +464,7 @@ real get_random_eccentricity(real e_lower, real e_upper,
 			       real exponent) {
     real e;
     switch(eccf) {
-       case Equal_sma:
+       case Equal_ecc:
 	  if (e_lower<0) {
 	     cerr << "get_random_eccentricity:"<<endl;
 	     cerr << "unambiguous choise of Equal_ecc."<<endl;
@@ -557,7 +559,7 @@ void mkrandom_binary( real m_min,  real m_max,
     real a_min_org = a_min;
     do {
       a_min = a_min_org;
-      ecc = get_random_eccentricity(e_min, e_max, ef, m_prim+m_sec);
+      ecc = get_random_eccentricity(e_min, e_max, ef, e_exp);
       //      PRL(ecc);
 
       // The Initial orbital separation is chosen flat in log a.
