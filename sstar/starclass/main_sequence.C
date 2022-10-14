@@ -1035,14 +1035,16 @@ void main_sequence::instantaneous_element() {
   // (AD Oct 4 2022) CHE implementation  
   real angular_freq = cnsts.mathematics(two_pi)/get_rotation_period();
   real critical_angular_freq = get_che_critical_angular_frequency();
-//  rotation_period = cnsts.mathematics(pi)/critical_angular_freq;} // to force entering CHE  
+//  if (relative_age > 0.2*main_sequence_time()){// to force entering CHE
+//      rotation_period = cnsts.mathematics(pi)/critical_angular_freq;}   
+
   if ((cnsts.parameters(include_CHE)) && get_rotation_period() != 0 && relative_mass >= 20 && angular_freq >= critical_angular_freq && relative_age < 0.3 * main_sequence_time()){
     		CHE_flag = true;
     	}
   
   if (CHE_flag){
-       	luminosity       = main_sequence_luminosity(0, relative_mass, metalicity);
-  		radius           = main_sequence_radius(0, relative_mass, metalicity);	
+       	luminosity       = max(luminosity, main_sequence_luminosity(0, relative_mass, metalicity));
+  		radius           = max(radius, main_sequence_radius(0, relative_mass, metalicity));	
   		effective_radius = radius;
 
    }else{
@@ -1055,7 +1057,6 @@ void main_sequence::instantaneous_element() {
      // to keep the effect of bloating for mass changes
      // because of the time steps we always reach the maximum radius on the MS 
    }
-   
 //   PRC(luminosity);PRC(radius);PRC(effective_radius);PRC(cnsts.parameters(include_CHE));PRL(CHE_flag);
   
 }
