@@ -53,6 +53,8 @@ class main_sequence : public single_star {
 
 	void adjust_next_update_age();
 	real nucleair_evolution_timescale();
+	real get_che_critical_angular_frequency(); //(AD Oct 4 2022)
+	
 	void instantaneous_element();
         void evolve_element(const real);
         real bolometric_correction();

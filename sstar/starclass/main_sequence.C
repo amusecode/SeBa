@@ -995,6 +995,32 @@ real main_sequence::nucleair_evolution_timescale() {
        * fused_mass/luminosity;
 }
 
+// (AD Oct 4 2022) CHE implementation  
+real main_sequence::get_che_critical_angular_frequency(){
+	// calculates the critical separation for a given mass, companion mass and angular frequency of spin
+	// for simplicity, we're assuming immediate tidal locking, therefore frequency of spin equals orbital frequency.
+	// Fitting formula of critical orbital spin is from Riley+ 21 eq. A2
+	real Grav_const = 6.67408 * pow(10, -11);
+	real Msol = 1.989 * pow(10,30);
+	real Rsol = 6.957* pow(10,8);
+
+	real m1 = relative_mass;
+
+	real a_coeff[] = {5.7914, -1.9196, -4.0602, 1.0150, -9.1792, 2.9051};
+	real a_base[] = {pow(10,-4), pow(10,-6), pow(10,-7), pow(10,-8), pow(10,-11), pow(10,-13)};
+
+	real omega_crit;
+	real omega_at_z_0d004 = 0;
+	for (int i=0; i<6;i++){
+    	omega_at_z_0d004 += a_coeff[i] * a_base[i] * pow(m1, i) / pow(m1, 0.4);
+    }
+
+	omega_crit = omega_at_z_0d004/(0.09 * log(metalicity/0.004) + 1);
+	//cout << "omega_crit: "<<omega_crit<<endl;
+	//real critical_separation = pow((Grav_const * mtot * Msol) / pow(omega_crit, 2), 0.333333333)/ Rsol;
+	return omega_crit;
+}
+
 
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -1006,16 +1032,33 @@ real main_sequence::nucleair_evolution_timescale() {
 // Adjust radius & luminosity at relative_age
 void main_sequence::instantaneous_element() {
 
-  luminosity       = main_sequence_luminosity(relative_age, 
-					      relative_mass, metalicity);
-  radius           = main_sequence_radius(relative_age, 
-					  relative_mass, metalicity);
-					      
-  // effective_radius = radius;
-  effective_radius = max(effective_radius, radius);
-  // eventhough the MS radius decreases slightly at the very end of the MS phase, we r_eff=max(r,r_eff)
-  // to keep the effect of bloating for mass changes
-  // because of the time steps we always reach the maximum radius on the MS 
+  // (AD Oct 4 2022) CHE implementation  
+  real angular_freq = cnsts.mathematics(two_pi)/get_rotation_period();
+  real critical_angular_freq = get_che_critical_angular_frequency();
+//  if (relative_age > 0.2*main_sequence_time()){// to force entering CHE
+//      rotation_period = cnsts.mathematics(pi)/critical_angular_freq;}   
+
+  if ((cnsts.parameters(include_CHE)) && get_rotation_period() != 0 && relative_mass >= 20 && angular_freq >= critical_angular_freq && relative_age < 0.3 * main_sequence_time()){
+    		CHE_flag = true;
+    	}
+  
+  if (CHE_flag){
+       	luminosity       = max(luminosity, main_sequence_luminosity(0, relative_mass, metalicity));
+  		radius           = max(radius, main_sequence_radius(0, relative_mass, metalicity));	
+  		effective_radius = radius;
+
+   }else{
+   		luminosity       = main_sequence_luminosity(relative_age, relative_mass, metalicity);
+  		radius           = main_sequence_radius(relative_age, relative_mass, metalicity);
+
+    // effective_radius = radius;
+        effective_radius = max(effective_radius, radius);
+     // eventhough the MS radius decreases slightly at the very end of the MS phase, we r_eff=max(r,r_eff)
+     // to keep the effect of bloating for mass changes
+     // because of the time steps we always reach the maximum radius on the MS 
+   }
+//   PRC(luminosity);PRC(radius);PRC(effective_radius);PRC(cnsts.parameters(include_CHE));PRL(CHE_flag);
+  
 }
 
 // Evolve a main_sequence star upto time argument according to
@@ -1038,9 +1081,11 @@ void main_sequence::evolve_element(const real end_time) {
     if (relative_age <= next_update_age) {
 
       instantaneous_element(); 
-
+    } else if (CHE_flag){   // (AD Oct 4 2022) CHE implementation  
+    	star_transformation_story(Helium_Star);
+    	new helium_star(*this);
+    	return;
     } else {
-
 	// Main sequence star's age exceeds hydrogen core burning
 	// lifetime.
         star_transformation_story(Hertzsprung_Gap);

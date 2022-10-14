@@ -47,6 +47,7 @@ class  single_star : public star
 // AMUSE
         real time_offset;
 // AMUSE
+        real CHE_flag; // (AD Oct 4 2022)
 
 	real  relative_mass;
         real  envelope_mass;         

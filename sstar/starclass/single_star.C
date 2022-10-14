@@ -99,6 +99,7 @@ single_star::single_star(node* n) : star(n) {
     magnetic_field = rotation_period = 0;
     birth_mass=0;
     time_offset=0;
+    CHE_flag=false;
 }
 
 
@@ -133,6 +134,7 @@ single_star::single_star(single_star & rv) : star(rv) {
   birth_mass      = rv.birth_mass;
   
   time_offset     = rv.time_offset;
+  CHE_flag        = rv.CHE_flag; // (AD Oct 4 2022)
   
   //              copy stellar history.
   previous.current_time    = rv.previous.current_time;
