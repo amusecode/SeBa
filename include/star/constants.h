@@ -175,6 +175,7 @@ enum model_parameter {star_formation_efficiency,
 		      convective_star_gyration_radius_sq,
 		      rejuvenation_exponent,
 		      spiral_in_time,
+		      include_CHE, //(SilT+AD Oct 4 2022)
                      };
 
 enum observational_parameter {B_emission_star_mass_limit,

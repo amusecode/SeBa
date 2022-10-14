@@ -37,7 +37,7 @@ class helium_star : public single_star {
       
       public :
 
-         //helium_star(main_sequence &);
+         helium_star(main_sequence &);
          //helium_star(hyper_giant &);
          helium_star(hertzsprung_gap &);
          helium_star(sub_giant &);
