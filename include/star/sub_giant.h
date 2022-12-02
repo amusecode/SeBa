@@ -31,7 +31,9 @@ class sub_giant : public single_star
       public :
 
 	sub_giant(hertzsprung_gap &);
-	sub_giant(main_sequence &);
+	sub_giant(main_sequence &, star*);
+	
+	
         sub_giant(node* n) : single_star(n) {}
         ~sub_giant() {}
 

@@ -31,7 +31,7 @@ class horizontal_branch : public single_star {
 
          horizontal_branch(sub_giant&);
          horizontal_branch(hertzsprung_gap&);
-         horizontal_branch(main_sequence&);
+         horizontal_branch(main_sequence&, star*);
 //         horizontal_branch(helium_star&);
          horizontal_branch(node* n) : single_star(n) {}
          ~horizontal_branch() {}

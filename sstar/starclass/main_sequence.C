@@ -449,14 +449,14 @@ star* main_sequence::merge_elements(star* str) {
 	     star_transformation_story(Horizontal_Branch);
 	     
 	     relative_age = next_update_age;
-	     return dynamic_cast(star*, new horizontal_branch(*this));
+	     return dynamic_cast(star*, new horizontal_branch(*this, str));
 	   } 
 	   else {
 
 	     star_transformation_story(Sub_Giant);
 	     
 	     relative_age = next_update_age;
-	     return dynamic_cast(star*, new sub_giant(*this));
+	     return dynamic_cast(star*, new sub_giant(*this, str));
 	   }
 
          case Thorn_Zytkow :

@@ -88,8 +88,8 @@ class main_sequence : public single_star {
 //              Friend functions.
         friend brown_dwarf::brown_dwarf(main_sequence &);
 	friend hertzsprung_gap::hertzsprung_gap(main_sequence &);
-	friend sub_giant::sub_giant(main_sequence &);
-	friend horizontal_branch::horizontal_branch(main_sequence &);
+	friend sub_giant::sub_giant(main_sequence &, star*);
+	friend horizontal_branch::horizontal_branch(main_sequence &, star*);
 	friend thorne_zytkow::thorne_zytkow(main_sequence &);
 	//friend helium_star::helium_star(main_sequence &);
 

@@ -47,23 +47,31 @@ horizontal_branch::horizontal_branch(hertzsprung_gap & h) : single_star(h) {
 
 // (GN+ SilT Feb 2011): new constructor for merger products of
 // main sequence plus WD/He stars
-horizontal_branch::horizontal_branch(main_sequence & m) : single_star(m) {
+horizontal_branch::horizontal_branch(main_sequence & m, star* str) : single_star(m) {
 
   delete &m; 
 
   last_update_age = next_update_age;
 
   // Proper adding of core mass
-  if (is_binary_component()) {
+//  if (is_binary_component()) {
+//
+//    if (get_companion()->get_core_mass() > 0)
+//      add_mass_to_accretor(get_companion()->get_core_mass(), false);
+//
+//    // this should not happen....(or hardly) for WD
+//    // but helium stars have He envelope and CO core....
+//    if (get_companion()->get_envelope_mass() > 0)
+//      add_mass_to_accretor(get_companion()->get_envelope_mass(), get_companion()->hydrogen_envelope_star());
+//  }
 
-    if (get_companion()->get_core_mass() > 0)
-      add_mass_to_accretor(get_companion()->get_core_mass(), false);
+  if (str->get_core_mass() > 0)
+    add_mass_to_accretor(str->get_core_mass(), false);
 
-    // this should not happen....(or hardly) for WD
-    // but helium stars have He envelope and CO core....
-    if (get_companion()->get_envelope_mass() > 0)
-      add_mass_to_accretor(get_companion()->get_envelope_mass(), get_companion()->hydrogen_envelope_star());
-  }
+  // this should not happen....(or hardly) for WD
+  // but helium stars have He envelope and CO core....
+  if (str->get_envelope_mass() > 0)
+    add_mass_to_accretor(str->get_envelope_mass(), str->hydrogen_envelope_star());
 
   adjust_next_update_age();
 
