@@ -50,10 +50,10 @@
 //-----------------------------------------------------------------------------
 
 void  addstar(node * b, real t_current, stellar_type type, real z,int id, 
-		bool verbose, real m_rel, real m_env, 
+		bool verbose, stellar_type type2, real m_rel, real m_env, 
 		real m_core, real mco_core, real t_rel)
 
-{
+{ 
   //    if(!((star*)b->get_starbase())->get_seba_counters()) {
   //      cerr << "Initialize SeBa counters" << endl;
   //      ((star*)b->get_starbase())->set_seba_counters(new seba_counters);
@@ -64,9 +64,15 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	real m_av = 0;
 	int  n_star = 0;
 
-	for_all_daughters(node, b, bi) {
-	    addstar(bi, t_current, type, z, id, verbose);
-
+    bool first_encounter = true; 
+	for_all_daughters(node, b, bi) {        
+        if (first_encounter){
+    	    addstar(bi, t_current, type, z, id, verbose, type2);
+    	    first_encounter = false;
+        }
+        else
+            addstar(bi, t_current, type2, z, id, verbose, type2);
+            
 	    if (verbose) {
 		real m = bi->get_starbase()
 			   ->conv_m_dyn_to_star(bi->get_mass());
@@ -76,7 +82,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 		n_star++;		
 	    }
 	}
-	if (verbose) {
+	if (verbose) {         
 	    if (n_star > 0) m_av /= n_star;
 	    //  PRC(n_star); PRC(m_min); PRC(m_max); PRL(m_av);
 	}
@@ -89,7 +95,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	// cases where only a starbase (but no star) exists.
 
 	if (b->get_starbase()->get_element_type() != NAS) return;
-	
+
 	//int id = b->get_index();
         //real t_cur=0, t_rel=0, m_rel=1, m_env=0, m_core=0.0;//0.01;
 	real t_cur=0;
@@ -97,7 +103,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	real p_rot=0, b_fld=0;
 	real m_tot;
 
-	// Create a (single) star part, using the unformation obtained from
+	// Create a (single) star part, using the information obtained from
 	// the star story read in by get_node(), or created from scratch.
 
 	stellar_type local_type = NAS;
@@ -112,15 +118,13 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	m_tot = m_env+m_core;
 	old_starbase->set_star_story(NULL);
 	delete s;
-
 	if (local_type != NAS) {	// Is the star properly defined?
 
 	    // Use the data extracted from the star story.  Note that the
 	    // input values of the type and t_rel arguments are IGNORED.
 
-	  //cerr << "addstar: " << type_string(local_type)
-	  //   << " t_rel = " << t_rel << " t_cur = " << t_cur << endl;
-	
+//	  cerr << "addstar: " << type_string(local_type)
+//	     << " t_rel = " << t_rel << " t_cur = " << t_cur << endl;
 	    type = local_type;
 	    single_star* new_star = new_single_star(type, id, z, t_cur,
 						    t_rel,
@@ -163,12 +167,36 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	      m_core = 0.01*m_tot;
 	      mco_core = 0;
 	    }
-	
-	    single_star* new_star = new_single_star(local_type, id, z,
+	    
+	    single_star* new_star;
+        switch(local_type) {
+            case Helium_Dwarf:
+            case Carbon_Dwarf:
+            case Oxygen_Dwarf: 
+            case Xray_Pulsar:
+            case Radio_Pulsar:
+            case Neutron_Star: 
+            case Black_Hole:            
+                new_star = new_single_star(local_type, id, z,
 						    t_cur, t_rel,
-						    m_rel, m_tot, m_core,
-						    mco_core,
+						    m_rel, m_tot, m_tot, m_tot,
 						    p_rot, b_fld, b);
+                break;
+            default: 
+                new_star = new_single_star(local_type, id, z,
+						    t_cur, t_rel,
+						    m_rel, m_tot, m_core, mco_core,
+						    p_rot, b_fld, b);
+                break;
+        }	    
+	    
+
+//	    single_star* new_star = new_single_star(local_type, id, z,
+//						    t_cur, t_rel,
+//						    m_rel, m_tot, m_core,
+//						    mco_core,
+//						    p_rot, b_fld, b);
+
 
 	}
 

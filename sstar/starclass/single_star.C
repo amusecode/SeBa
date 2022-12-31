@@ -25,6 +25,7 @@ single_star * new_single_star(stellar_type type,	// All defaults are
 			      real b_fld,
 			      node* n)
 { single_star* element = 0;
+
   switch(type) {
   case SPZDCH_Star: element = new SPZDCH_star(n);
     break;
@@ -39,19 +40,23 @@ single_star * new_single_star(stellar_type type,	// All defaults are
     break;
   case Sub_Giant: element = new sub_giant(n);
     break;
-  case Horizontal_Branch: element = new horizontal_branch(n);
+  case Horizontal_Branch: element = new horizontal_branch(n); 
+  t_rel = element->helium_ignition_time(m_rel, z);
     break;
   case Super_Giant: element = new super_giant(n);
     break;
   case Carbon_Star:  
-  case Helium_Star:  
-  case Helium_Giant: element = new helium_star(n);
+  case Helium_Star: element = new helium_star(n);
+//  case Helium_Giant: element = new helium_star(n);
+    break;
+  case Helium_Giant: element = new helium_giant(n); 
     break;
   case Hyper_Giant: element = new hyper_giant(n);
     break;
   case Helium_Dwarf:
   case Carbon_Dwarf:
-  case Oxygen_Dwarf: element = new white_dwarf(n);
+  case Oxygen_Dwarf: element = new white_dwarf(n); 
+    element->set_wd_type(type);
     break;
   case Thorn_Zytkow: element = new thorne_zytkow(n);
     break;
@@ -71,9 +76,7 @@ single_star * new_single_star(stellar_type type,	// All defaults are
   }
   
   element->initialize(id, z, t_cur, t_rel, m_rel, m_tot, m_core, co_core);
-
   element->post_constructor();
-
   //element->get_seba_counters()->add_sstar++;
 
   return element;
@@ -90,6 +93,7 @@ single_star::single_star(node* n) : star(n) {
     current_time=relative_age=0;
     last_update_age = next_update_age=0;
     relative_mass = accreted_mass=0;
+    relative_helium_mass = 0;
     envelope_mass=core_mass=0;
     core_radius=effective_radius=radius=0;
     COcore_mass = 0;
@@ -116,6 +120,7 @@ single_star::single_star(single_star & rv) : star(rv) {
   current_time  = rv.current_time;
   relative_age  = rv.relative_age;
   relative_mass = rv.relative_mass;
+  relative_helium_mass = rv.relative_helium_mass;
   envelope_mass = rv.envelope_mass;
   core_mass     = rv.core_mass;
   COcore_mass   = rv.COcore_mass;
@@ -142,6 +147,7 @@ single_star::single_star(single_star & rv) : star(rv) {
   previous.next_update_age = rv.previous.next_update_age;
   previous.relative_age    = rv.previous.relative_age;
   previous.relative_mass   = rv.previous.relative_mass;
+  previous.relative_helium_mass   = rv.previous.relative_helium_mass;
   previous.envelope_mass   = rv.previous.envelope_mass;
   previous.core_mass       = rv.previous.core_mass;
   previous.COcore_mass     = rv.previous.COcore_mass;
@@ -266,11 +272,11 @@ void single_star::initialize(int id, real z, real t_cur,
   current_time = t_cur;
   relative_age = t_rel;
   relative_mass = max(m_rel, m_env+m_core);
+  relative_helium_mass = max(m_rel, m_env+m_core);
   previous.envelope_mass = envelope_mass = m_env;
   core_mass = m_core;
   COcore_mass = co_core;
   time_offset = t_cur;
-  
   instantaneous_element();
 
   // (SPZ+GN: 26 Jul 2000) 
@@ -282,6 +288,7 @@ void single_star::initialize(int id, real z, real t_cur,
   instantaneous_element();
 
   update();
+  
 }
 
 #if 0
@@ -630,6 +637,7 @@ void single_star::refresh_memory() {
   previous.next_update_age = next_update_age;
   previous.relative_age = relative_age;
   previous.relative_mass = relative_mass;
+  previous.relative_helium_mass = relative_helium_mass;
   previous.envelope_mass = envelope_mass;
   previous.core_mass = core_mass;
   previous.COcore_mass = COcore_mass;
@@ -652,6 +660,7 @@ void single_star::recall_memory() {
   next_update_age  = previous.next_update_age;
   relative_age     = previous.relative_age;
   relative_mass    = previous.relative_mass;
+  relative_helium_mass    = previous.relative_helium_mass;
   envelope_mass    = previous.envelope_mass;
   core_mass        = previous.core_mass;
   COcore_mass      = previous.COcore_mass;
@@ -1394,6 +1403,7 @@ void single_star::update_relative_mass(const real new_relative_mass) {
   update_wind_constant();
 
 }
+
 
 void single_star::lose_envelope_decent() {
 

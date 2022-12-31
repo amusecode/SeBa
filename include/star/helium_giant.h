@@ -32,11 +32,12 @@ class helium_giant : public single_star {
      private:
   
          real CO_core_mass();
-         real relative_helium_mass;
+//         real relative_helium_mass;
     
       public :
          helium_giant(super_giant &);
          helium_giant(helium_star &);
+         helium_giant(node* n) : single_star(n) {}         
          ~helium_giant() {}
 
         stellar_type get_element_type();
