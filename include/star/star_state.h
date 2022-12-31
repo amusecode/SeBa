@@ -54,6 +54,7 @@ struct star_hist {
         real  next_update_age;
         real  relative_age;
         real  relative_mass;
+        real  relative_helium_mass;
         real  envelope_mass;
         real  core_mass;
 	real  COcore_mass;

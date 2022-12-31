@@ -22,6 +22,7 @@ inline  single_star * new_single_star(stellar_type type,  // All defaults are
 {
 
      single_star* element = 0;
+
       switch(type) {
          case Planet:
          case Brown_Dwarf: element = new brown_dwarf(n);
@@ -35,16 +36,20 @@ inline  single_star * new_single_star(stellar_type type,  // All defaults are
          case Sub_Giant: element = new sub_giant(n);
                              break;
          case Horizontal_Branch: element = new horizontal_branch(n);
+           t_rel = element->helium_ignition_time(m_rel, z);
                              break;
          case Super_Giant: element = new super_giant(n);
                              break;
          case Carbon_Star:
-         case Helium_Star:
-         case Helium_Giant: element = new helium_star(n);
+         case Helium_Star: element = new helium_star(n);
+//         case Helium_Giant: element = new helium_star(n);
+                             break;
+         case Helium_Giant: element = new helium_giant(n);
                              break;
          case Helium_Dwarf:
          case Carbon_Dwarf:
-         case Oxygen_Dwarf: element = new white_dwarf(n);
+         case Oxygen_Dwarf: element = new white_dwarf(n);   
+                            element->set_wd_type(type);
                              break;
          case Thorn_Zytkow: element = new thorne_zytkow(n);
                             break;

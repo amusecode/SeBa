@@ -87,7 +87,8 @@
 ////            -T or -t  binary end time. [13500] Myr
 ////            -s Random seed
 ////            -z select metallicity of binaries to be simulated. [0.02] Solar
-////            -c Initial stellar type [default is main_sequence]
+////            -C Initial stellar type primary star [default is main_sequence]
+////            -c Initial stellar type secondary star [default is main_sequence]
 //   Note:  libnode.a is referenced for the routines which produce the 
 //          mass function
 //
@@ -205,7 +206,8 @@ int main(int argc, char ** argv) {
     bool stop_at_merger_or_disruption = false;
     bool stop_at_remnant_formation = false;
     bool random_initialization = false;
-    stellar_type type = Main_Sequence;
+    stellar_type primary_type = Main_Sequence;
+    stellar_type secondary_type = Main_Sequence;
     char * star_type_string = new char[64];
     binary_type bin_type = Detached;
     real binary_fraction = 1.0;
@@ -264,7 +266,7 @@ int main(int argc, char ** argv) {
 
     extern char *poptarg;
     int c;
-    const char *param_string = "n:N:RDSM:m:x:F:f:A:a:y:G:g:E:e:v:U:u:Q:q:T:t:I:O:w:P:p:n:s:z:c:";
+    const char *param_string = "n:N:RDSM:m:x:F:f:A:a:y:G:g:E:e:v:U:u:Q:q:T:t:I:O:w:P:p:n:s:z:C:c:";
 
     while ((c = pgetopt(argc, argv, param_string)) != -1)
 	switch(c) {
@@ -335,8 +337,11 @@ int main(int argc, char ** argv) {
 		      break;
            case 'z': metal = atof(poptarg);
                 break;
+           case 'C': strcpy(star_type_string, poptarg);
+	           primary_type = extract_stellar_type_string(star_type_string);
+                break;
            case 'c': strcpy(star_type_string, poptarg);
-	           type = extract_stellar_type_string(star_type_string);
+	           secondary_type = extract_stellar_type_string(star_type_string);
                 break;
             case '?': params_to_usage(cerr, argv[0], param_string);
 		      exit(1);
@@ -448,7 +453,7 @@ int main(int argc, char ** argv) {
       root->get_starbase()->set_stellar_evolution_scaling(m_prim, r_hm, t_hc);
       the_binary = root->get_oldest_daughter();
       add_secondary(the_binary, m_sec/m_prim);
-      addstar(root, start_time, type, z);
+      addstar(root, start_time, primary_type, z, 0, false, secondary_type);
 //      root->get_starbase()->set_seba_counters(new_seba_counters);
 
 //      pp(root, cerr);

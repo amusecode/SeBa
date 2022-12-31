@@ -50,6 +50,7 @@ class  single_star : public star
         real CHE_flag; // (AD Oct 4 2022)
 
 	real  relative_mass;
+	real relative_helium_mass;
         real  envelope_mass;         
         real  core_mass;         
         real  COcore_mass;
@@ -369,6 +370,7 @@ class  single_star : public star
         
       //white dwarf      
       real white_dwarf_radius(real mass, real time);
+      virtual void set_wd_type(stellar_type wdtype) {};      
   
       // for virtual declaration in 
       //      void evolve_core_mass(const real) {}
@@ -502,6 +504,7 @@ void  addstar(node*,
 	      real z = cnsts.parameters(Zsun),
               int id = 1,
 	      bool verbose = false,
+	      stellar_type type2=Main_Sequence,
 	      real m_rel = 1,
 	      real m_env = 0,
 	      real m_core = 0.0,
