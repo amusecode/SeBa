@@ -10,7 +10,7 @@
 
 /*
  *  constants.h: header file for constants.
- *           
+ *
  *.............................................................................
  *    version 1:  May 1993   Simon F. Portegies Zwart
  *    version 2:
@@ -24,7 +24,7 @@
 #ifndef     _CONSTANTS
 #   define  _CONSTANTS
 
-#include "stdinc.h"       
+#include "stdinc.h"
 
 #define static_cast(type, expr) 	(type)(expr)
 #define const_cast(type, expr) 		(type)(expr)
@@ -45,8 +45,8 @@
 #define MEAN_KICK 450.0			// km/s
 #define VAR_KICK  90.0			// km/s
 
-//#define BINARY_UPDATE_TIMESTEP 0.9      // Timestep increase for binary   
-#define BINARY_UPDATE_TIMESTEP 0.1      // Timestep increase for binary   
+//#define BINARY_UPDATE_TIMESTEP 0.9      // Timestep increase for binary
+#define BINARY_UPDATE_TIMESTEP 0.1      // Timestep increase for binary
 #define TEN_PERCENT 0.1
 //#define STABLE_ZETA 15
 //#define J_SPI_FR 0.5			//Pols 93 advises 1/3
@@ -54,13 +54,13 @@
 // Model choices.
 //#define exp_HE_lifetime FALSE		// exponential he star lifetime fits.
 
-enum binary_history  {ms_ms = 0, bs_ms, bs_bs, he_ms, heN_ms, 
-                      wr_ms, he_he, rscvn, 
-		      wuma, wdxb, 
-                      lmxb, mmxb, hmxb, spi, spi_2, 
-                      wd_ms, wd_he, wd_wd, wd_ns, wdXns, 
+enum binary_history  {ms_ms = 0, bs_ms, bs_bs, he_ms, heN_ms,
+                      wr_ms, he_he, rscvn,
+		      wuma, wdxb,
+                      lmxb, mmxb, hmxb, spi, spi_2,
+                      wd_ms, wd_he, wd_wd, wd_ns, wdXns,
                       pr_ms, pr_he, pr_st, prXst, pr_pr, prXpr,
-                      ns_ms, ns_he, ns_st, nsXst, ns_ns, nsXns, st_st, 
+                      ns_ms, ns_he, ns_st, nsXst, ns_ns, nsXns, st_st,
                       no_of_type};
 
 enum Be_binaries    {be_ms=0, be_he, be_wd, be_ns, no_of_be_binary};
@@ -102,7 +102,7 @@ enum pulsar_initial_conditions {pulsar_magnetic_field,
 				maximum_neutron_star_mass,
 				minimum_neutron_star_mass
 };
-    
+
 enum stellar_mass_limits {low_mass_star_mass_limit,
 			  medium_mass_star_mass_limit,
 			  massive_star_mass_limit,
@@ -206,7 +206,7 @@ class stellar_evolution_constants {  // Easy to have a name for compiling.
   public:
   stellar_evolution_constants() {
     pk = internally_decided_velocity_kick;
-    v_disp = 600;    
+    v_disp = 600;
   }
 
   super_nova_kick_distribution pk;
@@ -216,15 +216,17 @@ class stellar_evolution_constants {  // Easy to have a name for compiling.
   real physics(physics_constants);
 
   real super_nova_kick();
-  
+  real common_envelope_lambda();
+
   real parameters(solar_parameter);
   real parameters(astronomical_scale_parameter);
   real parameters(pulsar_initial_conditions);
   real parameters(stellar_mass_limits);
-  
+
   int use_common_envelope_method();
-  int use_black_hole_mass_method();  
-  int use_jloss_method();  
+  int use_common_envelope_lambda_method();
+  int use_black_hole_mass_method();
+  int use_jloss_method();
 
   bool parameters(boolean_parameter);
   real parameters(accretion_parameter);
@@ -251,7 +253,3 @@ class stellar_model_constants {  // Easy to have a name for compiling.
 
 
 #endif		// _CONSTANTS
-
-
-
-
