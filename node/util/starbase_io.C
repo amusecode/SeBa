@@ -123,6 +123,7 @@ void starbase::set_semi(real a) {}
 real starbase::get_eccentricity()    {return 0;}
 void starbase::set_eccentricity(real e)    {}
 binary_type starbase::get_bin_type() {return Unknown_Binary_Type;}
+mass_transfer_type starbase::get_current_mass_transfer_type() {return Unknown;}
 
 real starbase::add_mass_to_accretor(real, bool, const real) {return 0;}
 star* starbase::subtrac_mass_from_donor(const real, real&){return NULL;}

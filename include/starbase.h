@@ -110,6 +110,7 @@ class  starbase
         virtual real sudden_mass_loss();
 
         virtual binary_type get_bin_type();
+        virtual mass_transfer_type get_current_mass_transfer_type();
         virtual real get_semi();
         virtual void set_semi(real);
         virtual real get_eccentricity();
