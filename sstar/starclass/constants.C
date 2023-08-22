@@ -33,12 +33,12 @@ real stellar_evolution_constants::mathematics(mathematical_constant pm) {
 
 real stellar_evolution_constants::physics(physics_constants pp) {
 
-    // physics parameters 
+    // physics parameters
     switch(pp) {
 	case gravitational_constant:
 	case G:                             return 6.67e-8;    // [cgs]
              break;
-        case speed_of_light:					    
+        case speed_of_light:
         case C:                             return 2.9979e+10; // [cm/s]
              break;
         case million_years:
@@ -67,7 +67,7 @@ real stellar_evolution_constants::physics(physics_constants pp) {
 }
 
 real stellar_evolution_constants::super_nova_kick() {
-  
+
   // Super Nova Kick functions.
   // kick velicity imparted to the remnant during the supernova event.
   // changing the kick velocity requires recompilation.
@@ -84,19 +84,19 @@ real stellar_evolution_constants::super_nova_kick() {
   //    Hansen & Phinney (1997, MNRAS 291, 569) kick velocity distribution.
   //    They prever a Maxwellian with a velocity dispersion of
   //    270 km/s.
-  
+
   //    Hobbs, Lorimer, Lyne & Kramer, 2005, 360, 974 - maxwellian with mean of 265
   //    Arzoumanian et al. 2002, 568, 289 - combination of two maxwellians (mean 90 & 500)
   // 	Verbunt, Igoshev & Cator, 2017, 608, 57 - combination of two maxwellians (mean 75 & 316)
-  
-  
+
+
   // selected kick distribution imparted to a newly formed neutron star
-  // in a supernova. 
+  // in a supernova.
 PRC(pk);
   PRL(v_disp);
     switch(pk) {
     case no_velocity_kick:              return 0;
-             break;                                
+             break;
 	case Maxwellian_velocity_kick:      return random_maxwellian_velocity(v_disp);
              break;
 	case Paczynski_velocity_kick:       return random_paczynski_velocity(v_disp);
@@ -105,7 +105,7 @@ PRC(pk);
             break;
 	case Arzoumanian_velocity_kick:      return random_arzoumanian_velocity();
             break;
-    case internally_decided_velocity_kick:		    
+    case internally_decided_velocity_kick:
 	case Verbunt_velocity_kick:      return random_verbunt_velocity();
             break;
 	case delta_function_velocity_kick:  return v_disp;
@@ -118,7 +118,27 @@ PRC(pk);
 		  << endl;
              exit(1);
     }
-}  
+}
+
+// SilT 27March 2023
+real stellar_evolution_constants::common_envelope_lambda() {
+
+  // functions for lambda for use in common envelope.
+  int lambda_method_param = cnsts.use_common_envelope_lambda_method();
+  //PRL(lambda_method_param);
+
+    if (lambda_method_param == 1){ // constant lambda
+        return cnsts.parameters(envelope_binding_energy);}
+    // else if (lambda_method_param == 2){
+    //     return 2;}
+    // desired function to be added here
+    else {
+      cerr << "\nNo recognized option in "
+        "stellar_evolution_constants::"
+        "common_envelope_lambda( "
+           << lambda_method_param << ")"<< endl;
+             exit(1);}
+}
 
 
 // SilT 8June 2022
@@ -127,7 +147,7 @@ int stellar_evolution_constants::use_jloss_method() {
 //    jloss_parameter = 2; // specific J of orbit
 //    jloss_parameter = 3; // specific J of donor i.e. Jeans mode
 //    jloss_parameter = 4; // specific J of accretor i.e isotropic re-emission
-       
+
   return jloss_parameter;
 }
 
@@ -135,9 +155,9 @@ int stellar_evolution_constants::use_jloss_method() {
 int stellar_evolution_constants::use_black_hole_mass_method() {
     int bhm_parameter = 1; // SeBa model based on Fryer 2001
     bhm_parameter = 2; // Fryer 2012 delayed model
-//    bhm_parameter = 3; // Fryer 2012 rapid model 
+//    bhm_parameter = 3; // Fryer 2012 rapid model
 //    bhm_parameter = 4; // Fryer 2012 Startrack model
-       
+
   return bhm_parameter;
 }
 
@@ -149,6 +169,12 @@ int stellar_evolution_constants::use_common_envelope_method() {
   return cc_parameter;
 }
 
+// SilT 27March 2023
+int stellar_evolution_constants::use_common_envelope_lambda_method() {
+  int lambda_parameter = 1; // default (constant)
+  // lambda_parameter = 2;  //
+  return lambda_parameter;
+}
 
 real stellar_evolution_constants::parameters(astronomical_scale_parameter pa) {
 
@@ -156,24 +182,24 @@ real stellar_evolution_constants::parameters(astronomical_scale_parameter pa) {
     switch(pa) {
 	case PC:
 	case parsec:                             return 3.0857e+18;
-             break;                                
-	case AU:                      
-	case astronomical_unit:                  return 1.496e+13; 
-             break; 
-             
+             break;
+	case AU:
+	case astronomical_unit:                  return 1.496e+13;
+             break;
 
-// (SilT May 26 2021) 
+
+// (SilT May 26 2021)
     case earth_mass:
-    case Mearth:                           return 1./1047.35/317.828; //[Solar mass]             
+    case Mearth:                           return 1./1047.35/317.828; //[Solar mass]
              break;
     case jupiter_mass:
-    case Mjupiter:                           return 1./1047.35; //[Solar mass]             
+    case Mjupiter:                           return 1./1047.35; //[Solar mass]
              break;
     case jupiter_radius:
-    case Rjupiter:                           return 0.10045; //[Solar radius]             
+    case Rjupiter:                           return 0.10045; //[Solar radius]
              break;
-                
-                                       
+
+
         default:
 	     cerr << "\nNo recognized option in "
 		     "stellar_evolution_constants::"
@@ -190,20 +216,20 @@ real stellar_evolution_constants::parameters(solar_parameter ps) {
     switch(ps) {
 	case solar_mass:
         case Msun:                      return 1.989e+33; //[gram]
-             break;                                
+             break;
 	case solar_radius:
 	case Rsun:                      return 6.96e+10;//[centimeter]
-             break;                                
+             break;
 	case solar_luminosity:
 	case Lsun:                      return 3.862e+33; // [erg/s]
-             break;                                
+             break;
 	case solar_temperature:
 	case Tsun:                      return 5770;     // [Kelvin]
              break;
         case Zsun:
         case solar_metalicity:          return 0.02;
 	     break;
-        case energy_to_mass_in_internal_units:         return 
+        case energy_to_mass_in_internal_units:         return
 				   cnsts.physics(nucleair_efficiency)
 				 * pow(cnsts.physics(C), 2)
                                  * cnsts.parameters(solar_mass)
@@ -225,18 +251,18 @@ real stellar_evolution_constants::parameters(pulsar_initial_conditions pp) {
     // Netron star basic parameters.
     switch(pp) {
 	case pulsar_magnetic_field:              return 12;     // [log Gs]
-             break;                                
+             break;
 	case pulsar_pulse_period:                return 0.1;    // [s]
-             break;                                
+             break;
         case kanonical_neutron_star_radius:      return 1.5e-5; // [cm]
-             break;                               
+             break;
         case kanonical_neutron_star_mass:        return 1.34;   // [msun]
-             break;                                
+             break;
 	// (SilT: 7 Nov 2020) updated to accommodate Fryer NS mass prescription
-	case maximum_neutron_star_mass:          return 2.25;    // [Msun] 
-             break;                                
+	case maximum_neutron_star_mass:          return 2.25;    // [Msun]
+             break;
 	case minimum_neutron_star_mass:          return 0.0925; // [Msun]
-             break;                              // Newtonian polytrope 
+             break;                              // Newtonian polytrope
         default:
 	     cerr << "\nNo recognized option in "
 		     "stellar_evolution_constants::"
@@ -253,35 +279,35 @@ real stellar_evolution_constants::parameters(stellar_mass_limits pm) {
     // solar units [Msun].
     switch(pm) {
 	case low_mass_star_mass_limit:           return 1.5;
-             break;                                
+             break;
 	case medium_mass_star_mass_limit:        return 15;
-             break;                               
+             break;
 	case massive_star_mass_limit:            return 25;
-             break;                               
+             break;
 	case upper_ZAMS_mass_for_degenerate_core: return 2.3;
-             break;                                
+             break;
     case minimum_main_sequence:              return 0.075;  //Msun
-             break;                              // for pop III: 0.095 [Msun] 
+             break;                              // for pop III: 0.095 [Msun]
     // (SilT January 18 2021) minimum mass for a Brown dwarf ~13 Jupiter masses
     // based on Spiegel, Burrows, Milsom, 2011, 727, 57S
-    case brown_dwarf_mass_limit:              return 0.0124; //Msun // 0.075;  
+    case brown_dwarf_mass_limit:              return 0.0124; //Msun // 0.075;
             break;
 	case helium_dwarf_mass_limit:            return 0.45;
-             break;                                
+             break;
 	case carbon_dwarf_mass_limit:            return 1.2;
              break;
 	case Chandrasekar_mass:                  return 1.38;
-             break;                                
+             break;
 	case helium2neutron_star:                return 2.2;
-             break;                                
+             break;
         case COcore2black_hole:                  return 4.5; // was 5, before that 10
-             break;                                
+             break;
 	case super_giant2neutron_star:           return 8;
-             break;                                
+             break;
         case super_giant2black_hole:             return 25; // was 40
-             break;                                
+             break;
         case maximum_main_sequence:              return 100; // Msun
-             break;                               
+             break;
 	case minimum_helium_star:                return 0.33;
              break;
 	case helium_star_lifetime_fraction:      return 0.9;
@@ -301,28 +327,28 @@ real stellar_evolution_constants::parameters(stellar_mass_limits pm) {
 
 bool stellar_evolution_constants::parameters(boolean_parameter pb) {
 
-    switch(pb) {                                
+    switch(pb) {
 	case hyper_critical:                        return false;
              break;                                // 10^8 x Eddington
                                                    // see: Chevalier 1993
         case super_giant_disintegration:               return false;
              break;
         case proto_star_to_binary:                     return false;
-             break;						    
+             break;
         case impulse_kick_for_black_holes:             return true;
-             break;				
+             break;
         case fallback_kick_for_black_holes:             return true;
-             break;				
+             break;
         case use_angular_momentum_tidal:               return false;
 	     break;
         case use_common_envelope_gamma_gamma:
-             if (cnsts.use_common_envelope_method()==2) 
+             if (cnsts.use_common_envelope_method()==2)
 	       return true;
 	     else
 	       return false;
 	     break;
         case use_common_envelope_alpha_alpha:
-             if(cnsts.use_common_envelope_method()==3) 
+             if(cnsts.use_common_envelope_method()==3)
 	       return true;
 	     else
 	       return false;
@@ -336,12 +362,12 @@ bool stellar_evolution_constants::parameters(boolean_parameter pb) {
              exit(1);
     }
 }
-    
+
 real stellar_evolution_constants::parameters(accretion_parameter pa) {
 
     switch(pa) {                        // Mass of accretion to core.
 	case black_hole_accretion_limit:        return 0.1;
-             break;                             // 
+             break;                             //
 	case neutron_star_accretion_limit:      return 0.05;
              break;                             //
 	case white_dwarf_accretion_limit:       return 0.01;
@@ -364,19 +390,19 @@ real stellar_evolution_constants::parameters(model_parameter pm) {
 
     switch(pm) {
 	case star_formation_efficiency:                return 1.0;
-             break;                             // [%] 
+             break;                             // [%]
 	case star_formation_timescale:                 return 1.0; // [Myr]
-             break;                                 // if(<0) abs times KH timescale 
+             break;                                 // if(<0) abs times KH timescale
 	case minimum_magnetic_mass_limit:                      return 0.3;
-             break;                             // [msun] 
+             break;                             // [msun]
 	case maximum_magnetic_mass_limit:                      return 1.2;
-             break;                             // [msun] 
+             break;                             // [msun]
 	case magnetic_braking_exponent:                return 2.5;
-	      break;                        
+	      break;
 	case corotation_eccentricity:                  return 0.001;
 	      break;                          // corotation if(ecc<this)
 	case tidal_circularization_radius:             return 5.0;
-	      break;                          
+	      break;
 	case core_overshoot:                           return 0.125;
 	      break;                          // overshoot fraction.
         case hydrogen_fraction:                        return 0.7;
@@ -390,13 +416,13 @@ real stellar_evolution_constants::parameters(model_parameter pm) {
         case dynamic_mass_transfer_gamma:               return 1.75;
               break;			      // (gamma)
         case non_massive_star_envelope_fraction_lost:  return 0.03;
-	      break;                          
+	      break;
         case massive_star_envelope_fraction_lost:      return 0.9;
-	      break;               
-        case relaxation_driven_mass_loss_constant:     return 1;           
-             break;						       
+	      break;
+        case relaxation_driven_mass_loss_constant:     return 1;
+             break;
         case massive_star_mass_loss_law:               return 6.8;
-	      break;                          
+	      break;
         case time_independent_mass_loss_law:           return 1;
 	      break;
         case Darwin_Riemann_instability_factor:        return
@@ -430,11 +456,11 @@ real stellar_evolution_constants::parameters(observational_parameter pm) {
 
     switch(pm) {
         case B_emission_star_mass_limit:               return 0.1;
-             break; 
+             break;
         case Barium_star_mass_limit:                   return 0.01;
-	      break;                        
+	      break;
         case Blue_straggler_mass_limit:                return 0;
-	      break;                        
+	      break;
         default:
 	     cerr << "\nNo recognized option in "
 		     "stellar_evolution_constants::"
@@ -450,29 +476,29 @@ real stellar_evolution_constants::parameters(observational_parameter pm) {
 real stellar_evolution_constants::safety(safety_parameter ps) {
 
   switch(ps) {
-    case timestep_factor:                      return 0.01;       
+    case timestep_factor:                      return 0.01;
           break;                             // 0.01 ok, but big for AM CVns
     case maximum_binary_update_time_fraction: return 1.0;// 0.9;
           break;                            // see also star_to_dyn
     //(SilT + GN : 19 Jan 2010)
-    //1.e-11 is too little for M < 0.5 with respect to the MS lifetime, smaller than numerical precision      
+    //1.e-11 is too little for M < 0.5 with respect to the MS lifetime, smaller than numerical precision
     case minimum_timestep:                   return 1.e-9; // 1.e-11; Do not change!
           break;                                   // == 10*HubbleT*precision
     case minimum_mass_step:                  return 1.e-5;
           break;                                   // Tricky used to be 1.e-7
-    case maximum_timestep:                   return 1000; // was 1000  
+    case maximum_timestep:                   return 1000; // was 1000
           break;                                   // 2.5 works fine but slow
     case maximum_recursive_calls:            return 1000;
           break;
     case tiny:                             return 1e-2;
           break;
-    case minimum_inversion_precision:        return 0.01;// 1%       
-          break;                                   
+    case minimum_inversion_precision:        return 0.01;// 1%
+          break;
     case number_of_steps:                   return 10;// error on mass smaller than a few percent
           // for M > 40 need n>=20 to get an error < ~7%
           // possibly other values for non_solar metallicities
         break;
-    case minimal_interpolation_accuracy:      return 0.01;  // [1%]     
+    case minimal_interpolation_accuracy:      return 0.01;  // [1%]
           break;                             // 0.01 ok, but big for AM CVns
         default:
 	     cerr << "\nNo recognized option in "
@@ -481,16 +507,16 @@ real stellar_evolution_constants::safety(safety_parameter ps) {
 	          << ps << ")"
 		  << endl;
              exit(1);
-  } 
+  }
 }
 
 real stellar_evolution_constants::star_to_dyn(dynamics_update_parameter dup) {
 
     switch(dup) {
         case stellar_mass_update_limit:                return 0.001;
-             break; 
+             break;
         case semi_major_axis_update_limit:             return 0.001;
-	      break;                        
+	      break;
         case binary_update_time_fraction:              return 0.001; //was 0.05
              break;
         default:
@@ -518,7 +544,7 @@ real stellar_model_constants::a(int index, real z) {
   switch(index) {
      case 1: a = ap(zeta, 1593.890, 2053.038, 1231.226, 232.7785);
              break;
-     case 2: a = ap(zeta, 2.706708E+3, 1.483131E+3, 5.772723E+2, 7.411230E+1);  
+     case 2: a = ap(zeta, 2.706708E+3, 1.483131E+3, 5.772723E+2, 7.411230E+1);
              break;
      case 3: a = ap(zeta, 1.466143E+2, -1.048442E+2, -6.795374E+1, -1.391127E+1);
              break;
@@ -526,50 +552,50 @@ real stellar_model_constants::a(int index, real z) {
              break;
      case 5: a = ap(zeta, 3.426349E-1);
              break;
-     case 6: a = ap(zeta, 1.949814E+1, 1.758178E+0, -6.008212E+0, -4.470533E+0); 
+     case 6: a = ap(zeta, 1.949814E+1, 1.758178E+0, -6.008212E+0, -4.470533E+0);
              break;
      case 7: a = ap(zeta, 4.903830E+0);
              break;
-     case 8: a = ap(zeta, 5.212154E-2, 3.166411E-2, -2.750074E-3, -2.271549E-3); 
+     case 8: a = ap(zeta, 5.212154E-2, 3.166411E-2, -2.750074E-3, -2.271549E-3);
              break;
      case 9: a = ap(zeta, 1.312179E+0, -3.294936E-1, 9.231860E-2, 2.610989E-2);
              break;
      case 10: a = ap(zeta, 8.073972E-1);
-              
+
              break;
-     case 11: {real a11 = ap(zeta, 1.031538E+0, -2.434480E-1, 7.732821E+0, 
+     case 11: {real a11 = ap(zeta, 1.031538E+0, -2.434480E-1, 7.732821E+0,
 			     6.460705E+0, 1.374484E+0);
                a = a11 * smc.a(14, z);
      }
              break;
-     case 12: {real a12 = ap(zeta, 1.043715E+0, -1.577474E+0, -5.168234E+0, 
+     case 12: {real a12 = ap(zeta, 1.043715E+0, -1.577474E+0, -5.168234E+0,
 			     -5.596506E+0, -1.299394E+0);
                a = a12 * smc.a(14, z);
      }
              break;
-     case 13: a = ap(zeta, 7.859573E+2, -8.542048E+0, -2.642511E+1, 
+     case 13: a = ap(zeta, 7.859573E+2, -8.542048E+0, -2.642511E+1,
 		     -9.585707E+0);
              break;
-     case 14: a = ap(zeta, 3.858911E+3, 2.459681E+3, -7.630093E+1, 
+     case 14: a = ap(zeta, 3.858911E+3, 2.459681E+3, -7.630093E+1,
 		     -3.486057E+2, -4.861703E+1);
              break;
-     case 15: a = ap(zeta, 2.888720E+2, 2.952979E+2, 1.850341E+2, 3.797254E+1); 
+     case 15: a = ap(zeta, 2.888720E+2, 2.952979E+2, 1.850341E+2, 3.797254E+1);
              break;
-     case 16: a = ap(zeta, 7.196580E+0, 5.613746E-1, 3.805871E-1, 8.398728E-2); 
+     case 16: a = ap(zeta, 7.196580E+0, 5.613746E-1, 3.805871E-1, 8.398728E-2);
              break;
      case 17: {real s = log10(z);
                real log_a17 = max(0.097 - 0.1072*(s+3),
-				 max(0.097, 
+				 max(0.097,
 				     min(0.1461, 0.1461 + 0.1237*(s+2))));
               a = pow(10., log_a17);
      }
-             break; 
-     case 18: {real a18 = ap(zeta, 2.187715E-1, -2.154437E+0, -3.768678E+0, 
+             break;
+     case 18: {real a18 = ap(zeta, 2.187715E-1, -2.154437E+0, -3.768678E+0,
 		            -1.975518E+0, -3.021475E-1);
               a = a18 * smc.a(20, z);
      }
              break;
-     case 19: {real a19 = ap(zeta, 1.466440E+0, 1.839725E+0, 6.442199E+0, 
+     case 19: {real a19 = ap(zeta, 1.466440E+0, 1.839725E+0, 6.442199E+0,
 			        4.023635E+0, 6.957529E-1);
               a = a19 * smc.a(20, z);
      }
@@ -577,13 +603,13 @@ real stellar_model_constants::a(int index, real z) {
      case 20: a = ap(zeta, 2.652091E+1, 8.178458E+1, 1.156058E+2, 7.633811E+1,
 		     1.950698E+1);
              break;
-     case 21: a = ap(zeta, 1.472103E+0, -2.947609E+0, -3.312828E+0, 
+     case 21: a = ap(zeta, 1.472103E+0, -2.947609E+0, -3.312828E+0,
 		     -9.945065E-1);
              break;
-     case 22: a = ap(zeta, 3.071048E+0, -5.679941E+0, -9.745523E+0, 
+     case 22: a = ap(zeta, 3.071048E+0, -5.679941E+0, -9.745523E+0,
 		     -3.594543E+0);
              break;
-     case 23: a = ap(zeta, 2.617890E+0, 1.019135E+0, -3.292551E-2, 
+     case 23: a = ap(zeta, 2.617890E+0, 1.019135E+0, -3.292551E-2,
 		     -7.445123E-2);
              break;
      case 24: a = ap(zeta, 1.075567E-2, 1.773287E-2, 9.610479E-3, 1.732469E-3);
@@ -596,9 +622,9 @@ real stellar_model_constants::a(int index, real z) {
              break;
      case 28: a = ap(zeta, 3.113458E+1, 1.012033E+1, -4.650511E+0, -2.463185E+0);
              break;
-     case 29: {real a29 = ap(zeta, 1.413057E+0, 4.578814E-1, -6.850581E-2, 
+     case 29: {real a29 = ap(zeta, 1.413057E+0, 4.578814E-1, -6.850581E-2,
 		                  -5.588658E-2);
-              a = pow(a29, smc.a(32, z)); 
+              a = pow(a29, smc.a(32, z));
      }
              break;
      case 30: a = ap(zeta, 3.910862E+1, 5.196646E+1, 2.264970E+1, 2.873680E+0);
@@ -607,8 +633,8 @@ real stellar_model_constants::a(int index, real z) {
              break;
      case 32: a = ap(zeta, 6.682518E+0, 2.827718E-1, -7.294429E-2);
              break;
-     case 33: a = max(0.6355 - 0.4192*zeta, 
-		      max(1.25, 
+     case 33: a = max(0.6355 - 0.4192*zeta,
+		      max(1.25,
 			  min(1.4, 1.5135 + 0.3769*zeta)));
              break;
      case 34: a = ap(zeta, 1.910302E-1, 1.158624E-1, 3.348990E-2, 2.599706E-3);
@@ -678,7 +704,7 @@ real stellar_model_constants::a(int index, real z) {
              break;
      case 56: a = ap(zeta, 9.587587E-1, 8.777464E-1, 2.017321E-1);
              break;
-     case 57: a = max(0.6355 - 0.4192*zeta, max(1.25, 
+     case 57: a = max(0.6355 - 0.4192*zeta, max(1.25,
 			 min(1.4, 1.5135 + 0.3769*zeta)));
              break;
      case 58: a = ap(zeta, 4.907546E-1, -1.683928E-1, -3.108742E-1, -7.202918E-2);
@@ -703,18 +729,18 @@ real stellar_model_constants::a(int index, real z) {
               if (smc.a(68, z) >= smc.a(66, z)) {
                   a =  smc.a(58, z)*pow(smc.a(66, z), smc.a(60, z))
                   / (smc.a(59, z) + pow(smc.a(66, z), smc.a(61, z)));
-                                   
+
               }
      }
              break;
-     case 65: {a = ap(zeta, 1.564231E-3, 1.653042E-3, -4.439786E-3, 
+     case 65: {a = ap(zeta, 1.564231E-3, 1.653042E-3, -4.439786E-3,
 		     -4.951011E-3, -1.216530E-03);
      }
              break;
      case 66: {real a66 = ap(zeta, 1.4770E+0, 2.9600E-1);
-             a = max(0.8, 
-		     min(0.8 - 2.0*zeta, 
-			 max(a66, 
+             a = max(0.8,
+		     min(0.8 - 2.0*zeta,
+			 max(a66,
 			     min(1.6, -0.308 - 1.046*zeta))));
      }
              break;
@@ -726,12 +752,12 @@ real stellar_model_constants::a(int index, real z) {
      }
              break;
 
-     case 69: a = ap(zeta, 1.071489E+0, -1.164852E-1, -8.623831E-2, 
+     case 69: a = ap(zeta, 1.071489E+0, -1.164852E-1, -8.623831E-2,
 		     -1.582349E-2);
              break;
      case 70: a = ap(zeta, 7.108492E-1, 7.935927E-1, 3.926983E-1, 3.622146E-2);
              break;
-     case 71: a = ap(zeta, 3.478514E+0, -2.585474E-2, -1.512955E-2, 
+     case 71: a = ap(zeta, 3.478514E+0, -2.585474E-2, -1.512955E-2,
 		     -2.833691E-3);
              break;
      case 72: {real a72 = ap(zeta, 9.132108E-1, -1.653695E-1, 0.0,  3.636784E-2);
@@ -741,7 +767,7 @@ real stellar_model_constants::a(int index, real z) {
 	       a = a72;
      }
              break;
-     case 73: a = ap(zeta, 3.969331E-3, 4.539076E-3, 1.720906E-3, 
+     case 73: a = ap(zeta, 3.969331E-3, 4.539076E-3, 1.720906E-3,
 		     1.897857E-4);
              break;
      case 74: {real a74 = ap(zeta, 1.600E+0, 7.640E-1, 3.322E-1);
@@ -749,13 +775,13 @@ real stellar_model_constants::a(int index, real z) {
      }
              break;
      case 75: {real a75 = ap(zeta, 8.109E-1, -6.282E-1);
-             a = max(max(1.0, 
+             a = max(max(1.0,
 			 min(a75, 1.27)), 0.6355 - 0.4192*zeta);
      }
              break;
-     case 76: {real a76 = ap(zeta, 1.192334E-2, 1.083057E-2, 
+     case 76: {real a76 = ap(zeta, 1.192334E-2, 1.083057E-2,
 			     1.230969E+0, 1.551656E+0);
-             a = max(a76, 
+             a = max(a76,
 		     -0.1015564 - 0.2161264*zeta - 0.05182516*pow(zeta, 2));
      }
              break;
@@ -764,7 +790,7 @@ real stellar_model_constants::a(int index, real z) {
 		     min(0.0, a77));
      }
              break;
-     case 78: {real a78 = ap(zeta, 7.615495E-1, 1.068243E-1, 
+     case 78: {real a78 = ap(zeta, 7.615495E-1, 1.068243E-1,
 			          -2.011333E-1, -9.371415E-2);
              a = max(0.0, min(a78, 7.454 + 9.046*zeta));
      }
@@ -783,7 +809,7 @@ real stellar_model_constants::a(int index, real z) {
              break;
 
      default:  cerr << "Not a valid index for "
-		    << "constant.stellar_model_constant::a(int i= " 
+		    << "constant.stellar_model_constant::a(int i= "
 		    << index << ")" << endl;
   }
 
@@ -814,11 +840,11 @@ real stellar_model_constants::b(int index, real z) {
      case 3: {real s = log10(z);
              real b3 = max(-0.1451, -2.2794 - s*(1.5175 + s*0.254));
              b = pow(10, b3);
-	     if(z>0.004) 
+	     if(z>0.004)
 	       b = max(b, 0.7307 + 14265.1*pow(z, 3.395));
              }
 	     break;
-     case 4: {real b4 = bp(zeta, 9.960283E-1, 8.164393E-1, 
+     case 4: {real b4 = bp(zeta, 9.960283E-1, 8.164393E-1,
 			  2.383830E+0, 2.223436E+0, 8.638115E-1);
              b = b4 + 0.1231572*pow(zeta, 5);
      }
@@ -826,7 +852,7 @@ real stellar_model_constants::b(int index, real z) {
      case 5: b = bp(zeta, 2.561062E-1, 7.072646E-2, -5.444596E-2, -5.798167E-2,
 		    -1.349129E-2);
              break;
-     case 6: {real b6 = bp(zeta, 1.157338E+0, 1.467883E+0, 4.299661E+0, 
+     case 6: {real b6 = bp(zeta, 1.157338E+0, 1.467883E+0, 4.299661E+0,
 			  3.130500E+0, 6.992080E-1);
              b = b6 + 0.01640687*pow(zeta, 5);
      }
@@ -837,7 +863,7 @@ real stellar_model_constants::b(int index, real z) {
 
      case 8: cerr << "Unknown index for b8"<<endl;
           break;
-          
+
      case 9: b = bp(zeta, 2.751631E+3, 3.557098E+2);
              break;
      case 10: b = bp(zeta, -3.820831E-2, 5.872664E-2);
@@ -863,7 +889,7 @@ real stellar_model_constants::b(int index, real z) {
      }
 	      break;
      case 17: b = 1;
-              if (zeta>-1) 
+              if (zeta>-1)
 		b = 1 - 0.3880523*pow(zeta+1, 2.862149);
 	     break;
      case 18: b = bp(zeta, 5.496045E+1, -1.289968E+1, 6.385758E+0);
@@ -878,7 +904,7 @@ real stellar_model_constants::b(int index, real z) {
              break;
      case 23: b = bp(zeta, 2.003160E+0, 9.388871E-1, 9.656450E-1, 2.362266E-1);
              break;
-     case 24: {real b24 = bp(zeta, 1.609901E+1, 7.391573E+0, 
+     case 24: {real b24 = bp(zeta, 1.609901E+1, 7.391573E+0,
 			    2.277010E+1, 8.334227E+0);
               b = pow(b24, smc.b(28, z));
      }
@@ -887,7 +913,7 @@ real stellar_model_constants::b(int index, real z) {
              break;
      case 26: b = 5 - 0.09138012*pow(z, -0.3671407);
              break;
-     case 27: {real b27 = bp(zeta, 2.752869E+0, 2.729201E-2, 
+     case 27: {real b27 = bp(zeta, 2.752869E+0, 2.729201E-2,
 			    4.996927E-1, 2.496551E-1);
               b = pow(b27, 2*smc.b(28, z));
      }
@@ -900,29 +926,29 @@ real stellar_model_constants::b(int index, real z) {
              break;
      case 30: b = bp(zeta, 3.336833E-1, -1.458043E-1, -2.011751E-2);
              break;
-     case 31: {real b31 = bp(zeta, 7.425137E+1, 1.790236E+1, 
+     case 31: {real b31 = bp(zeta, 7.425137E+1, 1.790236E+1,
 			    3.033910E+1, 1.018259E+1);
               b = pow(b31, smc.b(33, z));
      }
              break;
-     case 32: b = bp(zeta, 9.268325E+2, -9.739859E+1, -7.702152E+1, 
+     case 32: b = bp(zeta, 9.268325E+2, -9.739859E+1, -7.702152E+1,
 		     -3.158268E+1);
              break;
      case 33: b = bp(zeta, 2.474401E+0, 3.892972E-1);
              break;
-     case 34: {real b34 = bp(zeta, 1.127018E+1, 1.622158E+0, 
+     case 34: {real b34 = bp(zeta, 1.127018E+1, 1.622158E+0,
 			    -1.443664E+0, -9.474699E-1);
               b = pow(b34, smc.b(33, z));
      }
              break;
      case 35: cerr << "Unknown index for b35"<<endl;
 	     break;
-     case 36: {real b36 = bp(zeta, 1.445216E-1, -6.180219E-2, 
+     case 36: {real b36 = bp(zeta, 1.445216E-1, -6.180219E-2,
 			    3.093878E-2, 1.567090E-2);
               b = pow(b36, 4);
      }
              break;
-     case 37: {real b37 = bp(zeta, 1.304129E+0, 1.395919E-1, 
+     case 37: {real b37 = bp(zeta, 1.304129E+0, 1.395919E-1,
 			    4.142455E-3, -9.732503E-3);
               b = 4*b37;
      }
@@ -937,7 +963,7 @@ real stellar_model_constants::b(int index, real z) {
              b = max(b40, 1.);
      }
              break;
-     case 41: {real b41 = bp(zeta, 2.327037E+0, 2.403445E+0, 
+     case 41: {real b41 = bp(zeta, 2.327037E+0, 2.403445E+0,
 			    1.208407E+0, 2.087263E-1);
              b = pow(b41, smc.b(42, z));
      }
@@ -946,7 +972,7 @@ real stellar_model_constants::b(int index, real z) {
              break;
      case 43: b = bp(zeta, 1.079113E-1, 1.762409E-2, 1.096601E-2, 3.058818E-3);
              break;
-     case 44: {real b44 = bp(zeta, 2.327409E+0, 6.901582E-1, 
+     case 44: {real b44 = bp(zeta, 2.327409E+0, 6.901582E-1,
 			    -2.158431E-1, -1.084117E-1);
               b = pow(b44, 5);
      }
@@ -969,7 +995,7 @@ real stellar_model_constants::b(int index, real z) {
              break;
      case 49: b = bp(zeta, 5.139740E+0);
              break;
-     case 51: {real b51 = bp(zeta, 1.125124E+0, 1.306486E+0, 
+     case 51: {real b51 = bp(zeta, 1.125124E+0, 1.306486E+0,
 			    3.622359E+0, 2.601976E+0, 3.031270E-1);
              b = b51 - 0.1343798*pow(zeta, 5);
      }
@@ -977,7 +1003,7 @@ real stellar_model_constants::b(int index, real z) {
      case 52: b = bp(zeta, 3.349489E-1, 4.531269E-3, 1.131793E-1, 2.300156E-1,
 		     7.632745E-2);
              break;
-     case 53: {real b53 = bp(zeta, 1.467794E+0, 2.798142E+0, 9.455580E+0, 
+     case 53: {real b53 = bp(zeta, 1.467794E+0, 2.798142E+0, 9.455580E+0,
 			    8.963904E+0, 3.339719E+0);
              b = b53 + 0.4426929*pow(zeta, 5);
      }
@@ -989,18 +1015,18 @@ real stellar_model_constants::b(int index, real z) {
              b = min(b55, 0.99164 - 743.123*pow(z, 2.83));
      }
              break;
-     case 56: {real b56 = bp(zeta, 1.110866E+0, 9.623856E-1, 2.735487E+0, 
+     case 56: {real b56 = bp(zeta, 1.110866E+0, 9.623856E-1, 2.735487E+0,
 			    2.445602E+0, 8.826352E-1);
               b = b56 + 0.1140142*pow(zeta, 5);
      }
              break;
-     case 57: {real b57 = bp(zeta, -1.584333E-1, -1.728865E-1, -4.461431E-1, 
+     case 57: {real b57 = bp(zeta, -1.584333E-1, -1.728865E-1, -4.461431E-1,
 		     -3.925259E-1, -1.276203E-1);
               b = b57 - 0.01308728*pow(zeta, 5);
      }
              break;
      default:  cerr << "Not a valid index for "
-		    << "constant.stellar_model_constant::b(int i= " 
+		    << "constant.stellar_model_constant::b(int i= "
 		    << index << ")" << endl;
      }
 
@@ -1011,7 +1037,7 @@ return b;
 
 
 local real cp(real zeta, real a, real b=0, real c=0, real d=0, real e=0) {
-  // According to Tout96 cp == ap (== bp) of HPT 2000 
+  // According to Tout96 cp == ap (== bp) of HPT 2000
   return ap(zeta, a, b, c, d, e);
 }
 
@@ -1021,56 +1047,56 @@ real stellar_model_constants::c(int index, real z) {
 
   real c = 0;
   switch(index) {
-     case 1: c = cp(zeta, 3.970417E-01, -3.2913574E-01, 3.4776688E-01, 
+     case 1: c = cp(zeta, 3.970417E-01, -3.2913574E-01, 3.4776688E-01,
 			3.7470851E-01, 9.011915E-02);
              break;
-     case 2: c = cp(zeta, 8.527626E+00,-2.441225973E+01, 5.643597107E+01, 
-			3.706152575E+01, 5.4562406E+00);  
+     case 2: c = cp(zeta, 8.527626E+00,-2.441225973E+01, 5.643597107E+01,
+			3.706152575E+01, 5.4562406E+00);
              break;
-     case 3: c = cp(zeta,2.5546E-04, -1.23461E-03, -2.3246E-04, 
+     case 3: c = cp(zeta,2.5546E-04, -1.23461E-03, -2.3246E-04,
 			4.5519E-04, 1.6176E-04 );
              break;
-     case 4: c = cp(zeta, 5.432889E+00, -8.62157806E+00, 1.344202049E+01, 
+     case 4: c = cp(zeta, 5.432889E+00, -8.62157806E+00, 1.344202049E+01,
 			1.451584135E+01, 3.39793084E+00);
              break;
-     case 5: c = cp(zeta, 5.563579E+00,-1.032345224E+01, 1.944322980E+01, 
+     case 5: c = cp(zeta, 5.563579E+00,-1.032345224E+01, 1.944322980E+01,
 			1.897361347E+01, 4.16903097E+00);
              break;
      case 6: c = cp(zeta, 7.8866060E-01, -2.90870942E+00,  6.54713531E+00,
-			4.05606657E+00, 5.3287322E-01); 
+			4.05606657E+00, 5.3287322E-01);
              break;
-     case 7: c = cp(zeta, 5.86685E-03, -1.704237E-02, 3.872348E-02, 
+     case 7: c = cp(zeta, 5.86685E-03, -1.704237E-02, 3.872348E-02,
 			2.570041E-02, 3.83376E-03);
              break;
-     case 8: c = cp(zeta, 1.715359E+00, 6.2246212E-01, -9.2557761E-01, 
-			-1.16996966E+00, -3.0631491E-01); 
+     case 8: c = cp(zeta, 1.715359E+00, 6.2246212E-01, -9.2557761E-01,
+			-1.16996966E+00, -3.0631491E-01);
              break;
      case 9: c = cp(zeta, 6.597788E+00, -4.2450044E-01,-1.213339427E+01,
 			-1.073509484E+01, -2.51487077E+00);
              break;
-     case 10: c = cp(zeta,1.008855000E+01, -7.11727086E+00,-3.167119479E+01, 
+     case 10: c = cp(zeta,1.008855000E+01, -7.11727086E+00,-3.167119479E+01,
 			-2.424848322E+01,-5.33608972E+00 );
              break;
-     case 11: c = cp(zeta, 1.012495E+00, 3.2699690E-01, -9.23418E-03, 
+     case 11: c = cp(zeta, 1.012495E+00, 3.2699690E-01, -9.23418E-03,
 			-3.876858E-02, -4.12750E-03);
              break;
-     case 12: c = cp(zeta,7.490166E-02, 2.410413E-02, 7.233664E-02, 
+     case 12: c = cp(zeta,7.490166E-02, 2.410413E-02, 7.233664E-02,
 			3.040467E-02, 1.97741E-03 );
  	     break;
      case 13: c = cp(zeta,1.077422E-02 );
              break;
-     case 14: c = cp(zeta, 3.082234E+00, 9.447205E-01, -2.15200882E+00, 
+     case 14: c = cp(zeta, 3.082234E+00, 9.447205E-01, -2.15200882E+00,
 			-2.49219496E+00, -6.3848738E-01);
              break;
      case 15: c = cp(zeta,1.784778E+01, -7.4534569E+00,-4.896066856E+01,
-			-4.005386135E+01, -9.09331816E+00 ); 
+			-4.005386135E+01, -9.09331816E+00 );
              break;
-     case 16: c = cp(zeta,2.2582E-04, -1.86899E-03, 3.88783E-03, 
-			1.42402E-03,-7.671E-05 ); 
+     case 16: c = cp(zeta,2.2582E-04, -1.86899E-03, 3.88783E-03,
+			1.42402E-03,-7.671E-05 );
              break;
   }
   return c;
-}     
+}
 
 
 local real cpol(real zeta, real a, real b=0, real c=0, real d=0, real e=0, real f=0) {
@@ -1085,7 +1111,7 @@ local real cpol(real zeta, real a, real b=0, real c=0, real d=0, real e=0, real 
 real stellar_model_constants::c_Hall(int index, real z) {
 
   real zeta = log10(z/cnsts.parameters(solar_metalicity));
-    
+
   real c = -1;
   switch(index) {
      case 0: c = cpol(zeta, 2.817859, 4.331671E-01, -8.152041E-01,
@@ -1095,13 +1121,13 @@ real stellar_model_constants::c_Hall(int index, real z) {
 		    1.252224E+01, 3.256815, 0 );
              break;
      case 2: c = cpol(zeta, 4.947425E+01, 1.369688E+01, -2.513380E+01,
-		   -3.773333E+01, -9.791961, 0 );  
+		   -3.773333E+01, -9.791961, 0 );
              break;
      case 3: c = cpol(zeta, -4.914713E+01, -1.326969E+01, 4.137217E+01,
 		    6.525871E+01, 2.617208E+01, 3.184125);
              break;
      default:  cerr << "Not a valid index for "
-		    << "constant.stellar_model_constant::c_Hall(int i= " 
+		    << "constant.stellar_model_constant::c_Hall(int i= "
 		    << index << ")" << endl;
   }
   return c;

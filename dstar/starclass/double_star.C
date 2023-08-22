@@ -11,14 +11,14 @@
 #define REPORT_TRANFER_STABILITY   false
 
 // (SPZ+GN: 28 Jul 2000) Obsolete
-//#define MAXIMUM_BINARY_UPDATE_TIMESTEP cnsts.star_to_dyn(binary_update_time_fraction) 
+//#define MAXIMUM_BINARY_UPDATE_TIMESTEP cnsts.star_to_dyn(binary_update_time_fraction)
 // GIJS: If you want to increase the timestep for population synthesis,
 //       please use the the parameter: MAXIMUM_BINARY_UPDATE_TIMESTEP
 //       For example by defining:
 //       #define MAXIMUM_BINARY_UPDATE_TIMESTEP 0.9
 //       Which should be identical to your previous results.
 
-double_star * new_double_star(node* n, real sma, real ecc, 
+double_star * new_double_star(node* n, real sma, real ecc,
 			      real start_time, int id,	// Defaults specified
                               binary_type type)		// in double_star.h
     {
@@ -26,7 +26,7 @@ double_star * new_double_star(node* n, real sma, real ecc,
      element->initialize(type, sma, ecc, start_time, id);
 
      element->set_donor_timescale(element->get_primary(), true);
-     
+
      element->determine_minimal_timestep();
 
      element->evolve_element(start_time);
@@ -46,9 +46,9 @@ double_star::double_star(node* n) : star(n) {
         time_offset = 0;
 }
 
-void double_star::initialize(binary_type type, real sma, 
+void double_star::initialize(binary_type type, real sma,
   			real ecc, real age, int id) {
-   
+
       semi         = sma;
       eccentricity = ecc;
       bin_type     = type;
@@ -65,7 +65,7 @@ void double_star::initialize(binary_type type, real sma,
 	  get_primary()->set_identity(0);
       if(get_secondary()->get_identity()<0)
 	  get_secondary()->set_identity(1);
-      
+
       refresh_memory();       //implemented 25-1-95
 }
 
@@ -82,7 +82,7 @@ real double_star::mass_ratio()           {
 real double_star::get_evolve_timestep() {
 
   real delta_t = cnsts.safety(maximum_timestep); //donor_timescale;
-  // changed (again) spz:1 Jan 2006 
+  // changed (again) spz:1 Jan 2006
   //  real delta_t = get_donor_timescale();
 
   if (bin_type != Merged) {
@@ -102,7 +102,7 @@ real double_star::get_evolve_timestep() {
 binary_type double_star::obtain_binary_type() {
 
   binary_type type_of_binary = Unknown_Binary_Type;
-  
+
   real rl_p = roche_radius(get_primary());
   real rl_s = roche_radius(get_secondary());
 
@@ -111,7 +111,7 @@ binary_type double_star::obtain_binary_type() {
 
   //  cerr << "obtain_binary_type: " << identity
   //       << " rp:" <<log10(rl_p/rp)
-  //       << " rs:" << log10(rl_s/rs) 
+  //       << " rs:" << log10(rl_s/rs)
   //       << " a/r* = " << semi/max(rp, rs);
   // Just for memory and output routines.
   // Primary fills Roche-lobe.
@@ -124,13 +124,13 @@ binary_type double_star::obtain_binary_type() {
   else if (rp >= rl_p && rs >= rl_s)
     type_of_binary = Contact;
   else if (semi <= rp * cnsts.parameters(tidal_circularization_radius) ||
-           semi <= rs * cnsts.parameters(tidal_circularization_radius)) 
+           semi <= rs * cnsts.parameters(tidal_circularization_radius))
     type_of_binary = Synchronized;
   else
     type_of_binary = Detached;
 
   //  cerr << " type= " << type_string(type_of_binary) << endl;
-  
+
   return type_of_binary;
 }
 
@@ -157,7 +157,7 @@ real double_star::roche_radius(const real a, const real m1, const real m2) {
   real q = m1/m2;
   real q1_3 = pow(q, cnsts.mathematics(one_third));
   real q2_3 = pow(q1_3, 2);   //pow(mr, TWO_THIRD);
-  
+
   return a*0.49*q2_3/(0.6*q2_3 + log(1 + q1_3));
        }
 
@@ -184,7 +184,7 @@ void double_star::put_hrd(ostream & s) {
 
         s << "2\n  ";
         get_primary()->put_hrd(s);
-        s << "  "; 
+        s << "  ";
         get_secondary()->put_hrd(s);
    }
 
@@ -192,14 +192,14 @@ void double_star::put_hrd(ostream & s) {
 void double_star::print_status() {
         cout << "status at time = " << binary_age << endl;
 
-        if (get_primary()->no_of_elements()>1) 
+        if (get_primary()->no_of_elements()>1)
            get_primary()->print_status();
-        if (get_secondary()->no_of_elements()>1)   
+        if (get_secondary()->no_of_elements()>1)
            get_secondary()->print_status();
 
         cout << type_string(bin_type);
         switch (bin_type) {
-           case Merged: 
+           case Merged:
               cout << " {" << type_string(get_primary()->get_element_type())
                    << "}" << endl;
               cout << "M = "<<get_primary()->get_total_mass()
@@ -238,7 +238,7 @@ void double_star::print_status() {
      }
 
 void double_star::put_state() {
-  
+
   star *a, *b;
   if (get_use_hdyn()) {
    a = get_primary();
@@ -251,14 +251,14 @@ void double_star::put_state() {
 
         switch (bin_type) {
            case Merged:
-              cerr << " {"; 
+              cerr << " {";
               get_primary()->put_state();
               cerr << "}" << endl;
               break;
            case Disrupted:
               cerr << " )";
               a->put_state();
-              cerr << ", "; 
+              cerr << ", ";
               b->put_state();
               cerr << "(" << endl;
               break;
@@ -276,20 +276,20 @@ void double_star::put_state() {
 		cerr << ")";
 
 	     real pday = get_period();
-	      if (pday<0.04) 
+	      if (pday<0.04)
 		cerr << "   Porb = " << pday*1440 << " minutes"<<endl;
-	      else if (pday<1) 
+	      else if (pday<1)
 		cerr << "   Porb = " << pday*24 << " hours"<<endl;
-	      else if (pday<365.25) 
+	      else if (pday<365.25)
 		cerr << "   Porb = " << pday << " days"<<endl;
 	      else
-		cerr << "   Porb = " << pday/365.25 << " years"<<endl;	      
+		cerr << "   Porb = " << pday/365.25 << " years"<<endl;
            }
      }
 
 void double_star::print_roche() {
 //	Gives compatible output for EPJ Roche program.
-  
+
      if (bin_type!=Merged) {
        get_initial_primary()->print_roche();
        get_initial_secondary()->print_roche();
@@ -319,7 +319,7 @@ void double_star::dump(ostream & s, bool brief) {
 	secondary_roche_lobe = roche_radius(semi, m2, m1);
 
     }
-    
+
     //    if(identity>0)
     //	s << identity << " ";
     //    else
@@ -334,7 +334,7 @@ void double_star::dump(ostream & s, bool brief) {
 
 
 
-	s << stp->get_identity() << " "	  
+	s << stp->get_identity() << " "
 	  << stp->get_element_type() << " "
 	  << m1 << " "
 	  << stp->get_effective_radius() << " "
@@ -344,7 +344,7 @@ void double_star::dump(ostream & s, bool brief) {
 //      << primary_roche_lobe << "  "
 //      << stp->get_radius()<< "      "
 
-	  << sts->get_identity() << " "	  
+	  << sts->get_identity() << " "
 	  << sts->get_element_type() << " "
 	  << m2 << " "
 	  << sts->get_effective_radius() << " "
@@ -355,12 +355,12 @@ void double_star::dump(ostream & s, bool brief) {
 //      << sts->get_radius()
 	  << endl;
 
-   
+
       //get_initial_primary()->dump(s, brief);
       //      s << "    ";
       //    get_initial_secondary()->dump(s, brief);
       //    s << endl;
-    
+
   }
   else {
 
@@ -370,7 +370,7 @@ void double_star::dump(ostream & s, bool brief) {
 
       s << n_elements
         << "\n " << identity
-	<< " " << bin_type 
+	<< " " << bin_type
         << " " << binary_age
         << " " << bin_type
         << " " << eccentricity
@@ -403,7 +403,7 @@ void double_star::adjust_binary_after_wind_loss(star * donor,
                                                 const real md_dot,
                                                 const real dt) {
 // Binary separation is adjusterd upon mass loss by
-// stellar wind of one of the companions. 
+// stellar wind of one of the companions.
 // Fraction of the mass lost by the donor is dumped on its
 // companion.
 // Actually this routine is only applicable to
@@ -423,8 +423,8 @@ void double_star::adjust_binary_after_wind_loss(star * donor,
         real ma_dot = accretor->accrete_from_stellar_wind(md_dot, dt);
         real M_new = M_old - md_dot + ma_dot;
         real new_donor_mass = old_donor_mass - md_dot;
-        real new_accretor_mass = old_accretor_mass + ma_dot; 
-        
+        real new_accretor_mass = old_accretor_mass + ma_dot;
+
         if (md_dot>0 && ma_dot>=0) {
 	  // real alpha = 1 - ma_dot/md_dot;
           // semi *= pow(pow(new_donor_mass/old_donor_mass, 1-alpha)
@@ -434,7 +434,7 @@ void double_star::adjust_binary_after_wind_loss(star * donor,
 	   real eta =  ma_dot/md_dot;
            semi *= pow(pow(new_donor_mass/old_donor_mass, eta)
                 *  new_accretor_mass/old_accretor_mass, -2)
-                *  M_old/M_new; 
+                *  M_old/M_new;
         }
         donor = donor->reduce_mass(md_dot);
      }
@@ -455,15 +455,15 @@ real double_star::angular_momentum() {
         real ms = get_secondary()->get_total_mass()*cnsts.parameters(solar_mass);
         real a =  semi*cnsts.parameters(solar_radius);
         // (SilT: 6 Jan 2010) square root over (1-eccentricy*eccentricy) was missing
-        return omega*mp*ms*a*a*sqrt(1-eccentricity*eccentricity)/(mp+ms);         
+        return omega*mp*ms*a*a*sqrt(1-eccentricity*eccentricity)/(mp+ms);
      }
 
 void double_star::circularize() {
-//	Tidal circularization with 
+//	Tidal circularization with
 //	conservation of angular momentum.
-//	Binary is not nesecerely circularized but 
+//	Binary is not nesecerely circularized but
 //	periostron adapted to current TIDAL_RANGE.
-//	This method is more realistic than instantanious 
+//	This method is more realistic than instantanious
 //	curcularization.
 
      real pericenter = semi*(1-eccentricity);
@@ -481,19 +481,19 @@ void double_star::circularize() {
             real new_ecc = circ_semi/peri_new - 1;
 //cerr<<"old: "<<" "<<semi<<" "<<eccentricity<<" "<<pericenter<<endl;
 //cerr<<"new: "<<circ_semi<<" "<<new_ecc<<" "<<peri_new<<endl;
-            if(new_ecc<=0) { 
+            if(new_ecc<=0) {
               semi=circ_semi;
               eccentricity = 0;
             }
-            else { 
+            else {
               semi = circ_semi/(1 - new_ecc*new_ecc);
               eccentricity = new_ecc;
             }
 //cerr<<"final: "<<semi<<" "<<eccentricity<<endl;
             //semi *= (1-eccentricity*eccentricity);
             //eccentricity = 0;
-	    
-// (SilT 26 October 2010) Rotation_period should not be set every timestep to synchronisation                    	    
+
+// (SilT 26 October 2010) Rotation_period should not be set every timestep to synchronisation
 //	    real rotation_period = cnsts.physics(days)*get_period();
 //            get_primary()->set_rotation_period(rotation_period);
 //            get_secondary()->set_rotation_period(rotation_period);
@@ -531,7 +531,7 @@ void double_star::determine_minimal_timestep() {
 }
 
 // (SPZ+GN: 28 Jul 2000)
-// Limits timestep with safety which may be different for 
+// Limits timestep with safety which may be different for
 // dynamics or pop. synth.
 real double_star::internal_time_step(const real evolve_timestep) {
 
@@ -539,10 +539,10 @@ real double_star::internal_time_step(const real evolve_timestep) {
   if (get_use_hdyn()) {
 
     dt = cnsts.star_to_dyn(binary_update_time_fraction) * evolve_timestep;
-  } 
+  }
   else {
 
-    dt = cnsts.safety(maximum_binary_update_time_fraction) 
+    dt = cnsts.safety(maximum_binary_update_time_fraction)
        * evolve_timestep;
   }
 
@@ -571,17 +571,17 @@ real double_star::determine_dt(const real ageint, const real time_done) {
 	 real dt_orbit = orbital_timescale();
 
 	 dtime = Starlab::min(dtime, dt_orbit);
-	 
-//	 if(dtime>minimal_timestep && bin_type==Semi_Detached) 
+
+//	 if(dtime>minimal_timestep && bin_type==Semi_Detached)
 //	   dtime = minimal_timestep;
        }
      }
-     else 
+     else
        dtime = Starlab::min(dtime, dtime_ev);
 
      if(dtime>cnsts.safety(maximum_timestep))
        dtime = cnsts.safety(maximum_timestep);
-     if(dtime<cnsts.safety(minimum_timestep)) 
+     if(dtime<cnsts.safety(minimum_timestep))
        dtime = cnsts.safety(minimum_timestep);
 
      return dtime;
@@ -591,7 +591,7 @@ real double_star::determine_dt(const real ageint, const real time_done) {
 // is set. (SPZ+GN:24 Sep 1998)
 void double_star::set_donor_timescale(star* donor,
 				      bool first) { // default = false
-  
+
 
   if (first) {
 //    donor_timescale = donor->nucleair_evolution_timescale();
@@ -607,7 +607,7 @@ void double_star::set_donor_timescale(star* donor,
   }
   else{
     donor_timescale =
-      donor->mass_transfer_timescale(current_mass_transfer_type); 
+      donor->mass_transfer_timescale(current_mass_transfer_type);
   }
   donor_identity = donor->get_identity();
   donor_type = donor->get_element_type();
@@ -644,7 +644,7 @@ bool double_star::ready_for_mass_transfer(star* donor) {
      bool mass_transfer_allowed = TRUE;
 
      mass_transfer_type type = Unknown;
-     
+
      if (donor->get_identity()!=donor_identity) {
         donor_identity    = donor->get_identity();
         donor_type        = donor->get_element_type();
@@ -652,7 +652,7 @@ bool double_star::ready_for_mass_transfer(star* donor) {
 
         determine_minimal_timestep();
 
-        if(old_dt_min<=minimal_timestep) 
+        if(old_dt_min<=minimal_timestep)
            mass_transfer_allowed = TRUE;
         else
            mass_transfer_allowed = FALSE;
@@ -662,7 +662,7 @@ bool double_star::ready_for_mass_transfer(star* donor) {
 }
 
 #endif
-       
+
 
 void double_star::semi_detached(star* donor,
                                 star* accretor,
@@ -672,16 +672,16 @@ void double_star::semi_detached(star* donor,
 
   if (!stable(donor)) {
     cerr << "Spiral-in: Darwin Riemann instability"<<endl;
-    cerr << "semi_detached not stable => ::common_envelope" << endl; 
-    
+    cerr << "semi_detached not stable => ::common_envelope" << endl;
+
     //    dynamic_mass_transfer();
     // (GN+SilT Mar  2 2011)
     current_mass_transfer_type = Darwin;
     tidal_instability();
   }
   else if (get_current_mass_transfer_type()==Dynamic) {
-    cerr << "dynamic mass transfer => ::dynamic_mass_transfer" << endl; 
-    
+    cerr << "dynamic mass transfer => ::dynamic_mass_transfer" << endl;
+
     dynamic_mass_transfer();
 // in common_envelope dynamic_mass_trasfer is called
 //    dynamic_mass_transfer(donor,accretor);
@@ -689,7 +689,7 @@ void double_star::semi_detached(star* donor,
   else {
 
     if (REPORT_TRANFER_STABILITY) {
-      cerr << "stable mass transfer => ::perform_mass_transfer" << endl; 
+      cerr << "stable mass transfer => ::perform_mass_transfer" << endl;
     }
 
    // dump(cerr, false);
@@ -721,7 +721,7 @@ void double_star::contact(star* donor,
      real md_dot=0;
      donor = donor->subtrac_mass_from_donor(dt, md_dot);
 /*
- *    try { 
+ *    try {
  *       donor->subtrac_mass_from_donor(dt, md_dot);
  *      }
  *    catch (star * element) {
@@ -759,7 +759,7 @@ void double_star::contact(star* donor,
 
       // redundant due to implementation of new force donor timescale
       //                                         (SPZ+GN:23 Sep 1998)
-#if 0	
+#if 0
        real t_donor = donor->mass_transfer_timescale();
        if (((q_old<=1 && q_new>=1) ||
           (t_donor<0.1*donor_timescale || t_donor>10*donor_timescale)) &&
@@ -770,7 +770,7 @@ void double_star::contact(star* donor,
           determine_minimal_timestep();
        }
 #endif
-       
+
      }
 
      //get_seba_counters()->contact++;
@@ -788,42 +788,42 @@ bool  double_star::stable(star* st) {	// default = NULL
 //    if(st->get_total_mass() < 2*cnsts.safety(minimum_mass_step)) {
 //	return false;
 //    }
-    
+
   // (SilT: 22 Mar 2013) for high mass ratios the system might not be circularised yet
   // for a convective envelope, q>42
   // eccentricity not taken into account in J_orb
   real pericenter = semi*(1-eccentricity);
-    
-  if((bin_type != Merged && bin_type != Disrupted)          &&    
+
+  if((bin_type != Merged && bin_type != Disrupted)          &&
     (pericenter<= cnsts.parameters(tidal_circularization_radius)
       * get_primary()->get_effective_radius()         ||
     pericenter<= cnsts.parameters(tidal_circularization_radius)
       * get_secondary()->get_effective_radius())      &&
     eccentricity<1.) /*safety*/{
-            
+
     real J_star;
     real J_bin  = angular_momentum();
     if(st) {
-      
+
       J_star = st->angular_momentum();
       }
     else {
-      
+
       real J_prim = get_primary()->angular_momentum();
       real J_sec  = get_secondary()->angular_momentum();
-      J_star = Starlab::max(J_prim, J_sec);    
+      J_star = Starlab::max(J_prim, J_sec);
 //      PRC(J_prim);PRC(J_sec);PRL(angular_momentum());
     }
-  
+
     if(REPORT_TRANFER_STABILITY) {
       PRC(J_star);PRL(J_bin);
     }
 
-    if (J_star >= J_bin * cnsts.parameters(Darwin_Riemann_instability_factor)) {    
-      return FALSE;   
+    if (J_star >= J_bin * cnsts.parameters(Darwin_Riemann_instability_factor)) {
+      return FALSE;
     }
   }
-    
+
   return TRUE;
 }
 
@@ -849,24 +849,24 @@ void double_star::perform_mass_transfer(const real dt,
 
 // (GN+SilT Mar  2 2011) new dumping regime
     if (!first_contact) {
-    
+
         dump("SeBa.data", true);
         first_contact = true;
     }
-    
-    
+
+
     if (REPORT_TRANFER_STABILITY) {
         cerr<<"enter perform_mass_transfer("<<dt<<", "
             <<donor->get_element_type()<<", "<<accretor->get_element_type()
         <<") semi= "<< semi<<endl;
     }
-    
+
 //      Mass loss according to AM accretor.
     real M_old = get_total_mass();
     real old_donor_mass = donor->get_total_mass();
     real old_accretor_mass = accretor->get_total_mass();
-    
-    // (SilT 13 Apr 2012) Only calculate md_dot, subtract the mass later 
+
+    // (SilT 13 Apr 2012) Only calculate md_dot, subtract the mass later
     // so that in the SeBa output the correct separation is given
     real md_dot = 0;
     md_dot = donor->mdot_limit(dt, md_dot);
@@ -875,19 +875,19 @@ void double_star::perform_mass_transfer(const real dt,
     if (md_dot>0) {
 
         real ma_dot = accretor->add_mass_to_accretor(md_dot, donor->hydrogen_envelope_star(), dt);
-        
+
         real M_new = M_old - md_dot + ma_dot;
         real new_donor_mass = old_donor_mass - md_dot;
         real new_accretor_mass = old_accretor_mass + ma_dot;
         //PRC(M_new);PRC(new_donor_mass);PRC(new_accretor_mass);
-    
+
         real a_fr;
-        // SilT 8June 2022        
+        // SilT 8June 2022
         int jloss_param = cnsts.use_jloss_method();
 //        PRL(jloss_param);
         if (jloss_param == 3){//jeans mode
 //            cerr<<"jeans mode"<<endl;
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             a_fr = (old_accretor_mass/new_accretor_mass) *
                     pow(old_donor_mass/new_donor_mass, eta);
             semi *= M_old/M_new*pow(a_fr,2);
@@ -898,59 +898,59 @@ void double_star::perform_mass_transfer(const real dt,
             //               Two possibilities:
             //               1) eta>0: mass lost as wind from accretor.
             //               2) eta==0: exponential spiral-in.
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             if (eta>0) {
                 a_fr  = (new_donor_mass/old_donor_mass)
                     * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-                semi *= (M_old/M_new)/pow(a_fr, 2); 
+                semi *= (M_old/M_new)/pow(a_fr, 2);
             }
             else {
                 a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-            	 /new_accretor_mass); 
+            	 /new_accretor_mass);
                 semi *= (M_old/M_new)*a_fr
                     / pow(new_donor_mass/old_donor_mass, 2);
             }
-        
+
         }
         else{   //specific orbital jloss * factor
-            real beta = cnsts.parameters(specific_angular_momentum_loss);        
+            real beta = cnsts.parameters(specific_angular_momentum_loss);
             a_fr  = pow(old_donor_mass*old_accretor_mass
                     / (new_donor_mass*new_accretor_mass), 2);
             semi *= pow(M_new/M_old, 2*beta + 1)*a_fr;
         }
-        
-                
-	        
+
+
+
 //        if (!accretor->remnant()) {
 //            // General case: semi-conservative mass transfer.
 //            a_fr  = pow(old_donor_mass*old_accretor_mass
 //                    / (new_donor_mass*new_accretor_mass), 2);
 //            semi *= pow(M_new/M_old,
 //                2*cnsts.parameters(specific_angular_momentum_loss)
-//                + 1)*a_fr;	
+//                + 1)*a_fr;
 //        }
 //        else {
             // Special case: mass transfer to compact object as accretor.
             //               Two possibilities:
             //               1) eta>0: mass lost as wind from accretor.
             //               2) eta==0: exponential spiral-in.
-//            real eta = ma_dot/md_dot; 
+//            real eta = ma_dot/md_dot;
 //            if (eta>0) {
 //                a_fr  = (new_donor_mass/old_donor_mass)
 //                    * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-//                semi *= (M_old/M_new)/pow(a_fr, 2); 
+//                semi *= (M_old/M_new)/pow(a_fr, 2);
 //            }
 //            else {
 //                a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-//            	 /new_accretor_mass); 
+//            	 /new_accretor_mass);
 //                semi *= (M_old/M_new)*a_fr
 //                    / pow(new_donor_mass/old_donor_mass, 2);
 //            }
-        
+
             //   Let outer component accrete from mass lost of inner binary.
             //	Routine block for triple evolution.
             //	Tricky but fun!
-            //   if (is_binary_component()) 
+            //   if (is_binary_component())
 //            if (is_star_in_binary()) {
 //                real mdot_triple = M_old - M_new;
 //                if (mdot_triple>0) {
@@ -973,9 +973,9 @@ void double_star::perform_mass_transfer(const real dt,
 //            }
 //        }
 //    }
-    
-    
-    
+
+
+
     // md_dot2 is equal to md_dot
     real md_dot2 = 0 ;
     donor = donor->subtrac_mass_from_donor(dt, md_dot2);
@@ -985,18 +985,18 @@ void double_star::perform_mass_transfer(const real dt,
 #if 0
   switch(current_mass_transfer_type) {
       case Nuclear:           get_seba_counters()->nuclear++;
-           break;     
+           break;
       case AML_driven:        get_seba_counters()->aml_driven++;
-           break;     
+           break;
       case Thermal:           get_seba_counters()->thermal++;
-           break;     
+           break;
       case Dynamic:           get_seba_counters()->dynamic++;
-           break;     
+           break;
   }
 #endif
 }
 
-// final part of ::perform_mass_transfer()... 
+// final part of ::perform_mass_transfer()...
 #if 0
 	// Since donor timescale is set within recursive with
 	// the appropriate donor this part is redundant.
@@ -1004,15 +1004,15 @@ void double_star::perform_mass_transfer(const real dt,
 //	Adjust mass-transfer timescale if needed.
         real t_donor = donor->mass_transfer_timescale();
         if (((q_old<=1 && q_new>=1) ||
-	    (t_donor<0.1*donor_timescale || t_donor>10*donor_timescale)) && 
+	    (t_donor<0.1*donor_timescale || t_donor>10*donor_timescale)) &&
            (bin_type!=Disrupted && bin_type!=Merged)) {
-              set_donor_timescale(t_donor, 
-                           donor->get_element_type(), 
+              set_donor_timescale(t_donor,
+                           donor->get_element_type(),
                            donor->get_identity());
               determine_minimal_timestep();
         }
 #endif
-	
+
 
 void double_star::post_sn_companion_velocity(star* companion,
 					     const real mdot) {
@@ -1040,25 +1040,25 @@ void double_star::instantaneous_element() {
 }
 
 
-// evolve_element 
-// evolves a binary to the new time which is close to end_time 
+// evolve_element
+// evolves a binary to the new time which is close to end_time
 // NOTE: the new time of the binary is generally != end_time
 //       but slightly smaller.
 //       The BINARY_UPDATE_TIMESTEP must therefore be small.
-void double_star::evolve_element(const real end_time) 
+void double_star::evolve_element(const real end_time)
 {
   //  cerr<<"Evolve the binary"<<flush <<endl;
   //    real current_time = binary_age
   //			  + BINARY_UPDATE_TIMESTEP*get_evolve_timestep();
   //  real current_time = binary_age
   //                    + get_evolve_timestep();
-    
+
     // Add try_zero_timestep for the case that current_time==end_time.
     // Might be completely wrong, anyway, numerical precision prevents
     // such a constructiona anyway.
     // Implemented by (SPZ:2/1998)
     //if (current_time<=end_time)
- 
+
     real current_time = binary_age;
 
     //PRC(binary_age);PRL(end_time);
@@ -1070,35 +1070,35 @@ void double_star::evolve_element(const real end_time)
 		 << "  time step is " << get_evolve_timestep() << endl;
 	  }
 
-//	  current_time = min(end_time, 
+//	  current_time = min(end_time,
 //			     current_time+BINARY_UPDATE_TIMESTEP *
 //			     get_evolve_timestep();
 //	  current_time += BINARY_UPDATE_TIMESTEP * get_evolve_timestep();
 
 	  // Attempt a small timestep for consistency reasons.
 	  // but this timestep may be a bit too small.
-          // current_time += cnsts.safety(binary_update_time_fraction) 
+          // current_time += cnsts.safety(binary_update_time_fraction)
           //               * get_evolve_timestep();
 
-	  // A bigger timestep may be allowed, but the choise of the 
-	  // timestep must be consistemt, 
+	  // A bigger timestep may be allowed, but the choise of the
+	  // timestep must be consistemt,
 	  // in steps of binary_update_time_fraction
 	  current_time += internal_time_step(get_evolve_timestep());
-	    
+
 	  // safety: Never evolve passed end_time.
 	  // removed SPZ, 7 Febr 2003
 	  //if (current_time>=end_time)
 	  //  break;
-	  // The previous if-statment has been removed as it prevents 
-	  // a binary to be regularly updated if small time steps are 
+	  // The previous if-statment has been removed as it prevents
+	  // a binary to be regularly updated if small time steps are
 	  // required. This may not have been a problem in the passed.
 	  // Low mass binaries ware likely not updated, even though they
-	  // may have undergone severe dynamical evolution, which again 
+	  // may have undergone severe dynamical evolution, which again
 	  // could have affected the binary evolution.
-	  // for high mass binaries (R136) this is no problem, as the 
+	  // for high mass binaries (R136) this is no problem, as the
 	  // evolution timescale for these massive binaries are short
 	  // to begin with.
-	  // However, we may have ignored some aspects of binary evolution 
+	  // However, we may have ignored some aspects of binary evolution
 	  // in the passed.
 
 	  if (current_time>=end_time){
@@ -1109,7 +1109,7 @@ void double_star::evolve_element(const real end_time)
 	  }
 
 	} while (binary_age<end_time);
-	
+
     else if (end_time == 0){
       try_zero_timestep();
     }
@@ -1125,7 +1125,7 @@ void double_star::try_zero_timestep() {
 
      star *p = get_primary();
      star *s = get_secondary();
-     if (p) 
+     if (p)
 	 p->evolve_element(binary_age);
 
      if(s) {
@@ -1175,14 +1175,14 @@ void double_star::evolve_the_binary(const real end_time) {
      real ageint = end_time - binary_age;
 
      do {
-       
+
         determine_minimal_timestep();
         dt = determine_dt(ageint, time_done);
 
-        recursive_counter = 0;             
+        recursive_counter = 0;
         old_binary_age = binary_age;
 
-        //redundant line 	
+        //redundant line
         get_primary()->set_previous_radius(get_primary()
 		     ->get_effective_radius());
         get_secondary()->set_previous_radius(get_secondary()
@@ -1213,16 +1213,16 @@ void double_star::recursive_binary_evolution(real dt,
     recursive_counter++;
 
     if (REPORT_RECURSIVE_EVOLUTION) {
-      cerr << "recursive_binary_evolution(dt " << dt 
+      cerr << "recursive_binary_evolution(dt " << dt
 	   << ", end_time " << end_time << "): " <<bin_type<< endl;
       cerr<<dt<<" "<<binary_age<<" "<<end_time<< " "<<recursive_counter<<endl;
       cerr << "recursive # " << recursive_counter << endl;
       dump(cerr, false);
     }
-      
+
     if(recursive_counter >= cnsts.safety(maximum_recursive_calls)) {
 	cerr << "WARNING: ";
-	cerr << "recursive_binary_evolution(dt " << dt 
+	cerr << "recursive_binary_evolution(dt " << dt
 	    << ", end_time " << end_time << "): " <<bin_type<< endl;
 	cerr<<dt<<" "<<binary_age<<" "<<end_time<<endl;
 	cerr << "recursive_counter == " << recursive_counter << endl;
@@ -1232,7 +1232,7 @@ void double_star::recursive_binary_evolution(real dt,
     }
 
     if (binary_age>=end_time) return;
-    
+
     dt = Starlab::min(dt, determine_dt(end_time, binary_age));
     binary_age += dt;
 
@@ -1241,7 +1241,7 @@ void double_star::recursive_binary_evolution(real dt,
     // of the recursive binev reaches to far, causing the a giant to become
     // huge: -> merger due to magnetic braking!
     angular_momentum_loss(dt);
-       
+
     star *p = get_primary();
     star *s = get_secondary();
     if (p) p->evolve_element(binary_age);
@@ -1253,13 +1253,13 @@ void double_star::recursive_binary_evolution(real dt,
 
       real rl_p = roche_radius(get_primary());
       real rl_s = roche_radius(get_secondary());
-      
+
       real rp = get_primary()->get_radius();
       real rs = get_secondary()->get_radius();
-      
+
       star* donor    = get_primary();
       star* accretor = get_secondary();
-            
+
       // Primary fills Roche-lobe?
       if (rp >= rl_p) {
 	get_primary()->set_spec_type(Rl_filling);
@@ -1278,7 +1278,7 @@ void double_star::recursive_binary_evolution(real dt,
 	get_secondary()->set_spec_type(Rl_filling);
 	get_secondary()->set_spec_type(Accreting, false);
 	get_primary()->set_spec_type(Accreting);
-	
+
 	// One could check here for contact binary to cause
 	// the secondary to be the donor.
       }
@@ -1297,7 +1297,7 @@ void double_star::recursive_binary_evolution(real dt,
 	       << ")";
 
 	}
-	
+
 	// set the mass transfer timescale to the
 	// timescale of the newly determined donor
 	// implemented (SPZ+GN:23 Sep 1998)
@@ -1309,7 +1309,7 @@ void double_star::recursive_binary_evolution(real dt,
 	determine_minimal_timestep();
 
 	// Check for Contact
-	if (rp >= rl_p &&  rs >= rl_s){       
+	if (rp >= rl_p &&  rs >= rl_s){
 
 	  if (!first_contact) {
 	  // (SilT Nov 25 2012)
@@ -1317,14 +1317,14 @@ void double_star::recursive_binary_evolution(real dt,
       // bin_type = Contact;
 	  // first_contact=true;
 
-	    if (REPORT_RECURSIVE_EVOLUTION) 
+	    if (REPORT_RECURSIVE_EVOLUTION)
 	      cerr << "\tFirst contact" << endl;
 
 	    cerr << "First Roche-lobe contact for: ";
 	    put_state();
 	    cerr << endl;
 	  // (SilT Nov 25 2012)
-	  // Goes wrong when first stable mass transfer. Need to set in ::contact_binary...	    
+	  // Goes wrong when first stable mass transfer. Need to set in ::contact_binary...
 	  //dump("SeBa.data", true);
 	  }
 
@@ -1334,8 +1334,8 @@ void double_star::recursive_binary_evolution(real dt,
 	    cerr << endl;
 	    dump(cerr, false);
 	  }
-	  
-	  contact_binary(dt);   
+
+	  contact_binary(dt);
 
 	  star *p = get_primary();
 	  star *s = get_secondary();
@@ -1353,7 +1353,7 @@ void double_star::recursive_binary_evolution(real dt,
 	    return;
 	  }
 	} // end Contact
-	
+
 	else if(dt <= minimal_timestep) { // Ready to go!
 
 	  if (REPORT_RECURSIVE_EVOLUTION) {
@@ -1362,29 +1362,29 @@ void double_star::recursive_binary_evolution(real dt,
 	    cerr << endl;
 	    dump(cerr, false);
 	  }
-	  
+
 	  bin_type = Semi_Detached;
-	  
+
 	  if (!first_contact) {
 	    if (REPORT_RECURSIVE_EVOLUTION)
 	      cerr << "\tFirst contact" << endl;
-	    
+
 	    donor->first_roche_lobe_contact_story(accretor->get_element_type());
 
 	    cerr << "First Roche-lobe contact for: ";
         put_state();
 	    cerr << endl;
-	    
+
 	    // (GN+SilT Mar  2 2011)
 	    // do dump later, so that we know exactly what type of MT
 	    // (i.e. Spiral_In, Common_Envelope etc...
 	    //dump("SeBa.data", true);
 	  }
-	    
+
 	  semi_detached(donor, accretor, dt);
-	  
+
 	  // (GN+SilT Mar  2 2011)
-	  //first_contact=true; 
+	  //first_contact=true;
 	  // (GN+SilT Apr 19 2011)
 	  // Goes wrong with Common-envelope etc. Need to set in ::perform_mass_transfer...
 
@@ -1392,7 +1392,7 @@ void double_star::recursive_binary_evolution(real dt,
 	  star *s = get_secondary();
 	  if (p) p->evolve_element(binary_age);
 	  if (bin_type!=Merged && s)  s->evolve_element(binary_age);
-	  p = s = NULL;	      
+	  p = s = NULL;
 	  refresh_memory();
 
 	  if (binary_age>=end_time) return;
@@ -1400,21 +1400,21 @@ void double_star::recursive_binary_evolution(real dt,
 	  dt = minimal_timestep;
 
 	  if (binary_age + dt > end_time ||
-	      (bin_type==Merged || bin_type == Disrupted)) 
+	      (bin_type==Merged || bin_type == Disrupted))
 	    dt = end_time - binary_age;
-	  
+
 	  recursive_binary_evolution(dt, end_time);
 	  return;
 	} // end semi_detached and ready to go
 	else {// semi detached and dt >= minimal_timestep --> Total recall
-	
+
 	  if (REPORT_RECURSIVE_EVOLUTION) {
 	    cerr << "\tTotal recall" << endl;
 	    put_state();
 	    cerr << endl;
 	    dump(cerr, false);
 	  }
-	  
+
 	  bin_type = Semi_Detached;
 	  recall_memory();
 	  dt *= 0.5;
@@ -1427,7 +1427,7 @@ void double_star::recursive_binary_evolution(real dt,
 	bin_type = Detached;
 	get_primary()->set_spec_type(Rl_filling, false);
 	get_secondary()->set_spec_type(Rl_filling, false);
-	
+
 	if (REPORT_RECURSIVE_EVOLUTION) {
 	  cerr << "\tRestep" << endl;
 	  put_state();
@@ -1462,13 +1462,13 @@ void double_star::recursive_binary_evolution(real dt,
 	  dump(cerr, false);
 	  bin_type = Detached;
 	}
-	
-	// (GN+SPZ May  3 1999) effective_radius 
+
+	// (GN+SPZ May  3 1999) effective_radius
 	get_primary()->
 	  set_effective_radius(get_primary()->get_radius());
 	get_secondary()->
 	  set_effective_radius(get_secondary()->get_radius());
-	
+
 	current_mass_transfer_type = Unknown;
 
 	refresh_memory();
@@ -1481,14 +1481,14 @@ void double_star::recursive_binary_evolution(real dt,
 	       << ") < end_time - binary_age ("
 	       << end_time - binary_age << ")." << endl;
 	}
-	
+
 	//if (max_dt == 0 && dt > 2 * minimum_timestep) first_contact = false;
 
 	recursive_binary_evolution(max_dt, end_time);
 
 	return;
       } // end Detached
-    } // end evolution surviving binaries 
+    } // end evolution surviving binaries
     else { // Mergers and disrupted systems
 
       if (REPORT_RECURSIVE_EVOLUTION) {
@@ -1503,13 +1503,13 @@ void double_star::recursive_binary_evolution(real dt,
       // merged object should not accrete.
       get_primary()->set_spec_type(Accreting, false);
       get_secondary()->set_spec_type(Accreting, false);
-  
+
       current_mass_transfer_type = Unknown;
 
       refresh_memory();
       real max_dt = end_time - binary_age;
       recursive_binary_evolution(max_dt, end_time);
-    } 
+    }
 }
 
 
@@ -1521,14 +1521,14 @@ void double_star::set_donor_timescale(star * donor) {
 //cerr <<"void double_star::set_donor_timescale(donor="
 //     << donor->get_element_type()<<")"<<endl;
 
-  
+
      if (bin_type!=Merged && bin_type!=Disrupted) {
        int id          = donor->get_identity();
        stellar_type st = donor->get_element_type();
        mass_transfer_type type = Unknown;
        real t          = donor->mass_transfer_timescale(type);
        current_mass_transfer_type = type;
-	
+
 	 if (st!=NAS) {
            if (donor_identity!=id) {
               donor_identity = id;
@@ -1571,9 +1571,9 @@ void double_star::tidal_instability() {
   //cerr << "tidal_instability"<<endl;
 
   if (bin_type!=Merged && bin_type!=Disrupted) {
-       
+
     if (get_primary()->giant_star()) {
-      if (get_secondary()->giant_star()) 
+      if (get_secondary()->giant_star())
 	double_spiral_in();
       else if(cnsts.parameters(use_angular_momentum_tidal))
 	angular_momentum_envelope_ejection(get_primary(), get_secondary());
@@ -1583,7 +1583,7 @@ void double_star::tidal_instability() {
     else if (get_secondary()->giant_star()) {
       // (SPZ+GN:2002Dec4)
       // based on: Nelemans 2003 (to be written)
-      if(cnsts.parameters(use_angular_momentum_tidal)) 
+      if(cnsts.parameters(use_angular_momentum_tidal))
 	angular_momentum_envelope_ejection(get_secondary(), get_primary());
       else
 	spiral_in(get_secondary(), get_primary());
@@ -1591,12 +1591,12 @@ void double_star::tidal_instability() {
     else {
       cerr << "Merger double_star::tidal_instability" << endl;
       dump(cerr, false);
-	   
+
       // (GN+PimvO Jan 18 2013)
       // if primary is remnant, secondary should be consumer
-      if (get_primary()->remnant()) 
+      if (get_primary()->remnant())
 	  merge_elements(get_secondary(), get_primary());
-      else 
+      else
 	  merge_elements(get_primary(), get_secondary());
 
     }
@@ -1610,14 +1610,14 @@ void double_star::dynamic_mass_transfer() {
   //cerr << "dynamic_mass_transfer"<<endl;
 
   if (bin_type!=Merged && bin_type!=Disrupted) {
-       
+
     if (get_primary()->giant_star()) {
-      if (get_secondary()->giant_star()) 
+      if (get_secondary()->giant_star())
 	double_spiral_in();
       // (SPZ+GN:2002Dec4)
       // based on: Nelemans 2003 (to be written)
       // (SPZ+GN:2007June29)
-      else if (get_secondary()->remnant()) 
+      else if (get_secondary()->remnant())
 	if(cnsts.parameters(use_common_envelope_gamma_gamma))
 	  angular_momentum_envelope_ejection(get_primary(), get_secondary());
 	else
@@ -1650,12 +1650,12 @@ void double_star::dynamic_mass_transfer() {
     else {
       cerr << "Merger double_star::dynamic_mass_transfer" << endl;
       dump(cerr, false);
-	   
+
       // (GN+PimvO Jan 18 2013)
       // if primary is remnant, secondary should be consumer
-      if (get_primary()->remnant()) 
+      if (get_primary()->remnant())
 	  merge_elements(get_secondary(), get_primary());
-      else 
+      else
 	  merge_elements(get_primary(), get_secondary());
 
     }
@@ -1678,7 +1678,7 @@ void double_star::double_spiral_in() {
 
        star *p = get_primary();
        star *s = get_secondary();
-       
+
        real mcore_p = p->get_core_mass();
        real menv_p = p->get_envelope_mass();
        real mtot_p = mcore_p + menv_p;
@@ -1693,17 +1693,17 @@ void double_star::double_spiral_in() {
 
         //real r_l_p = roche_radius(p);
         //real r_l_s = roche_radius(s);
-	//PRC(r_l_p);PRC(r_p);PRC(r_l_s);PRL(r_s); 	
-		
+	//PRC(r_l_p);PRC(r_p);PRC(r_l_s);PRL(r_s);
+
        real alpha_lambda = cnsts.parameters(common_envelope_efficiency)
-	                 * cnsts.parameters(envelope_binding_energy);
+	                 * cnsts.common_envelope_lambda();
 
        real post_ce_orbital_energy = mtot_p*menv_p/(alpha_lambda*r_p)
 	                           + mtot_s*menv_s/(alpha_lambda*r_s)
 	                           + mtot_p*mtot_s/(2 * semi);
 
        real post_ce_semi = mcore_p*mcore_s/(2*post_ce_orbital_energy);
-       
+
        real rl_p = roche_radius(post_ce_semi, mcore_p, mcore_s);
        real rl_s = roche_radius(post_ce_semi, mcore_s, mcore_p);
 
@@ -1713,9 +1713,9 @@ void double_star::double_spiral_in() {
        if (prc >= rl_p    ||
 	   src >= rl_s) {
 
-#if 0       
+#if 0
          // see double_star::spiral_in()
-	  
+
          real semi_p = p->get_core_radius()
 	             / roche_radius(1, p->get_core_mass(),
 			               s->get_core_mass());
@@ -1728,22 +1728,22 @@ void double_star::double_spiral_in() {
 	  // the mass lost before the two stars merge is computed from
 	  // change in orbital energy assuming that
 	  // the final separation << initial separation.
-	  
+
 	  real mass_loss_fr = post_ce_semi
 	                    / (alpha_lambda * mtot_p * mtot_s)
 	                    * (pow(mtot_p, 2)/r_p + pow(mtot_s, 2)/r_s);
 
 	  real mlf_limit = (menv_p + menv_s)/(mtot_p + mtot_s);
 #endif
-	 
-	 
+
+
          // see double_star::spiral_in()
 
 	 real semi_p = prc                         // was p->get_core_radius()
 		     / roche_radius(1, mcore_p, mcore_s);
 	 real semi_s = src                         // was s->get_core_radius()
 		     / roche_radius(1, mcore_s, mcore_p);
-	 
+
 	 real post_ce_semi = Starlab::max(semi_p, semi_s);
 
 	 // the mass lost before the two stars merge is computed from
@@ -1778,15 +1778,15 @@ void double_star::double_spiral_in() {
 
 	 if (mass_loss_fr >= 1) {
 	      cerr << "ERROR: in double_star::double_spiral_in()" << endl;
-	      cerr << "         Fraction of mass lost (" << mass_loss_fr 
+	      cerr << "         Fraction of mass lost (" << mass_loss_fr
 	           << ") greater then 1" << endl;
-	    
+
 	    dump(cerr, false);
 	    mass_loss_fr = 0.99;
 	  }
 	  else if (mass_loss_fr > mlf_limit) {
 	      cerr << "WARNING: in double_star::double_spiral_in()" << endl;
-	      cerr << "         Fraction of mass lost (" << mass_loss_fr 
+	      cerr << "         Fraction of mass lost (" << mass_loss_fr
 	           << ") greater then limit (" << mlf_limit << ")" << endl;
 	    dump(cerr, false);
 	  }
@@ -1803,12 +1803,12 @@ void double_star::double_spiral_in() {
 
 	  merge_elements(p, s);
 
-        } 
+        }
         else {
 
 	  cerr << "Survival double_star::double_spiral_in()"<<endl;
 	  dump(cerr, false);
-	  
+
 	  semi = post_ce_semi;
 	  p = p->reduce_mass(menv_p);
 	  //I don't know why but sometimes the envelope_mass of the secondary changes, so:
@@ -1841,7 +1841,7 @@ void double_star::spiral_in(star* larger,
 
 	// What is accreted by the accretor should be reduce in the donor.
 	// (SPZ:  2 Jun 1999)
-	//real m_acc = smaller->accretion_limit(m_env_l, 
+	//real m_acc = smaller->accretion_limit(m_env_l,
         //             cnsts.parameters(spiral_in_time));
         real m_acc = 0;
         real mtot_s = smaller->get_total_mass() + m_acc;
@@ -1852,7 +1852,7 @@ void double_star::spiral_in(star* larger,
     	real r_larger = Starlab::min(roche_radius(larger), larger->get_effective_radius())/semi;
 
 	    real alpha_lambda = cnsts.parameters(common_envelope_efficiency)
-	                  * cnsts.parameters(envelope_binding_energy);
+	                  * cnsts.common_envelope_lambda();
 	    real a_spi = semi*(mcore_l/mtot_l)/(1. + (2.*menv_l
                    / (alpha_lambda *r_larger*mtot_s)));
 
@@ -1870,10 +1870,10 @@ void double_star::spiral_in(star* larger,
 	  // Determine the minimum separation before either the
 	  // core of the larger star or
 	  // its companion (the smaller star) fills its Roche-lobe.
-	  // substituted for: 
+	  // substituted for:
 	  // real da = semi*(1 - r_larger) - smaller->get_effective_radius();
 	  // (SPZ+GN: 1 Oct 1998)
-	  
+
 	  real sma_larger = lrc / roche_radius(1, larger->get_core_mass(),
 					       smaller->get_total_mass());
 	  real sma_smaller = ser / roche_radius(1, smaller->get_total_mass(),
@@ -1884,41 +1884,41 @@ void double_star::spiral_in(star* larger,
       // than semi!!
       sma_post_ce = Starlab::min(sma_post_ce, semi);
 
-	  real mass_lost = (mtot_l*mtot_s/(2*sma_post_ce) 
+	  real mass_lost = (mtot_l*mtot_s/(2*sma_post_ce)
                              - mtot_l*mtot_s/(2*semi))
-			 / (mtot_l/(alpha_lambda*r_larger*semi) 
+			 / (mtot_l/(alpha_lambda*r_larger*semi)
                              + mtot_s/(2*sma_post_ce));
 
 	  //real da = semi - sma_post_ce;
 	  //real semi_fr = 1-da/semi;
 	  //	  real mass_lost = (1 - semi_fr)
-	  //           / (1./mtot_l 
+	  //           / (1./mtot_l
 	  //           + 2*semi_fr/(mtot_s
 	  //	 *   cnsts.parameters(common_envelope_efficiency)
-	  //         *   cnsts.parameters(envelope_binding_energy)
+	  //         *   cnsts.common_envelope_lambda()
 	  //	 *   r_larger));
            if (mass_lost>=menv_l) {
               mass_lost = 0.99*menv_l;
            }
-	   
+
 	   cerr << "Merger double_star::spiral_in()"<<endl;
 	   dump(cerr, false);
 
 	   //           larger->set_core_mass(mcl_old);
 	   //           larger->set_envelope_mass(mel_old);
 	   larger = larger->reduce_mass(mass_lost);
-	   
+
 	   // (GN Feb 2011) Always have larger be consumer
 	   // else problems with MS + giant mergers
-	   //if (mtot_l>mtot_s) 
+	   //if (mtot_l>mtot_s)
 	   merge_elements(larger, smaller);
-           //else 
+           //else
 	   //  merge_elements(smaller, larger);
-        } 
+        }
         else {
 	  semi = a_spi;
 
-	  // note that the accreted mass to the smaller 
+	  // note that the accreted mass to the smaller
 	  // has not affected the spiral in. (SPZ:  2 Jun 1999)
 	  menv_l -= smaller->add_mass_to_accretor(
                              larger->get_envelope_mass(),
@@ -1930,7 +1930,7 @@ void double_star::spiral_in(star* larger,
 	  // redundant due to implementation of new force donor timescale
 	  //                                         (SPZ+GN:23 Sep 1998)
 	  //set_donor_timescale(smaller);
-	  //determine_minimal_timestep();  
+	  //determine_minimal_timestep();
         }
      }
 
@@ -1949,9 +1949,9 @@ void double_star::merge_elements(star* consumer,
   dump("SeBa.data", true);
 
   if (!get_use_hdyn()) {
-    consumer->set_velocity(velocity); 
+    consumer->set_velocity(velocity);
     dinner->set_velocity(velocity);
-    
+
 // (GN+SPZ Apr 28 1999) star type can change (see single_star::merge_elements)
     consumer = consumer->merge_elements(dinner);
     semi = 0;
@@ -1991,7 +1991,7 @@ void double_star::perform_wind_loss(const real dt) {
 
 void double_star::angular_momentum_loss(const real dt) {
 //	Lose angular momentum.
-//	First due to magnetic breaking then by gravitational 
+//	First due to magnetic breaking then by gravitational
 //	wave radiation.
 
   if (bin_type != Merged && bin_type != Disrupted) {
@@ -2031,7 +2031,7 @@ void double_star::magnetic_stellar_wind(const real dt) {
     else if(semi_new <= get_primary()->get_core_radius() +
 			     get_secondary()->get_core_radius()) {
       semi = semi_new;
-cerr << "magnetic stellar wind => ::dynamics_mas_transfer" << endl; 
+cerr << "magnetic stellar wind => ::dynamics_mas_transfer" << endl;
       dynamic_mass_transfer();
       //      if (get_primary()->get_effective_radius() >
       //  get_secondary()->get_effective_radius())
@@ -2039,7 +2039,7 @@ cerr << "magnetic stellar wind => ::dynamics_mas_transfer" << endl;
       //      else
       //spiral_in(get_primary(), get_secondary());
     }
-    else { 
+    else {
       semi = semi_new;
       gravrad(dt);
     }
@@ -2069,7 +2069,7 @@ void double_star::gravrad(const real dt) {
 
 //	Only appicable to small separation.
      if(semi*sqrt(1-eccentricity*eccentricity)/sqrt(get_total_mass())<=6.) {
-        real e_new = eccentricity 
+        real e_new = eccentricity
                    + G3M3_C5R4*de_dt_gwr(eccentricity)
 	           * dt*cnsts.physics(Myear);
 
@@ -2077,7 +2077,7 @@ void double_star::gravrad(const real dt) {
         if (e_new > 0 && eccentricity > 0) {
            real c0 = (semi*(1-pow(eccentricity,2))/pow(eccentricity, 12./19.))
                    / pow(1 + 121*pow(eccentricity, 2.)/304, 870./2299.);
-       
+
            a_new = (c0*pow(e_new, 12./19.)/(1-pow(e_new, 2.)))
                  * pow(1 + 121*pow(e_new, 2.)/304, 870./2299.);
         }
@@ -2096,7 +2096,7 @@ void double_star::gravrad(const real dt) {
            c0 = Starlab::max(c0, 0.);
            a_new = pow(c0, 0.25)/cnsts.parameters(solar_radius);
         }
-    
+
         if (a_new<=0) {
 
 	  cerr << "Merger::gravrad"<<endl;
@@ -2114,7 +2114,7 @@ void double_star::gravrad(const real dt) {
 			      get_secondary()->get_core_radius()) {
 	  semi=a_new;
 	  eccentricity = e_new;
-	  cerr << "gravrad => ::dynamics_mass_transfer" << endl; 
+	  cerr << "gravrad => ::dynamics_mass_transfer" << endl;
 	  dynamic_mass_transfer();
 	  //	  if (get_primary()->get_effective_radius() >
 	  //  get_secondary()->get_effective_radius())
@@ -2141,24 +2141,24 @@ real double_star::mdot_according_to_roche_radius_change(star* donor,
   if (bin_type != Merged && bin_type != Disrupted) {
 
     real m_don_rel = donor->get_relative_mass();
-    real m_acc = accretor->get_total_mass();   
+    real m_acc = accretor->get_total_mass();
     real m_don = donor->get_total_mass();
 
     real J_mb = mb_angular_momentum_loss();
     real J_gwr = gwr_angular_momentum_loss(m_don, m_acc, semi, eccentricity);
     real mtt = 1./abs(J_mb + J_gwr);
     real mtt_nuc = donor->nucleair_evolution_timescale();
-    
+
     if (J_mb+J_gwr == 0 | mtt_nuc < mtt){
-        return m_don / mtt_nuc / 2.; // so that donor_timescale = nuclear_timescale        
-    
+        return m_don / mtt_nuc / 2.; // so that donor_timescale = nuclear_timescale
+
     }
-    
-    real md_dot = Starlab::min(donor->get_total_mass(), 
-    			 cnsts.safety(minimum_mass_step));            
+
+    real md_dot = Starlab::min(donor->get_total_mass(),
+    			 cnsts.safety(minimum_mass_step));
     real dt = md_dot * mtt/donor->get_total_mass();
     real ma_dot = accretor->accretion_limit(md_dot, dt);
-    real eta = ma_dot/md_dot; 
+    real eta = ma_dot/md_dot;
     real z_star = donor->zeta_adiabatic();
     real zeta_l = zeta_scaled(donor, accretor, mtt);
 
@@ -2171,7 +2171,7 @@ real double_star::mdot_according_to_roche_radius_change(star* donor,
     	 / (2 - 2*eta*m_don/m_acc - (1-eta)*(1+2*c_Jloss)*m_don/(m_don+m_acc) + z_star - zeta_l);
     }
     else {
-        
+
         // Special case: mass transfer to compact object as accretor.
         // Only taken into account the posibility
         // 1) eta>0: mass lost as wind from accretor.
@@ -2210,7 +2210,7 @@ void double_star::contact_binary(real dt) {
 
 // (SilT Nov 25 2012) new dumping regime
     if (!first_contact) {
-    
+
         bin_type = Contact;
         dump("SeBa.data", true);
         first_contact = true;
@@ -2219,7 +2219,7 @@ void double_star::contact_binary(real dt) {
 
 
 // for the moment: only [ms,ms] stable, but what about [bd,ms] and [he,ms] etc.
-    if (get_primary()->get_element_type() == Main_Sequence && 
+    if (get_primary()->get_element_type() == Main_Sequence &&
 	get_secondary()->get_element_type() == Main_Sequence) {
 
       // 'stable' contact binaries:
@@ -2227,14 +2227,14 @@ void double_star::contact_binary(real dt) {
       // primary: results in flip-flop, which rejuvenates both stars
       // (This might be not so bad, PPE private communication)
       // For now: do nothing
-	
+
 //        if (primary->get_effective_radius()>
 //	      secondary->get_effective_radius()) {
 //           if (ready_for_mass_transfer(secondary))
 //              contact(secondary, primary, dt);
 //        }
 //        else {
-//           if (ready_for_mass_transfer(primary)) 
+//           if (ready_for_mass_transfer(primary))
 //              contact(primary, secondary, dt);
 //        }
 
@@ -2250,9 +2250,9 @@ void double_star::contact_binary(real dt) {
 // (SPZ+GN: 28 Jul 2000)
 // Dynamic mass transfer as in Eq. 5 of Nelemans VYPZ 2000 A&A in press
 
-void double_star::angular_momentum_envelope_ejection(star* larger, 
+void double_star::angular_momentum_envelope_ejection(star* larger,
 						     star* smaller) {
-  
+
 //  cerr << "double_star::angular_momentum_envelope_ejection()"<<endl;
   // (GN+SilT Mar  2 2011) new dumping regime
   bin_type = Common_Envelope;
@@ -2261,7 +2261,7 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 
 
   if (bin_type!=Merged && bin_type!=Disrupted) {
- 
+
 	real M_core = larger->get_core_mass();
 	real M_env  = larger->get_envelope_mass();
 	real M_tot  = M_env + M_core;
@@ -2271,7 +2271,7 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 	real m_acc = 0;
 	real m_new  = smaller->get_total_mass() - m_acc;
 	M_env -= m_acc;
-	
+
 // (GN Sep 22 1999) ang.mom balance: \Delta J = \gamma * J * \Delta M / M
 // See Eq. 5 of Nelemans VYPZ 2000 A&A
         real gamma = cnsts.parameters(dynamic_mass_transfer_gamma);
@@ -2315,7 +2315,7 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 
 	      cerr << "semi before = " << semi << endl;
 	      cerr << "semi after = " << a_f << endl;
-	    
+
 	      real Eorb1 = (M_tot * m_new)/(2 * semi);
 	      real Ebind = (M_tot * (M_tot - M_core))/larger->get_radius();
 	      real Eorb2 = (M_core * m_new) / (2*a_f);
@@ -2325,9 +2325,9 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 		   << (Eorb2 - Eorb1)/Ebind << endl;
 	    }
 
-	    semi = a_f; 
+	    semi = a_f;
 	    smaller->add_mass_to_accretor(larger->get_envelope_mass(),
-					  larger->hydrogen_envelope_star(), 
+					  larger->hydrogen_envelope_star(),
 					  cnsts.parameters(spiral_in_time));
 	    smaller->set_effective_radius(smaller->get_radius());
 
@@ -2342,17 +2342,17 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 //  cerr <<"Leave ::dynamics mass transfer"<<endl;
 }
 
-// (SPZ+GN: 28 Jul 2000) 
+// (SPZ+GN: 28 Jul 2000)
 // Old 'beta' mechanism, not used any more.
 #if 0
 // (GN Apr 22 1999) artifical experiment to make giant - main_sequence
 // contact system much less dramatic spiral-in (no separation change!)
 void double_star::dynamic_mass_transfer(star* larger, star* smaller) {
-  
+
 //  cerr << "double_star::dynamic_mass_transfer()" << endl;
 
   if (bin_type!=Merged && bin_type!=Disrupted) {
-       
+
 // beta is cnst or specific ang. mom of donor/accretor
 	real beta = cnsts.parameters(specific_angular_momentum_loss);
 // donor
@@ -2372,22 +2372,22 @@ void double_star::dynamic_mass_transfer(star* larger, star* smaller) {
 //	smaller->dump(cerr, false);
 //	  cerr << endl;
 
- 
+
 	real M_core = larger->get_core_mass();
 	real M_env  = larger->get_envelope_mass();
 	real M_tot  = M_env + M_core;
 
 	// What is accreted by the accretor should be reduce in the donor.
-	//m_acc -= smaller->accretion_limit(M_env, 
+	//m_acc -= smaller->accretion_limit(M_env,
         //                  cnsts.parameters(spiral_in_time));
 	real m_acc = 0;
 	real m_new  = smaller->get_total_mass() - m_acc;
 	M_env -= m_acc;
-	
+
 	  real a_f = semi*pow(M_tot/M_core,2)
-                         *pow((M_core + m_new)/(M_tot + m_new), 
+                         *pow((M_core + m_new)/(M_tot + m_new),
 			      2 * beta + 1);
-  
+
 	  real Eorb1 = (M_tot * m_new)/(2 * semi);
 	  real Ebind = (M_tot * (M_tot - M_core))/larger->get_radius();
 
@@ -2411,15 +2411,15 @@ void double_star::dynamic_mass_transfer(star* larger, star* smaller) {
 	  else {
 
 	    cerr << "semi before = " << semi << endl;
-	    semi = a_f; 
+	    semi = a_f;
 	    cerr << "semi after = " << semi << endl;
-	    
+
 	    real Eorb2 = (M_core * m_new) / (2*semi);
 
 	    PRC(Eorb1);PRC(Eorb2);PRL(Ebind);
 	    cerr << "(Eorb2 - Eorb1)/Ebind = " << (Eorb2 - Eorb1)/Ebind << endl;
 	    smaller->add_mass_to_accretor(larger->get_envelope_mass(),
-					  larger->hydrogen_envelope_star(), 
+					  larger->hydrogen_envelope_star(),
 					  cnsts.parameters(spiral_in_time));
 	    smaller->set_effective_radius(smaller->get_radius());
 
@@ -2436,18 +2436,18 @@ void double_star::dynamic_mass_transfer(star* larger, star* smaller) {
 #endif
 
 bool double_star::low_mass_star() {
-  
+
     return (get_total_mass()<=cnsts.parameters(low_mass_star_mass_limit))
            ?true: false;
 }
 
 bool double_star::medium_mass_star() {
-  
+
   return (!low_mass_star() && !high_mass_star())?true:false;
 }
 
 bool double_star::high_mass_star() {
-  
+
   return (get_total_mass()>cnsts.parameters(medium_mass_star_mass_limit))
          ?true: false;
 }
@@ -2488,7 +2488,7 @@ void double_star::recall_memory() {
 // (SilT+GN Feb 2011) new version
 // Call of zeta explicitly gives the donor timescale as parameter
 // does not include aml losses -> otherwise donor_time_scale becomes thermal instead of aml
-real double_star::zeta(star * donor, 
+real double_star::zeta(star * donor,
                        star * accretor,
 		              const real md_timescale) {
 
@@ -2497,11 +2497,11 @@ real double_star::zeta(star * donor,
 
 
        // Use total mass here as md_dot is only used to determine zeta
-       real md_dot = Starlab::min(donor->get_total_mass(), 
+       real md_dot = Starlab::min(donor->get_total_mass(),
        			 cnsts.safety(minimum_mass_step));
-       //       real md_dot = min(donor->get_envelope_mass(), 
+       //       real md_dot = min(donor->get_envelope_mass(),
        //			 cnsts.safety(minimum_mass_step));
-              
+
        real dt = md_dot * md_timescale/donor->get_relative_mass();
        real ma_dot = accretor->accretion_limit(md_dot, dt);
 
@@ -2516,12 +2516,12 @@ real double_star::zeta(star * donor,
        real q_new = new_accretor_mass/new_donor_mass;
 
        real a_fr, new_semi;
-        // SilT 8June 2022        
+        // SilT 8June 2022
         int jloss_param = cnsts.use_jloss_method();
 //        PRL(jloss_param);
         if (jloss_param == 3){//jeans mode
 //            cerr<<"jeans mode"<<endl;
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             a_fr = (old_accretor_mass/new_accretor_mass) *
                     pow(old_donor_mass/new_donor_mass, eta);
             new_semi = semi * M_old/M_new*pow(a_fr,2);
@@ -2532,27 +2532,27 @@ real double_star::zeta(star * donor,
             //               Two possibilities:
             //               1) eta>0: mass lost as wind from accretor.
             //               2) eta==0: exponential spiral-in.
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             if (eta>0) {
                 a_fr  = (new_donor_mass/old_donor_mass)
                     * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-                new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+                new_semi = semi * (M_old/M_new)/pow(a_fr, 2);
             }
             else {
                 a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-            	 /new_accretor_mass); 
+            	 /new_accretor_mass);
                 new_semi = semi * (M_old/M_new)*a_fr
                     / pow(new_donor_mass/old_donor_mass, 2);
             }
-        
+
         }
         else{   //specific orbital jloss * factor
-           real beta = cnsts.parameters(specific_angular_momentum_loss);    
+           real beta = cnsts.parameters(specific_angular_momentum_loss);
             a_fr  = pow(old_donor_mass*old_accretor_mass
                     / (new_donor_mass*new_accretor_mass), 2);
             new_semi = semi * pow(M_new/M_old,2*beta+ 1)*a_fr;
         }
-        
+
 
 
 
@@ -2561,7 +2561,7 @@ real double_star::zeta(star * donor,
 //	 // General case: semi-conservative mass transfer.
 //	 a_fr  = pow(old_donor_mass*old_accretor_mass
 //		  / (new_donor_mass*new_accretor_mass), 2);
-//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
+//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;
 //       }
 //       else {
 
@@ -2569,24 +2569,24 @@ real double_star::zeta(star * donor,
 	 //               Two possibilities:
 	 //               1) eta>0: mass lost as wind from accretor.
 	 //               2) eta==0: exponential spiral-in.
-	 
-//	 real eta = ma_dot/md_dot; 
+
+//	 real eta = ma_dot/md_dot;
 
 //	 if (eta>0) {
 //
 //	   a_fr  = (new_donor_mass/old_donor_mass)
 //	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2);
 //	 }
 //	 else {
 //
 //	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-//		       /new_accretor_mass); 
+//		       /new_accretor_mass);
 //	   new_semi = semi * (M_old/M_new)*a_fr
 //	            / pow(new_donor_mass/old_donor_mass, 2);
 //	 }
 //       }
-       
+
 //        real a_dot=0;
 //
 //        real magnetic_braking_aml = mb_angular_momentum_loss();
@@ -2602,7 +2602,7 @@ real double_star::zeta(star * donor,
 //        //       PRC(a_dot);
 //        new_semi += a_dot;
 //        //PRL(a_dot);
-       
+
        real rl = roche_radius(donor);
 
        real rl_d = roche_radius(new_semi,
@@ -2611,9 +2611,9 @@ real double_star::zeta(star * donor,
 
 //       PRC(new_semi);PRC(rl_d);PRL(rl);
        real d_lnr = (rl_d - rl)/rl;
-       real d_lnm = (new_donor_mass - donor->get_total_mass()) 
+       real d_lnm = (new_donor_mass - donor->get_total_mass())
 	          /  donor->get_total_mass();
-       
+
        real zeta;
        if(d_lnm==0) {
 	 cerr << "WARNING: d_lnm (= " << d_lnm << ") has an illegal value"
@@ -2633,11 +2633,11 @@ real double_star::zeta(star * donor,
      return 1;
 }
 
-// (SilT 22 Mar 2012) 
+// (SilT 22 Mar 2012)
 // return dln(Rl/a)/dlnM in stead of dlnRl/dlnM
 // used in mdot_according_to_roche_radius_change
 // includes aml losses
-real double_star::zeta_scaled(star * donor, 
+real double_star::zeta_scaled(star * donor,
                        star * accretor,
 		              const real md_timescale) {
 
@@ -2647,11 +2647,11 @@ real double_star::zeta_scaled(star * donor,
 
 
        // Use total mass here as md_dot is only used to determine zeta
-       real md_dot = Starlab::min(donor->get_total_mass(), 
+       real md_dot = Starlab::min(donor->get_total_mass(),
        			 cnsts.safety(minimum_mass_step));
-       //       real md_dot = min(donor->get_envelope_mass(), 
+       //       real md_dot = min(donor->get_envelope_mass(),
        //			 cnsts.safety(minimum_mass_step));
-              
+
        real dt = md_dot * md_timescale/donor->get_relative_mass();
        real ma_dot = accretor->accretion_limit(md_dot, dt);
 
@@ -2666,13 +2666,13 @@ real double_star::zeta_scaled(star * donor,
        real q_new = new_accretor_mass/new_donor_mass;
 
        real a_fr, new_semi;
-       
-        // SilT 8June 2022        
+
+        // SilT 8June 2022
         int jloss_param = cnsts.use_jloss_method();
 //        PRL(jloss_param);
         if (jloss_param == 3){//jeans mode
 //            cerr<<"jeans mode"<<endl;
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             a_fr = (old_accretor_mass/new_accretor_mass) *
                     pow(old_donor_mass/new_donor_mass, eta);
             new_semi = semi * M_old/M_new*pow(a_fr,2);
@@ -2683,32 +2683,32 @@ real double_star::zeta_scaled(star * donor,
             //               Two possibilities:
             //               1) eta>0: mass lost as wind from accretor.
             //               2) eta==0: exponential spiral-in.
-            real eta = ma_dot/md_dot; 
+            real eta = ma_dot/md_dot;
             if (eta>0) {
                 a_fr  = (new_donor_mass/old_donor_mass)
                     * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-                new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+                new_semi = semi * (M_old/M_new)/pow(a_fr, 2);
             }
             else {
                 a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-            	 /new_accretor_mass); 
+            	 /new_accretor_mass);
                 new_semi = semi * (M_old/M_new)*a_fr
                     / pow(new_donor_mass/old_donor_mass, 2);
             }
-        
+
         }
         else{   //specific orbital jloss * factor
-           real beta = cnsts.parameters(specific_angular_momentum_loss);    
+           real beta = cnsts.parameters(specific_angular_momentum_loss);
             a_fr  = pow(old_donor_mass*old_accretor_mass
                     / (new_donor_mass*new_accretor_mass), 2);
             new_semi = semi * pow(M_new/M_old,2*beta+ 1)*a_fr;
         }
- 
- 
- 
- 
-        
-       
+
+
+
+
+
+
 //       real beta = cnsts.parameters(specific_angular_momentum_loss);
 
 //       if (!accretor->remnant()) {
@@ -2716,7 +2716,7 @@ real double_star::zeta_scaled(star * donor,
 //	 // General case: semi-conservative mass transfer.
 //	 a_fr  = pow(old_donor_mass*old_accretor_mass
 //		  / (new_donor_mass*new_accretor_mass), 2);
-//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;	
+//	 new_semi = semi * pow(M_new/M_old, 2*beta + 1) * a_fr;
 //       }
 //       else {
 
@@ -2724,24 +2724,24 @@ real double_star::zeta_scaled(star * donor,
 	 //               Two possibilities:
 	 //               1) eta>0: mass lost as wind from accretor.
 	 //               2) eta==0: exponential spiral-in.
-	 
-//	 real eta = ma_dot/md_dot; 
+
+//	 real eta = ma_dot/md_dot;
 //
 //	 if (eta>0) {
 //
 //	   a_fr  = (new_donor_mass/old_donor_mass)
 //	         * pow(new_accretor_mass/old_accretor_mass, 1/eta);
-//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2); 
+//	   new_semi = semi * (M_old/M_new)/pow(a_fr, 2);
 //	 }
 //	 else {
 //
 //	   a_fr  = exp(2*(new_donor_mass-old_donor_mass)
-//		       /new_accretor_mass); 
+//		       /new_accretor_mass);
 //	   new_semi = semi * (M_old/M_new)*a_fr
 //	            / pow(new_donor_mass/old_donor_mass, 2);
 //	 }
 //       }
-       
+
         real a_dot=0;
 
         real magnetic_braking_aml = mb_angular_momentum_loss();
@@ -2757,7 +2757,7 @@ real double_star::zeta_scaled(star * donor,
         //       PRC(a_dot);
         new_semi += a_dot;
         //PRL(a_dot);
-       
+
        real rl = roche_radius(donor);
 
        real rl_d = roche_radius(new_semi,
@@ -2767,9 +2767,9 @@ real double_star::zeta_scaled(star * donor,
 //       PRC(new_semi);PRC(rl_d);PRL(rl);
 //       real d_lnr = (rl_d - rl)/rl;
        real d_lnr_scaled = (rl_d/new_semi - rl/semi)/(rl/semi);
-       real d_lnm = (new_donor_mass - donor->get_total_mass()) 
+       real d_lnm = (new_donor_mass - donor->get_total_mass())
 	          /  donor->get_total_mass();
-       
+
        real zeta;
        if(d_lnm==0) {
 	 cerr << "WARNING: d_lnm (= " << d_lnm << ") has an illegal value"
@@ -2791,13 +2791,13 @@ real double_star::zeta_scaled(star * donor,
 
 }
 
-     
+
 void double_star::enhance_cluster_profile(cluster_profile& c_prof) {
 
       double_profile binary;
       //make_profile(identity, initial.start_time, binary, initial);
       binary.enhance_double_profile(this);
-      c_prof.enhance_cluster_profile(binary);      
+      c_prof.enhance_cluster_profile(binary);
    }
 
 // Used by determine_dt
@@ -2815,7 +2815,7 @@ real double_star::orbital_timescale() {
                 + abs(grav_rad_aml);
 
 // about 50 steps to lose ang. momentum.
-  if (aml_loss> 0) 
+  if (aml_loss> 0)
     dt=.02/aml_loss;
 
   return dt;
@@ -2824,29 +2824,29 @@ real double_star::orbital_timescale() {
 // Peters & Mathews, 1963/4
 real double_star::gwr_angular_momentum_loss(const real m_prim,
 					    const real m_sec,
-					    const real sma, 
+					    const real sma,
 					    const real ecc) {
 
   real m_tot = m_prim + m_sec;
   real J_gwr = 0;
-  
+
   if(sma*sqrt(1-ecc*ecc)/sqrt(m_tot)<=6.) {
-  
+
     real c_gwr = -32*pow(cnsts.parameters(solar_mass)*
 			cnsts.physics(G), 3)
                / (5*pow(cnsts.physics(C), 5)*
 		 pow(cnsts.parameters(solar_radius), 4));
    real ecc_factor = (1+7./8.*ecc*ecc)/pow(1-ecc*ecc, 2.5);
-    J_gwr = c_gwr*m_prim*m_sec*m_tot/pow(sma, 4)* ecc_factor;  
+    J_gwr = c_gwr*m_prim*m_sec*m_tot/pow(sma, 4)* ecc_factor;
 
   }
-  
+
   return J_gwr*cnsts.physics(Myear);
 }
 
 // Rappaport, Verbunt & Joss, 1983
 real double_star::mb_angular_momentum_loss() {
-    
+
   real c_mb = -3.8e-30*cnsts.parameters(solar_mass)*cnsts.physics(G)
             /          cnsts.parameters(solar_radius);
 
@@ -2857,7 +2857,7 @@ real double_star::mb_angular_momentum_loss() {
               * pow(get_primary()->get_effective_radius(),
 	            cnsts.parameters(magnetic_braking_exponent))
               / (get_secondary()->get_total_mass()*pow(semi, 5));
-  
+
   real J_mb_sec = 0;
   if (get_secondary()->magnetic() && eccentricity<=
       cnsts.parameters(corotation_eccentricity))
@@ -2872,16 +2872,16 @@ real double_star::mb_angular_momentum_loss() {
 
 }
 
-//		The circularization radius for the accretion stream 
-//		for star with mass m1 is fiven by 
+//		The circularization radius for the accretion stream
+//		for star with mass m1 is fiven by
 //		(Shore, S., Livio, M., vanden Heuvel EPJ., saas-Fee
-//		Advanced Course 22 for Astronomy and Astrophysics, 
+//		Advanced Course 22 for Astronomy and Astrophysics,
 //		Interacting Binaries p145):
 real double_star::circularization_radius(const real m1, const real m2) {
-  
+
      real q = m2/m1;
      real r_c = semi*(1+q)*pow(0.5 - 0.227 * log10(q), 4);
-     
+
      return r_c;
 }
 
@@ -2892,34 +2892,31 @@ real double_star::get_period() {
 			/ (cnsts.physics(G)*get_total_mass()
 			   *cnsts.parameters(solar_mass)))
             /  cnsts.physics(days);
-	  
+
      if(p<=0) p=1;
-	  
-     return p; 
+
+     return p;
 }
 
 
 real double_star::potential_energy() {
-  
+
      real GM2_R = cnsts.physics(G)*pow(cnsts.parameters(solar_mass), 2)
                 / cnsts.parameters(solar_radius);
      real u = GM2_R*get_primary()->get_total_mass()
             * get_secondary()->get_total_mass()/semi;
-     
+
      return -u;
 }
 real double_star::kinetic_energy() {
-  
+
      real M_km_s = cnsts.parameters(solar_mass)
                  * pow(cnsts.physics(km_per_s), 2);
      real k = 0.5*M_km_s*get_total_mass()*velocity*velocity;
-     
+
      return k;
 }
 
 real double_star::total_energy() {
   return kinetic_energy() + potential_energy();
 }
-
-
-
