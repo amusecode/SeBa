@@ -121,7 +121,19 @@ href=mailto:steve@physics.drexel.edu>steve@physics.drexel.edu</a><br><br>
 
 // So we get the good old standard cerr, cout, cin, ....
 
-using namespace std;
+//using namespace std;
+using std::cout;
+using std::cerr;
+using std::cin;
+using std::endl;
+using std::ostream;
+using std::ifstream;
+using std::ofstream;
+using std::istream;
+using std::flush; 
+using std::min; 
+using std::max; 
+using std::ios; 
 
 //=============================================================================
 //  New naming conventions to add to or replace existing names in C :

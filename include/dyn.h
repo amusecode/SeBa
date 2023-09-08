@@ -25,6 +25,8 @@
 #include  "node.h"
 #include  "kepler.h"
 
+using std::vector;
+
 #define BIN_INDENT	21	// for print_pert() and print_binary_params()
 
 static const real rnull = 0.0;
