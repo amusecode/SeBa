@@ -39,7 +39,15 @@ If you need to follow the binary stellar evolution for multiple systems with par
 ./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500 -z 0.001
 ./SeBa -M 2.5 -m 1.5 -e 0.5 -a 500 -T 500 -z 0.02
 ```
+
 This is probably not handy for more than 5 systems. Although this can be added in e.g. a shell or Python script.
+For example a file named run.sh, should contain the lines for the example given above:
+```
+./SeBa -M 2 -m 1 -e 0.2 -a 200 -T 13500
+./SeBa -M 2.5 -m 1.5 -e 0.5 -a 500 -T 500
+```
+Note:Check permissions of run.sh file; it should be executable by the owner. If not: type ' chmod 744 run.sh ' in command line. 
+To run the shell script: ./run.sh
 
 Another option is to use an input file:
 ```
@@ -72,6 +80,13 @@ with following parameters:
    To vary the metallicity, multiple simulations should be run. 
 -N initial ID number of first simulated binary
 (Default: 0, may come in handy for stitching together production runs)   
+```
+
+(Experimental)
+```
+-C Initial stellar type primary star [default is main_sequence]
+-c Initial stellar type secondary star [default is main_sequence]
+Starts at beginning of specified phase. Options are planet, brown_dwarf, main_sequence, hertzsprung_gap, sub_giant, horizontal_branch, super_giant, helium_star, helium_giant, hyper_giant, carbon_star, thorn_zytkow, helium_dwarf, carbon_dwarf, oxygen_dwarf, xray_pulsar, radio_pulsar, neutron_star, black_hole, Disintegrated
 ```
 
 The initial parameters are drawn from distributions:
@@ -138,7 +153,8 @@ column 12 & 18 core mass in Solar mass
 
 ```
 2 detached
-3 semi detached + stable mass transfer 4 contact
+3 semi detached + stable mass transfer 
+4 contact
 5 CE (gamma)
 6 double spiral-in
 7 merged
