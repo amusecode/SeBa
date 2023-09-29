@@ -10,6 +10,7 @@ LDLIBS	  += \
 	     -lm
 
 CFLAGS    += -O
+CXXFLAGS  += -O
 
 EXE	= SeBa Normalisation
 DIRS	= init io starclass stardyn util

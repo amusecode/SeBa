@@ -1,6 +1,7 @@
 CXXFLAGS  += -I./include -I./include/star -DHAVE_CONFIG_H -DTOOLBOX
 LDLIBS	  += -Lsstar -lsstar -Lnode -lnode -Lstd -lstd -lm
 CFLAGS    += -O
+CXXFLAGS  += -O
 
 EXE	= starev
 #DIRS	= node std sstar dstar
