@@ -812,6 +812,15 @@ bool  double_star::stable(star* st) {	// default = NULL
       real J_prim = get_primary()->angular_momentum();
       real J_sec  = get_secondary()->angular_momentum();
       J_star = Starlab::max(J_prim, J_sec);
+      
+      //(SilT:25 Jan 2024)
+      //J_star should be the angular momentum of the prospective donor star
+      //Out of simplicity the maximum of J_prim and J_sec was taken
+      //Gives a problem when the primary is a neutron star with high rotation rate       
+      if (get_primary()->get_element_type()==18 && get_secondary()->get_element_type()<=14){
+            J_star = J_sec;
+      };      
+      
 //      PRC(J_prim);PRC(J_sec);PRL(angular_momentum());
     }
 
