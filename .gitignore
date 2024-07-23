@@ -1,0 +1,6 @@
+Makefile.inc
+dstar/Makefile.inc
+**/*.o
+**/*.a
+starev
+
