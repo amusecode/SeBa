@@ -1,6 +1,6 @@
 CXXFLAGS  += -I../include -I../include/star \
 	     -D_SRC_='"no_source_available"' \
-	     -DHAVE_CONFIG_H  -DTOOLBOX 
+	     -DHAVE_CONFIG_H
 LDLIBS	  += \
 	     -L. -ldstar \
 	     -L../sstar -lsstar \
