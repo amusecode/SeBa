@@ -67,19 +67,19 @@ Monte Carlo based approach
 ./SeBa -R -n 200
 ./SeBa -R -n 250000 -m 0.96 -M 11 -q 1e-4 -Q 1 -A 1e6 -f 4 -T 13500
 ```
-with following parameters:
+with following parameters [default]:
 
 ```
 -R SeBa generates randomly the initial parameters -n number of systems simulated
--m -M min/max primary mass
--q -Q min/max mass ratio
--e -E min/max eccentricity
--a -A min/max orbital separation
--T time in Myr in the simulation of the binaries. Same time for all binaries 
--z metallicity of binary stars. All binaries have the same metallicity.
+-m -M min/max primary mass [0.1,100]
+-q -Q min/max mass ratio [0,1]
+-e -E min/max eccentricity [0,1]
+-a -A min/max orbital separation [0, 1e6]
+-T time in Myr in the simulation of the binaries. Same time for all binaries [13500Myr]
+-z metallicity of binary stars. All binaries have the same metallicity. [0.02]
    To vary the metallicity, multiple simulations should be run. 
--N initial ID number of first simulated binary
-(Default: 0, may come in handy for stitching together production runs)   
+-N initial ID number of first simulated binary [0]
+(comes in handy for stitching together production runs)   
 ```
 
 (Experimental)
