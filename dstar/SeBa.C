@@ -258,7 +258,7 @@ int main(int argc, char ** argv) {
 
     int input_seed=0; 
     char seedlog[64];
-    char paramlog[90];
+    char paramlog[110];
 
     //check_help();
 
@@ -349,13 +349,15 @@ int main(int argc, char ** argv) {
 
     int actual_seed = srandinter(input_seed);
     cerr << "random number generator seed = " << actual_seed << endl;
-    sprintf(paramlog, 
-"         alpha  = %3.1f\n         lambda = %3.1f\n         beta   = %3.1f\n         gamma  = %4.2f\n     CE_method = %d",
+    sprintf(paramlog,
+	   "   alpha  = %3.1f\n   lambda = %3.1f\n   beta   = %3.1f\n   gamma  = %4.2f\n   CE_method = %d\n   Jloss_method = %d \n",
 	    cnsts.parameters(common_envelope_efficiency),
 	    cnsts.parameters(envelope_binding_energy),
 	    cnsts.parameters(specific_angular_momentum_loss),
 	    cnsts.parameters(dynamic_mass_transfer_gamma)),
-            cnsts.use_common_envelope_method();
+            cnsts.use_common_envelope_method(),
+            cnsts.use_jloss_method()
+          );
 
     if (n <= 0) err_exit("mknodes: N > 0 required!");
 
