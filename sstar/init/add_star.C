@@ -106,7 +106,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	// Create a (single) star part, using the information obtained from
 	// the star story read in by get_node(), or created from scratch.
 
-	stellar_type local_type = NAS;
+	stellar_type local_type = type;
 	starbase * old_starbase = b->get_starbase();
 	story * s = old_starbase->get_star_story();
 
