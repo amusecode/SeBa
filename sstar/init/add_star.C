@@ -121,8 +121,8 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 
 	//old code
 	//stellar_type local_type = type;
-	//starbase * old_starbase = b->get_starbase();
-	//story * s = old_starbase->get_star_story();
+	starbase * old_starbase = b->get_starbase();
+	story * s = old_starbase->get_star_story();
 
 	//real mco_core = 0;
 	extract_story_chapter(local_type, z, t_cur, t_rel,
