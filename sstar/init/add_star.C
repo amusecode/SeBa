@@ -106,9 +106,23 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 	// Create a (single) star part, using the information obtained from
 	// the star story read in by get_node(), or created from scratch.
 
+	//Changed in Jan 2025 by Cloude Cournoyer-Cloutier and SPZ to type
+	// to allow pre-evolved binaries to continue their evolution.
+	// Maybe this was not necessary, and it caused SeBa to break upon new stars
+	// add_particles stopped working. Now (Febr 2025) changed it back to NAS.
+	// Jan 22025 code:
+	// stellar_type local_type = type;
+	// Febr 2025 code:
+	cout <<"stellar type in add_star:"<< type << endl;
 	stellar_type local_type = type;
-	starbase * old_starbase = b->get_starbase();
-	story * s = old_starbase->get_star_story();
+	if (type == Main_Sequence) {
+	  local_type = NAS;
+	}
+
+	//old code
+	//stellar_type local_type = type;
+	//starbase * old_starbase = b->get_starbase();
+	//story * s = old_starbase->get_star_story();
 
 	//real mco_core = 0;
 	extract_story_chapter(local_type, z, t_cur, t_rel,
