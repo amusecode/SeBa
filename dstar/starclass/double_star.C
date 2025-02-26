@@ -61,10 +61,19 @@ void double_star::initialize(binary_type type, real sma,
       initial.mass_prim    = get_primary()->get_total_mass();
       initial.eccentricity = eccentricity;
 
+      //cout << "binary id="<<id<<" star0="<<get_primary()->get_identity()
+      //     <<" star1="<< get_secondary()->get_identity()<<endl;
+      // Set the binary component identities to 0 and 1, or to i and i+1 (SPZ+FK Feb2025)
+      
       if(get_primary()->get_identity()<0)
 	  get_primary()->set_identity(0);
-      if(get_secondary()->get_identity()<0)
-	  get_secondary()->set_identity(1);
+      if(get_secondary()->get_identity()<=0)
+	  get_secondary()->set_identity(get_primary()->get_identity()+1);
+      // before Feb 2025 stellar identities were only set if <0:
+      //if(get_primary()->get_identity()<0)
+      //  get_primary()->set_identity(0);
+      //if(get_secondary()->get_identity()<0)
+      //  get_secondary()->set_identity(1);
 
       refresh_memory();       //implemented 25-1-95
 }
