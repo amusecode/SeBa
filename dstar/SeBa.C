@@ -354,7 +354,7 @@ int main(int argc, char ** argv) {
 	    cnsts.parameters(common_envelope_efficiency),
 	    cnsts.parameters(envelope_binding_energy),
 	    cnsts.parameters(specific_angular_momentum_loss),
-	    cnsts.parameters(dynamic_mass_transfer_gamma)),
+	    cnsts.parameters(dynamic_mass_transfer_gamma),
             cnsts.use_common_envelope_method(),
             cnsts.use_jloss_method()
           );
