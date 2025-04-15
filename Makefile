@@ -1,4 +1,4 @@
-CXXFLAGS  += -I./include -I./include/star -DHAVE_CONFIG_H -DTOOLBOX
+CXXFLAGS  += -I./include -I./include/star -DHAVE_CONFIG_H
 LDLIBS	  += -Lsstar -lsstar -Lnode -lnode -Lstd -lstd -lm
 CFLAGS    += -O
 CXXFLAGS  += -O
