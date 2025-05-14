@@ -65,7 +65,7 @@ which contains following information a e M m z, e.g.
 Monte Carlo based approach
 ```
 ./SeBa -R -n 200
-./SeBa -R -n 250000 -m 0.96 -M 11 -q 1e-4 -Q 1 -A 1e6 -f 4 -T 13500
+./SeBa -R -n 250000 -T 13500 -f 4 -m 0.95 -M 10 -Q 1 -A 1e6 
 ```
 with following parameters [default]:
 
