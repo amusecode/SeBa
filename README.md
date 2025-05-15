@@ -180,11 +180,11 @@ magnetic braking)
 2 brown dwarf
 3 main sequence
 5 hertzsprung gap
-6 sub-giant
-7 core helium burning star 
-8 agb
-10 helium star
-11 helium giant
+6 sub-giant (i.e. first-ascent red giant branch)
+7 core helium burning star (official name in SeBa code: horizontal branch star)
+8 agb (i.e. after core-helium burning, official name in SeBa code: super-giant)
+10 helium star (i.e. hydrogen-poor helium-core-burning star)
+11 helium giant (i.e. hydrogen-poor helium-shell-burning star)
 12 carbon-oxygen white dwarf 
 13 helium white dwarf
 14 oxygen-neon white dwarf 
