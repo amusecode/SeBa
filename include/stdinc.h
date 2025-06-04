@@ -134,6 +134,7 @@ using std::flush;
 using std::min; 
 using std::max; 
 using std::ios; 
+using std::abs;
 
 //=============================================================================
 //  New naming conventions to add to or replace existing names in C :
