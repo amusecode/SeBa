@@ -3124,10 +3124,6 @@ real single_star::update_core_and_envelope_mass(const real m_core) {
   
   bool successful_update = false;
   real dm_core = m_core-core_mass;
-  cout << m_core << endl;
-  cout << get_total_mass() << endl;
-  cout << dm_core << endl;
-  cout << core_mass << endl;
   if (m_core > get_total_mass()){
     cerr << "single_star::update_core_and_envelope_mass limits new core mass to total mass." << endl;
     real m_tot = get_total_mass();
