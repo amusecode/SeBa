@@ -3124,7 +3124,7 @@ real single_star::update_core_and_envelope_mass(const real m_core) {
   
   bool successful_update = false;
   real dm_core = m_core-core_mass;
-    
+  
   if (m_core > get_total_mass()){
     cerr << "single_star::update_core_and_envelope_mass limits new core mass to total mass." << endl;
     real m_tot = get_total_mass();
@@ -3261,7 +3261,7 @@ real single_star::linear_function_inversion(real (single_star::*fptr)(real, cons
         gx = gx_new; 
         within_range = 1; 
     }
-    while(abs(dy/y_value)>cnsts.safety(minimum_inversion_precision));
+    while(std::abs(dy/y_value)>cnsts.safety(minimum_inversion_precision));
     
 //    PRC(x_guess);PRL(gx);
 //    PRC(y_value);PRL((this->*fptr)(gx, z));
