@@ -16,6 +16,6 @@ jobs:
     - name: make
       run: make
     - name: make dstar
-      run: 
+      run: |
         cd dstar
         make
