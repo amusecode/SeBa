@@ -26,6 +26,9 @@
 #include "star.h"
 #include "star_state.h"
 
+#include <stdexcept>
+
+
 /*-----------------------------------------------------------------------------
  *  star  --  the standard class for stellar evolution, with core and envelope
  *-----------------------------------------------------------------------------
@@ -362,10 +365,20 @@ class  single_star : public star
 //      real small_envelope_core_luminosity(){return 0;};
 //      real small_envelope_core_radius(){return 0;};
 //      real helium_core_radius(){return 0;};
-        
-        virtual real small_envelope_core_luminosity(){};
-        virtual real small_envelope_core_radius(){};
-        virtual real helium_core_radius(){};        
+// don't do this either, as it returns an arbitrary value that could mess up your result:
+//      real small_envelope_core_luminosity() {};
+//      real small_envelope_core_radius() {};
+//      real helium_core_radius() {};
+
+        virtual real small_envelope_core_luminosity() {
+            throw std::logic_error("Invalid call to small_envelope_core_luminosity()");
+        };
+        virtual real small_envelope_core_radius() {
+            throw std::logic_error("Invalid call to small_envelope_core_radius()");
+        };
+        virtual real helium_core_radius() {
+            throw std::logic_error("Invalid call to helium_core_radius()");
+        };
         
         
       //white dwarf      
