@@ -583,7 +583,7 @@ void  plot_mass_radii_in_percentages(dyn * b, int width_factor)
 //  main  --  driver to use  plot_mass_radii() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     bool  c_flag = FALSE;      /* if TRUE: a comment given on command line   */

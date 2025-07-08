@@ -137,7 +137,7 @@ local void scale_energy(real energy, int N, real M, real E)
 
 //----------------------------------------------------------------------
 
-void main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     real energy = 0.0;
     real eccentricity = -1;

@@ -2034,7 +2034,7 @@ local void  wrap_string(char substring[BUFF_LENGTH],
     substring[++i] = '\0';
     }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.8 $", _SRC_);

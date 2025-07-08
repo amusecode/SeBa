@@ -137,7 +137,7 @@ void  dist_stats(dyn * b1, dyn * b2, int n_intervals)
     print_sqrt_n_tiles(veldists, n_intervals, n1);
     }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  n_intervals;
     bool  n_flag = FALSE;

@@ -32,7 +32,7 @@
  *  main  --  driver, to directly display subtrees.
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     char  *comment;

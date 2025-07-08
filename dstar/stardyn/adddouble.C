@@ -315,7 +315,7 @@ void adddouble(hdyn *b,					// b is binary CM
  *  main  --
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
     {
     int  c;
     bool  A_flag = FALSE;

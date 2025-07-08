@@ -26,7 +26,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool renumber = true;
     check_help();

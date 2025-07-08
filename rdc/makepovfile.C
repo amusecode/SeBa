@@ -1164,7 +1164,7 @@ void rdc_and_wrt_movie(dyn *b, bool povray, real scale_L, real mmax,
 //-----------------------------------------------------------------------------
 enum SF_base_type {No_base=0, StTr_station, SW_ISD}; 
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = false;      // if TRUE: a comment given on command line
     bool  v_flag = false;      // if TRUE: a comment given on command line

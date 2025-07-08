@@ -132,7 +132,7 @@ int get_radial_vdisp(dyn *b, vec cpos, vec cvel,
 
 #define N_DEFAULT 100
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int n_zones = N_DEFAULT;
     real r_max = 0;

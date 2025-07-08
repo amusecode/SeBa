@@ -33,7 +33,7 @@ local void freezebin(dyn * b, real fac)
 	if (bi->is_parent()) bi->scale_vel(fac);
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     char  *comment;

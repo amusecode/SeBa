@@ -220,7 +220,7 @@ void  starplot(dyn * b, int k, real lmax, int nlines)
 //	      number of lines on the screen.
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  k;
     int  nlines;

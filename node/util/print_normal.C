@@ -134,7 +134,7 @@ char* get_normal_form(node* b)	// Unused...
  *  main  --  driver to directly print out a tree structure
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
     {
     int i = 0;
     node *root;    // root node

@@ -36,7 +36,7 @@
 //  main  --  driver to directly add one extra daughter node.
 //-------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  i;
     int  j;

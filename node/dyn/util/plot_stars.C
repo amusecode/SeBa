@@ -268,7 +268,7 @@ void plot_stars(dyn * bi,
 
 #else
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  k = 3;
     int n = 5;

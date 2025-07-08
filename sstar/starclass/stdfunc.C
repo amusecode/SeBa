@@ -837,7 +837,7 @@ real dynamic_timescale(const real mass,
 
 #else
 
-void main() {
+int main() {
 
   real v_disp = 8; // km/s
 //  real v_disp = 4; // km/s

@@ -701,7 +701,7 @@ cerr << "addstar(node... called from adddouble(node ..." << endl;
    }
 #else
 
-void main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
     bool F_flag = false;
     bool P_flag = false;

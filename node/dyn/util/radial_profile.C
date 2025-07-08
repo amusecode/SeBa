@@ -212,7 +212,7 @@ real Q3(dyn *b)					// vr^2
 
 typedef real (*qfn)(dyn*);
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int n_zones = N_DEFAULT;
     int option = 0;

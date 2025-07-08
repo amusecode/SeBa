@@ -83,7 +83,7 @@ int adjust_starlab_precision(int p)
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.4 $", _SRC_);

@@ -197,7 +197,7 @@ char *gethist(int argc, char ** argv)
 //                gethist these are words "but this is a single string"
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.5 $", _SRC_);

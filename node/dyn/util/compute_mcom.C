@@ -179,7 +179,7 @@ void compute_mcom(dyn *b,
 //  main  --  driver to use compute_mcom() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

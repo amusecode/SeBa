@@ -1362,7 +1362,7 @@ int  is_quantity_name(story * a_story, const char * name)
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.15 $", _SRC_);

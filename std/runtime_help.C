@@ -132,7 +132,7 @@ void check_runtime_help(int argc, char** argv,
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     extern char *poptarg;

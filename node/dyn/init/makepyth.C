@@ -31,7 +31,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  i;
     bool c_flag = FALSE;

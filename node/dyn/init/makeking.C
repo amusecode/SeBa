@@ -847,7 +847,7 @@ local void makeking(dyn * b, int n, real w0, bool n_flag, bool u_flag, int test)
     }
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  n;
     int  input_seed, actual_seed;

@@ -240,7 +240,7 @@ void  compute_density(dyn * b,	      // pointer to N-body system or node
 
 #else
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  k = 12;                // default
 

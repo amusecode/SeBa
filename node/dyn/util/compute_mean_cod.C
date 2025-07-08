@@ -140,7 +140,7 @@ void compute_mean_cod(dyn *b)
 //  main  --  driver to use compute_mean_cod() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

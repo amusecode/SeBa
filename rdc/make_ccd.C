@@ -736,7 +736,7 @@ local void mk_ccd(dyn* b, vec dc_pos, int project, wavelength band,
 //             -v    verbose, prints stars and positions to cerr [false]
 //
 //
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
     check_help();
 
     wavelength band = F;

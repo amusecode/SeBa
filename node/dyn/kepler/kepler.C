@@ -1665,7 +1665,7 @@ local void rr(real r)
     k.print_dyn();
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.17 $", _SRC_);

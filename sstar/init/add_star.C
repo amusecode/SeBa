@@ -222,7 +222,7 @@ void  addstar(node * b, real t_current, stellar_type type, real z,int id,
 
 #else
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  c;
     bool  t_flag = FALSE;

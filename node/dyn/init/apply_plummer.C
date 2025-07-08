@@ -86,7 +86,7 @@ local void  addplummer(dyn * b, real mfrac, real rfrac)
     b->to_com();
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  random_seed;
     real  mfrac = MFRAC_DEFAULT;

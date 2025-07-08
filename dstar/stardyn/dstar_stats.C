@@ -119,7 +119,7 @@ void dstar_stats(dyn* b, bool mass_spectrum, vec center,
 
 #else
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     bool binaries = true, verbose = true, out = false,
          n_sq = true, calc_e = true;

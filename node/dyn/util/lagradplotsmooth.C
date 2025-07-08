@@ -240,7 +240,7 @@ char in_screen[MAX_NUMBER_OF_INPUT_LINES][MAX_NUMBER_OF_COLUMNS], int w)
 //  main
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     bool  c_flag = FALSE;      /* if TRUE: a comment given on command line   */

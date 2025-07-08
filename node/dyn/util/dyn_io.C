@@ -488,7 +488,7 @@ void put_col(dyn* root, ostream& s, bool put_time) {
 
 
 #else
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.32 $", _SRC_);

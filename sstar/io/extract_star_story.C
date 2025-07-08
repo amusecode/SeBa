@@ -194,7 +194,7 @@ void  addstar1(node * b, real t_rel, stellar_type type,
  *  main  --
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  c;
     bool  t_flag = FALSE;

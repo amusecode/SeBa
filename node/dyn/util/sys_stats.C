@@ -1586,7 +1586,7 @@ void sys_stats(dyn* b,
 
 #else
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     check_help();
 

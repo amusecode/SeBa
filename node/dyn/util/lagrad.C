@@ -536,7 +536,7 @@ real compute_lagrangian_radii(dyn* b,
 //  main  --  driver to use  compute_mass_radii() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     int n = 0;
