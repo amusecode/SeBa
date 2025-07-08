@@ -56,7 +56,7 @@ void  starplot(dyn * b, int k, real lmax, int nlines)
     {
     int  n;
     int  kx, ky;	 // the coordinates projected onto the x- and y-axes
-    register int  i, j;
+    int  i, j;
     real lvmax;
     char  screen[VBINS][HBINS];		             // pixels on the screen
     dyn *bi;
