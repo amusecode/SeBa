@@ -34,6 +34,12 @@
 
 #ifdef TOOLBOX
 
+local void scanf_check(char const * format, void * value) {
+    int err = scanf(format, value);
+    if (err != 0)
+        throw std::runtime_error("Invalid stoa file detected");
+}
+
 local dyn* read_stoa(bool i_flag) {
 
     dyn *root, *by, *bo;
@@ -43,9 +49,9 @@ local dyn* read_stoa(bool i_flag) {
     root = new dyn();
     if (i_flag) root->set_label(0);
 
-    int n; scanf("%d", &n); PRL(n);
-    int ndim; scanf("%d", &ndim); PRL(ndim);
-    real time; scanf("%lf", &time); PRL(time);
+    int n; scanf_check("%d", &n); PRL(n);
+    int ndim; scanf_check("%d", &ndim); PRL(ndim);
+    real time; scanf_check("%lf", &time); PRL(time);
     root->set_system_time(time);
     
     // Create first daughter node.
