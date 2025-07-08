@@ -1,4 +1,7 @@
 #include "SeBa_hist.h"
+
+#include <stdexcept>
+
  
 bool scenarios_identical(SeBa_hist* hi, SeBa_hist* ha) {
 
@@ -129,6 +132,8 @@ real SeBa_hist::get_parameter(binary_parameter param) {
           break;
      case mass_ratio:                        return m_sec/m_prim;
           break;
+     default:
+          throw std::logic_error("Invalid parameter");
      }
 }
 
