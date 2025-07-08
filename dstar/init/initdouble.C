@@ -820,7 +820,7 @@ int main(int argc, char ** argv) {
 			q_min, q_max, qf, q_exp, 
 			a_min, a_max, af, a_exp, 
 			e_min, e_max, ef, e_exp, 
-			m_prim, m_sec, sma, ecc);
+			m_prim, m_sec, sma, ecc, 1.0);
 	cerr << "\t" << m_prim 
 	     << "\t" << m_sec 
 	     << "\t" << sma
