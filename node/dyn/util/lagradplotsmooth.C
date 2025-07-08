@@ -298,7 +298,7 @@ int main(int argc, char ** argv)
             c = getchar();
             while (c != '\n' && c != EOF)
                 {
-                in_screen[i][j++] = c;
+                in_screen[i][j++] = static_cast<char>(c);
                 c = getchar();
                 }
             i++;

@@ -27,6 +27,9 @@
 
 #include "dyn.h"
 
+#include <ios>
+
+
 real print_binary_params(kepler* k, real m1, real kT,
 			 real dist_from_center,
 			 bool verbose,			// default = true
@@ -52,7 +55,7 @@ real print_binary_params(kepler* k, real m1, real kT,
 
 	if (!long_binary_output) {
 
-	    int p = cerr.precision(LOW_PRECISION);
+        std::streamsize p = cerr.precision(LOW_PRECISION);
 
 	    cerr << "a= " << k->get_semi_major_axis()
 		 << " e= " << k->get_eccentricity()
@@ -205,8 +208,8 @@ void print_binary_from_dyn_pair(dyn* bi, dyn* bj,
 
     real dist_from_center = abs(primary->get_pos() - center);
 
-    int init_indent = 11 - strlen(bi->format_label());
-    init_indent -= strlen(bj->format_label()) ;
+    int init_indent = 11 - static_cast<int>(strlen(bi->format_label()));
+    init_indent -= static_cast<int>(strlen(bj->format_label()));
 
     print_binary_params(&k, primary->get_mass(), kT,
 			dist_from_center, verbose, long_binary_output,
@@ -253,7 +256,7 @@ real print_structure_recursive(dyn* bi,
 	    else
 		cerr << "  U ";
 	    cerr << bi->format_label();
-	    init_indent -= 4 + strlen(bi->format_label()) + indent;
+	    init_indent -= 4 + static_cast<int>(strlen(bi->format_label())) + indent;
 	}
 
 	real dist_from_center = abs(primary->get_pos() - center);

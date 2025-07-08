@@ -59,8 +59,8 @@ real cpu_time()
 	cpu_init();
 
     times(&buffer);
-    return ((real) (buffer.tms_utime + buffer.tms_stime - initial_cpu))
-      			/ ticks_per_sec;
+    return (static_cast<real>(buffer.tms_utime + buffer.tms_stime) - initial_cpu)
+      			/ static_cast<real>(ticks_per_sec);
 #else
     return 0;
 #endif

@@ -36,7 +36,7 @@ int get_line(istream & s, char * line)
     while (s.get(c))
 	if (c == '\n') break;
 
-    return strlen(line);
+    return static_cast<int>(strlen(line));
 }
 
 int check_input_line(istream &s, const char* reference_string)

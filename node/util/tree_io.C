@@ -39,11 +39,11 @@ void  node::log_history(int argc, char ** argv)
 	// with the "col" output format, which is line oriented.
 	// Rather than rewrite gethist, split the line here...
 
-	int n = strlen(hist);
-	if (n > 0) {
+    std::size_t n = strlen(hist);
+	if (n > 0u) {
 	    char *tmp = new char[n+1];
-	    int j = 0;
-	    for (int i = 0; i < strlen(hist); i++) {
+	    std::size_t j = 0u;
+	    for (std::size_t i = 0u; i < strlen(hist); i++) {
 		if (hist[i] == '\n') {
 		    strncpy(tmp, hist+j, i-j);
 		    tmp[i-j] = '\0';
@@ -334,7 +334,7 @@ local node *get_node_recursive(istream& s,
 
 	    if (val) {
 		if (!strcmp("i",keyword)) {
-		    int index = strtol(val, NULL, 10);
+		    int index = atoi(val);
 		    b->set_label(index);
 		} else if (!strcmp("name",keyword)) {
 		    char cptr[MAX_INPUT_LINE_LENGTH];
