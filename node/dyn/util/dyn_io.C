@@ -294,6 +294,7 @@ dyn *get_dyn(istream & s,		// default = cin
     format = ungetc(getc(ifp), ifp) == '(' ? DYN : COL;
     return get_dyn(s, the_hbpfp, the_sbpfp, use_stories);
   }
+  return NULL;
 }
 
 // Called by get_dyn when input format is columns of numbers.
