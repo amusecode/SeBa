@@ -455,7 +455,7 @@ void put_col(dyn* root, ostream& s, bool put_time) {
 
   } else {
 
-    int oldp = s.precision(p);
+    std::streamsize oldp = s.precision(p);
 
     // Special treatment to preserve the root node member data
     // and Log and Dyn stories.

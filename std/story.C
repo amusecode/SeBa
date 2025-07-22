@@ -371,7 +371,7 @@ local void  write_iq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -392,7 +392,7 @@ local void  write_ulq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -413,7 +413,7 @@ local void  write_ullq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -434,7 +434,7 @@ local void  write_rq(story * a_story_line, const char * name, real value,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     char format[128];
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_REAL_LENGTH;
@@ -461,7 +461,7 @@ local void  write_sq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name)
 				     + strlen(value) + SAFE_STRING_LENGTH;
@@ -489,7 +489,7 @@ local void write_vq(story * a_story_line, const char * name, vec & value,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     char format[128];
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_VECTOR_LENGTH;
@@ -536,7 +536,7 @@ local void  write_ra(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_REAL_LENGTH + 2);
@@ -568,7 +568,7 @@ local void  write_ia(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);
@@ -599,7 +599,7 @@ local void  write_ia(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);
@@ -630,7 +630,7 @@ local void  write_ia(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);

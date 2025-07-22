@@ -641,7 +641,7 @@ void  adddouble(node * b, real dyn_time,
 		real e_min, real e_max)
 {
   if (REPORT_ADD_DOUBLE) {
-    int p = cerr.precision(HIGH_PRECISION);
+    std::streamsize p = cerr.precision(HIGH_PRECISION);
     cerr<<"adddouble: "<<b<<" "<<dyn_time;
     cerr.precision(p);
     cerr <<" "<<a_min<<" "<<a_max<<" "<<e_min<<" "<<e_max << endl;

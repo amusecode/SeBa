@@ -95,12 +95,12 @@ void construct_node_name(node* b)
 
 	temp[0] = '(';
 	temp[1] = '\0';
-	int length = 2;
+	std::size_t length = 2;
 
 	for (int i = 0; i < n; i++) {
 
-	    int sl = strlen(list[i]);
-	    if (length + sl > 1024)
+	    std::size_t sl = strlen(list[i]);
+	    if (length + sl > 1024u)
 		err_exit("construct_node: buffer overflow.");
 
 	    strcat(temp, list[i]);

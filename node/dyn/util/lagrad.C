@@ -304,7 +304,8 @@ void reset_lagr_cutoff_mass(dyn *b,
 
     // Lower limit:
 
-    int nf = (int)(f_low*m.size()) - 1, i = nf;
+    int nf = static_cast<int>((f_low * static_cast<real>(m.size())) - 1);
+    int i = nf;
     if (nf < 0)
 	cutoff_mass_low = 0;
     else {
@@ -317,7 +318,8 @@ void reset_lagr_cutoff_mass(dyn *b,
 
     // Upper limit (same procedure, for now):
 
-    nf = (int)(f_high*m.size()) - 1, i = nf;
+    nf = static_cast<int>((f_high * static_cast<real>(m.size())) - 1);
+    i = nf;
     if (nf < 0)
 	cutoff_mass_high = 0;
     else {

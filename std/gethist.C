@@ -55,7 +55,7 @@ local bool  contains_white(char * s)
  *                  eff_length("hi there") = 10
  *-----------------------------------------------------------------------------
  */
-local int  eff_length(char * s)
+local std::size_t  eff_length(char * s)
     {
     if (contains_white(s))
         return(strlen(s) + 2);
@@ -108,7 +108,7 @@ local int  eff_length(char * s)
 char *gethist(int argc, char ** argv)
     {
     int  i, j, k;
-    int  n;
+    std::size_t  n;
     long int  clock;              /* will contain time in seconds since 1970 */
     char *hist_string;            /* will point to newly allocated string    */
 /*
@@ -125,7 +125,8 @@ char *gethist(int argc, char ** argv)
     char *user_part = getenv("USER");
     int user_length = 0;
 
-    if (user_part) user_length = strlen(user_part) + strlen(USER_HEAD) + 1;
+    if (user_part) user_length = static_cast<int>(
+            strlen(user_part) + strlen(USER_HEAD) + 1);
     //									')'
 
     n += user_length;

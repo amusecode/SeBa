@@ -421,7 +421,7 @@ real cpu_time();
 
 void starlab_wait(int iwait);
 
-int set_starlab_precision(ostream&);
+std::streamsize set_starlab_precision(ostream&);
 int adjust_starlab_precision(int p);
 int  get_starlab_precision();
 

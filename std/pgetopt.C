@@ -84,6 +84,7 @@
 //.............................................................................
 
 #include "stdinc.h"
+#include <cstddef>
 
 #ifndef TOOLBOX
 
@@ -120,7 +121,7 @@ local inline char *get_version(const char *cvs_id)
     while (*end > ' ') end++;
 
     if (*end == ' ') {
-	int n = end-start+1;
+	std::ptrdiff_t n = end-start+1;
 	char *version = new char[n];
 	strncpy(version, start, n-1);
 	version[n-1] = 0;
@@ -152,7 +153,7 @@ local inline char *get_name(const char *source)
 
     if (end < start) return NULL;
 
-    int n = end-start+2;
+    std::ptrdiff_t n = end-start+2;
     char *name = new char[n];
     strncpy(name, start, n-1);
     name[n-1] = 0;

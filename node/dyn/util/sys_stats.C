@@ -523,7 +523,7 @@ local void print_energies(dyn* b,
     real external_pot = get_external_pot(b);
     e_total = total_int_energy + external_pot;
 
-    int ppp = cerr.precision(STD_PRECISION);
+    std::streamsize ppp = cerr.precision(STD_PRECISION);
 
     vec com_pos, com_vel;
     compute_com(b, com_pos, com_vel);
@@ -562,7 +562,7 @@ local void print_energies(dyn* b,
     kin_tot += kin_com;
     e_total += external_pot + kin_com;
 
-    int p = cerr.precision(INT_PRECISION);
+    std::streamsize p = cerr.precision(INT_PRECISION);
     cerr << endl
 	 << "    Energies: " << pot_tot << " " << kin_tot << " " << e_total
 	 << endl;
@@ -862,7 +862,7 @@ local void print_binaries(dyn* b, real kT,
 		cerr << bi->format_label();
 	    }
 
-	    int init_indent = BIN_INDENT - 4 - strlen(bi->format_label());
+	    int init_indent = BIN_INDENT - 4 - static_cast<int>(strlen(bi->format_label()));
 
 	    if (bi->n_leaves() > 2) {
 
@@ -1259,7 +1259,7 @@ void sys_stats(dyn* b,
 // other hdyn programs.
 
 {
-    int p = cerr.precision(STD_PRECISION);
+    std::streamsize p = cerr.precision(STD_PRECISION);
 
     if (print_time) {
 

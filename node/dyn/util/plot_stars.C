@@ -139,9 +139,9 @@ void plot_stars(dyn * bi,
 		|| i == 0 || i == HBINS-1
 		|| j == 0 || j == VBINS-1) {
 		if (m < 10)
-		    disp[i][j] = '0' + m;
+		    disp[i][j] = '0' + static_cast<char>(m);
 		else
-		    disp[i][j] = 'a' + m - 10;
+		    disp[i][j] = 'a' - 10 + static_cast<char>(m);
 	    } else
 		disp[i][j] = '*';
 
@@ -238,7 +238,7 @@ void plot_stars(dyn * bi,
 
 	    // Label placement is Steve's aesthetic judgement (6/00)...
 
-	    int len = strlen(nodes[i]->format_label());
+	    int len = static_cast<int>(strlen(nodes[i]->format_label()));
 	    if (len > 9) len = 9;
 	    int ind = 7-len;
 	    if (len > 3) ind = 6 - (1+len)/2;

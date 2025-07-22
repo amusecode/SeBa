@@ -233,7 +233,7 @@ void put_real_number(ostream & s, const char * label, real x)
     // is essentially that used with the obsolete BAD_GNU_IO macro,
     // but this has *nothing* to do with that ancient G++ bug.
 
-    int old_precision = set_starlab_precision(s);
+    std::streamsize old_precision = set_starlab_precision(s);
 
 #ifdef BAD_GNU_IO
 
@@ -318,7 +318,7 @@ void put_real_vector(ostream & s, const char * label, vec v)
 {
     // See various notes in put_real_number above...
 
-    int old_precision = set_starlab_precision(s);
+    std::streamsize old_precision = set_starlab_precision(s);
 
 #ifdef BAD_GNU_IO
 

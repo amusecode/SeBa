@@ -710,7 +710,7 @@ real single_star::mass_ratio_mdot_limit(real mdot) {
 	mdot = mdot_max;
     }
 
-    int p = cerr.precision(HIGH_PRECISION);
+    std::streamsize p = cerr.precision(HIGH_PRECISION);
     PRC(accretor_mass);PRL(get_total_mass());
     cerr.precision(p);
   
