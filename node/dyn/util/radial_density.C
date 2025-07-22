@@ -78,7 +78,7 @@ vector<real>& get_radial_densities(dyn *b, vec cpos, vector<real>& r,
     vector<real>& rho = *(new vector<real>(r.size()));
     real rj2 = r[0]*r[0];
 
-    for (int i = 0, j = 0; i < table->size(); i++) {
+    for (std::size_t i = 0u, j = 0u; i < table->size(); i++) {
 	real ri_sq = (*table)[i].r_sq;
 	while (ri_sq > rj2) {
 	    if (++j >= r.size()) break;
@@ -91,7 +91,7 @@ vector<real>& get_radial_densities(dyn *b, vec cpos, vector<real>& r,
     // Convert from mass to density.
 
     real v0 = 0;	// assume that the first zone extends in to r = 0
-    for (int j = 0; j < r.size(); j++) {
+    for (std::size_t j = 0u; j < r.size(); j++) {
 	real v1 = pow(r[j], 3);
 	rho[j] /= (4*M_PI/3) * (v1 - v0);	// dM --> dM/dV
 	v0 = v1;

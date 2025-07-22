@@ -291,7 +291,7 @@ void put_real_number(ostream & s, const char * label, real x)
 
     if (!outstring) {
 	nout = p+10;
-	outstring = new char[nout];
+	outstring = new char[static_cast<std::size_t>(nout)];
     }
 
     // Finally, create the string...
@@ -368,7 +368,7 @@ void put_real_vector(ostream & s, const char * label, vec v)
 
     if (!outstring) {
 	nout = 3*p+30;
-	outstring = new char[nout];
+	outstring = new char[static_cast<std::size_t>(nout)];
     }
 
     // Finally, create the string...

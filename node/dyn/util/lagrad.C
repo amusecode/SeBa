@@ -109,9 +109,9 @@ bool compute_general_mass_radii(dyn * b,
 
     char lagr_string[64] = "geometric center";
 
-    int n = 0;
+    std::size_t n = 0;
     if (bf == NULL)
-	n = b->n_daughters();
+	n = static_cast<std::size_t>(b->n_daughters());
     else {
 	for_all_daughters(dyn, b, bb)
 	    if ((*bf)(bb)) n++;
@@ -171,7 +171,7 @@ bool compute_general_mass_radii(dyn * b,
 
     int nmass = nzones - 1;
     if (nzones < 2) nmass = n_lagr;
-    real* mass_percent = new real[nmass];
+    real* mass_percent = new real[static_cast<std::size_t>(nmass)];
     if (mass_percent == NULL) {
 	if (verbose)
 	    cerr << endl << "    " << func
@@ -189,7 +189,7 @@ bool compute_general_mass_radii(dyn * b,
 	    mass_percent[k] = nonlin_masses[k] * total_mass;
     }
 
-    real *rlagr = new real[nmass];
+    real *rlagr = new real[static_cast<std::size_t>(nmass)];
     if (rlagr == NULL) {
 	if (verbose)
 	    cerr << endl << "    " << func
@@ -304,8 +304,8 @@ void reset_lagr_cutoff_mass(dyn *b,
 
     // Lower limit:
 
-    int nf = static_cast<int>((f_low * static_cast<real>(m.size())) - 1);
-    int i = nf;
+    std::size_t nf = static_cast<std::size_t>((f_low * static_cast<real>(m.size())) - 1);
+    std::size_t i = nf;
     if (nf < 0)
 	cutoff_mass_low = 0;
     else {
@@ -318,7 +318,7 @@ void reset_lagr_cutoff_mass(dyn *b,
 
     // Upper limit (same procedure, for now):
 
-    nf = static_cast<int>((f_high * static_cast<real>(m.size())) - 1);
+    nf = static_cast<std::size_t>((f_high * static_cast<real>(m.size())) - 1);
     i = nf;
     if (nf < 0)
 	cutoff_mass_high = 0;
@@ -443,8 +443,8 @@ real print_lagrangian_radii(dyn* b,
 		cerr << "    selected percentiles: ";
 	}
 
-        int n_lagr = getiq(b->get_dyn_story(), "n_lagr");  // should be nl - 1
-	real *r_lagr = new real[n_lagr];
+	int n_lagr = getiq(b->get_dyn_story(), "n_lagr");  // should be nl - 1
+	real *r_lagr = new real[static_cast<std::size_t>(n_lagr)];
 
 	getra(b->get_dyn_story(), "r_lagr", r_lagr, n_lagr);
 
@@ -491,7 +491,7 @@ real compute_lagrangian_radii(dyn* b,
 
     // Work with copies...
 
-    if (lagr_array == NULL) lagr_array = new real[narr];
+    if (lagr_array == NULL) lagr_array = new real[static_cast<std::size_t>(narr)];
     for (int k = 0; k < narr; k++) lagr_array[k] = arr[k];
     n_lagr = narr;
 

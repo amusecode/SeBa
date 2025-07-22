@@ -50,7 +50,7 @@ class  single_star : public star
 // AMUSE
         real time_offset;
 // AMUSE
-        real CHE_flag; // (AD Oct 4 2022)
+        bool CHE_flag; // (AD Oct 4 2022)
 
 	real  relative_mass;
 	real relative_helium_mass;
@@ -237,9 +237,9 @@ class  single_star : public star
                         const real x_guess, const real y_value, const real z = 0, 
                                    const real xmin = cnsts.parameters(minimum_main_sequence), 
                                    const real xmax = cnsts.parameters(maximum_main_sequence));
-      real update_core_and_envelope_mass(const real m_core);
-      real update_core_and_envelope_mass_TPAGB(const real m_core);
-      real update_COcore_mass(const real mco_core);
+      bool update_core_and_envelope_mass(const real m_core);
+      bool update_core_and_envelope_mass_TPAGB(const real m_core);
+      bool update_COcore_mass(const real mco_core);
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++

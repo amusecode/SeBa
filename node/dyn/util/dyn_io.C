@@ -148,7 +148,7 @@ bool dyn::check_and_correct_node(bool verbose)	// default = false
 istream & dyn::scan_dyn_story(istream& s)
 {
     char input_line[MAX_INPUT_LINE_LENGTH];
-    real last_real = false;
+    bool last_real = false;
 
     while (get_line(s,input_line), !matchbracket(END_DYNAMICS, input_line)) {
 

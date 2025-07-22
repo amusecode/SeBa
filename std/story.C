@@ -531,7 +531,7 @@ local void write_vq(story * a_story_line, const char * name, vec & value,
  *-----------------------------------------------------------------------------
  */
 local void  write_ra(story * a_story_line, const char * name,
-		     real * value, int n)
+		     real * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
@@ -563,7 +563,7 @@ local void  write_ra(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     int * value, int n)
+		     int * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
@@ -594,7 +594,7 @@ local void  write_ia(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     unsigned long * value, int n)
+		     unsigned long * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
@@ -625,7 +625,7 @@ local void  write_ia(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     unsigned long long * value, int n)
+		     unsigned long long * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
@@ -975,7 +975,7 @@ local void get_array(char * sin, unsigned long * x, int n)  // overloaded!
 	    char save = *s2;
 
 	    *s2 = '\0';
-	    x[i++] = atoi(s1);				// <-- only change!
+	    x[i++] = static_cast<unsigned long>(atoi(s1));				// <-- only change!
 	    *s2 = save;
 
 	    if (i >= n) break;
@@ -1203,7 +1203,7 @@ void putrq(story * a_story, const char * name, real value,
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putra(story * a_story, const char * name, real * value, int n)
+void putra(story * a_story, const char * name, real * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1224,7 +1224,7 @@ void putra(story * a_story, const char * name, real * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, int * value, int n)
+void putia(story * a_story, const char * name, int * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1245,7 +1245,7 @@ void putia(story * a_story, const char * name, int * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, unsigned long * value, int n)
+void putia(story * a_story, const char * name, unsigned long * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1266,7 +1266,7 @@ void putia(story * a_story, const char * name, unsigned long * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, unsigned long long * value, int n)
+void putia(story * a_story, const char * name, unsigned long long * value, std::size_t n)
 {
     if (!a_story || !name) return;
 

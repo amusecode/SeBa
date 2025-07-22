@@ -116,8 +116,8 @@ void  compute_density(dyn * b,	      // pointer to N-body system or node
 	return;
     }
 
-    neighbor_dist_sq = new real[k+1];
-    neighbor_mass = new real[k+1];
+    neighbor_dist_sq = new real[static_cast<std::size_t>(k+1)];
+    neighbor_mass = new real[static_cast<std::size_t>(k+1)];
 
     // Set first body d for which density is to be computed.
 

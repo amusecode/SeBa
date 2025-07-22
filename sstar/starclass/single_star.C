@@ -3120,7 +3120,7 @@ real single_star::white_dwarf_radius(real mass, real time) {
 // Miscellaneous
 //
     
-real single_star::update_core_and_envelope_mass(const real m_core) {
+bool single_star::update_core_and_envelope_mass(const real m_core) {
   
   bool successful_update = false;
   real dm_core = m_core-core_mass;
@@ -3146,7 +3146,7 @@ real single_star::update_core_and_envelope_mass(const real m_core) {
   return successful_update;
 }
 
-real single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
+bool single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
     //difference with update_core_and_envelope_mass is in the fact that on the TPAGB
     // the core mass can decrease during the second dredge_up 
     bool successful_update = false;
@@ -3166,7 +3166,7 @@ real single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
     return successful_update;
 }
 
-real single_star::update_COcore_mass(const real mco_core) {
+bool single_star::update_COcore_mass(const real mco_core) {
     
     bool successful_update = false;    
     if(mco_core>=COcore_mass- cnsts.safety(tiny) &&

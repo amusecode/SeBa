@@ -72,7 +72,7 @@ void construct_node_name(node* b)
 	for_all_daughters(node, b, b1)
 	    construct_node_name(b1);
 
-	char** list = new char*[b->n_daughters()];
+	char** list = new char*[static_cast<std::size_t>(b->n_daughters())];
 
 	int n = 0;
 	for_all_daughters(node, b, b2) {

@@ -117,16 +117,15 @@ char *gethist(int argc, char ** argv)
     n = DATE_TOT_LENGTH;
     for (i = 0; i < argc; i++)    /* total length, apart from the white      */
         n += eff_length(argv[i]); /* spaces separating the commands          */
-    n += argc;                    /* one for each white space delimiter,     */
+    n += static_cast<unsigned int>(argc);   /* one for each white space delimiter, */
 				  /* and a final NULL to end the hist_string */
 
     // Added by Steve (7/01):
 
     char *user_part = getenv("USER");
-    int user_length = 0;
+    std::size_t user_length = 0u;
 
-    if (user_part) user_length = static_cast<int>(
-            strlen(user_part) + strlen(USER_HEAD) + 1);
+    if (user_part) user_length = strlen(user_part) + strlen(USER_HEAD) + 1;
     //									')'
 
     n += user_length;
@@ -168,7 +167,7 @@ char *gethist(int argc, char ** argv)
 /*
  * write the command line:
  */
-    j = DATE_TOT_LENGTH + user_length;
+    j = static_cast<int>(DATE_TOT_LENGTH + user_length);
     for (i = 0; i < argc; i++)
 	{
 	k = 0;

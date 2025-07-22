@@ -799,7 +799,7 @@ real *vector(long nl, long nh)
 {
         real *v;
 
-        v=(real *)malloc((size_t) ((nh-nl+1+NR_END)*sizeof(real)));
+        v=(real *)malloc((static_cast<std::size_t>(nh-nl+1+NR_END)*sizeof(real)));
         if (!v) cerr<<"allocation failure in vector()";
         return v-nl+NR_END;
 }

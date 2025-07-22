@@ -229,9 +229,9 @@ typedef double  real;
 					  // we also want the quantity
 					  // -VERY_LARGE_INTEGER to be legal
 
-#define SETBIT(i, n) ((i) |= (1 << (n)))  // set bit n of i
-#define GETBIT(i, n) ((i) & (1 << (n)))   // get bit n of i
-#define CLRBIT(i, n) ((i) &= ~(1 << (n))) // clear bit n of i
+#define SETBIT(i, n) ((i) |= (1u << (n)))  // set bit n of i
+#define GETBIT(i, n) ((i) & (1u << (n)))   // get bit n of i
+#define CLRBIT(i, n) ((i) &= ~(1u << (n))) // clear bit n of i
 void printbits(unsigned int i);		  // print significant nonzero bits
 
 //=============================================================================

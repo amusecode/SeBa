@@ -27,7 +27,7 @@ local real find_neighbors(dyn *bi, dyn **list, int n)	// note: this n is n+1!
 {
     dyn *root = bi->get_root();
 
-    real *dr2 = new real[n];
+    real *dr2 = new real[static_cast<std::size_t>(n)];
     for (int i = 0; i < n; i++) {
 	list[i] = NULL;
 	dr2[i] = VERY_LARGE_NUMBER;
@@ -75,7 +75,7 @@ void plot_stars(dyn * bi,
     // Make a list of the n (actual, not projected) nearest neighbors of bi.
     // Convenient to keep bi at location 0.
 
-    dyn **list = new dynptr[n+1];
+    dyn **list = new dynptr[static_cast<std::size_t>(n+1)];
     real scale = find_neighbors(bi, list, n+1);
     if (scale <= 0) return;
 
@@ -224,7 +224,7 @@ void plot_stars(dyn * bi,
 
 	  PRL(nnodes);
 
-	  dyn ** nodes = new dynptr[nnodes];
+	  dyn ** nodes = new dynptr[static_cast<std::size_t>(nnodes)];
 
 	  int i = 0;
 	  for (m = 0; m <= n; m++) {
