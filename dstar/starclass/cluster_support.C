@@ -7,6 +7,8 @@
  *  make_profile --  make profile for whole n-binary cluster
  *-----------------------------------------------------------------------------
  */
+/* Disabled because make_profile in double_support.C is broken
+
 void  make_profile(initial_cluster& c_init,
                    cluster_profile& c_prof, profile prof,
                    star_type_spec s_prof = Emission) {
@@ -28,7 +30,8 @@ void  make_profile(initial_cluster& c_init,
           c_prof.enhance_cluster_profile(binary, prof, s_prof);
       }
 
-}    
+}
+*/
 
 /*-----------------------------------------------------------------------------
  *  cluster_profile -- Support routines for cluster simulation.

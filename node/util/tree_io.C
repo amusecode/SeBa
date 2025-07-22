@@ -53,9 +53,9 @@ void  node::log_history(int argc, char ** argv)
 	    }
 	    if (j < n)
 		add_story_line(log_story, hist+j);
-	    delete tmp;
+	    delete[] tmp;
 	}
-	delete hist;
+	delete[] hist;
     }
 }
 

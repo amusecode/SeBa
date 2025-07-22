@@ -306,7 +306,7 @@ local char * alt_construct_merger_label(node * ni, node * nj)
     // Decode the names and combine them to make the new name.
     // Not very efficiently written, but... (Steve, 12/98)
 
-    static char new_name[1024];
+    static char new_name[1040];
     int count_i = string_count(string_index_of_node(ni));
     int count_j = string_count(string_index_of_node(nj));
 

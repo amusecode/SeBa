@@ -187,11 +187,6 @@ story* get_chapter(istream& str, const char* line)
 	    add_story_line(chap, new_line);
     }
 
-    if (new_line == NULL) {
-	cerr << "get_chapter: new_line == NULL before end of chapter\n";
-	exit(1);
-    }
-
     if (!streq(new_line+1, chap->get_text())) {
 	cerr << "get_chapter: closing title ``" << new_line+1
 	     << "'' differs from opening title ``" << chap->get_text()
@@ -610,7 +605,7 @@ local void  write_ia(story * a_story_line, const char * name,
 
     for (int i = 0; i < n; i++) {
 
-	sprintf(tmp, " %d", value[i]);
+	sprintf(tmp, " %lu", value[i]);
 
 	strcat(new_string, tmp);
     }
@@ -641,7 +636,7 @@ local void  write_ia(story * a_story_line, const char * name,
 
     for (int i = 0; i < n; i++) {
 
-	sprintf(tmp, " %d", value[i]);
+	sprintf(tmp, " %llu", value[i]);
 
 	strcat(new_string, tmp);
     }
@@ -1335,7 +1330,7 @@ int  rmq(story *  a_story, const char * name)
 
     story * story_line;
 
-    if (story_line = find_qmatch(a_story, name)) {
+    if ((story_line = find_qmatch(a_story, name))) {
 	rm_daughter_story(a_story, story_line);
 	return 1;
     } else
