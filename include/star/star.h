@@ -252,7 +252,7 @@ class  star : public starbase
 
 //              output
         virtual void dump(ostream &, bool brief = true){}
-        virtual void dump(char*, bool brief = true){}
+        virtual void dump(const char*, bool brief = true){}
         virtual void print_status(){}
         virtual void print_roche(){}
         virtual void put_state(){}

@@ -210,7 +210,7 @@ class  single_star : public star
         void read_element();
         void put_element();
         void dump(ostream&, bool brief = true);
-        void dump(char*, bool brief = true);
+        void dump(const char*, bool brief = true);
         void print_status();
         void print_roche();
         void put_state();

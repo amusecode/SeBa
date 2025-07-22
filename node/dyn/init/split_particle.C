@@ -202,7 +202,7 @@ int main(int argc, char ** argv)
 	// Thus, if the total system energy is known, 'energy' is specified
 	// in "kT" units.  If not, 'energy' is the binary kinetic energy.
 
-	char* energy_string = "initial_total_energy";
+	const char* energy_string = "initial_total_energy";
 
 	if (find_qmatch(b->get_log_story(), energy_string))
 	    scale_energy(energy, b->n_daughters(), b->get_mass(),

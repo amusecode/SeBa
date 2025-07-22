@@ -130,7 +130,7 @@ class star_cluster
        void put_state();
        void put_hrd(ostream &);
        void dump(ostream &); //char*);
-       void dump(char*); //char*);
+       void dump(const char*); //char*);
        void test_maxwellian_velocities();
 
 //		Profiler

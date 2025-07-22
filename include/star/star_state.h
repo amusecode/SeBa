@@ -120,7 +120,7 @@ struct star_state {
 
 void put_state(star_state, ostream & s=cerr);
 void put_short_state(star_state, ostream & s=cerr);
-char* type_dominant_state(star_state);
+const char* type_dominant_state(star_state);
 void print_star(starbase*, ostream & s=cerr);
 void pretty_print_star(starbase*, int depth_level, ostream & s=cerr);
 void pretty_print_star(starbase*, ostream & s=cerr);

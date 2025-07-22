@@ -63,18 +63,18 @@ enum supernova_type {NAT=0, SN_Ia, SN_Ib, SN_Ic,
 		     SN_II, SN_IIL, SN_IIP, SN_IV,
 		     no_of_supernova_type};
 
-char * type_string(stellar_type);
-char * type_string(stellar_type_summary);
-char * type_string(spectral_class);
-char * type_string(luminosity_class);
-char * type_string(star_type_spec);
-char * type_string(mass_transfer_type);
-char * type_string(supernova_type sn_type);
-char * type_short_string(star_type_spec);
-char * type_short_string(stellar_type);
-char * type_short_string(stellar_type_summary);
-char * type_short_string(mass_transfer_type);
-char * type_short_string(spectral_class);
+const char * type_string(stellar_type);
+const char * type_string(stellar_type_summary);
+const char * type_string(spectral_class);
+const char * type_string(luminosity_class);
+const char * type_string(star_type_spec);
+const char * type_string(mass_transfer_type);
+const char * type_string(supernova_type sn_type);
+const char * type_short_string(star_type_spec);
+const char * type_short_string(stellar_type);
+const char * type_short_string(stellar_type_summary);
+const char * type_short_string(mass_transfer_type);
+const char * type_short_string(spectral_class);
 
 stellar_type extract_stellar_type_string(char*);
 star_type_spec extract_stellar_spec_summary_string(char*);

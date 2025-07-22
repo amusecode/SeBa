@@ -546,7 +546,7 @@ void single_star::dump(ostream & s, bool brief) {
     }
 }
 
-void single_star::dump(char * filename, bool brief) {
+void single_star::dump(const char * filename, bool brief) {
 
   ofstream s(filename, ios::app|ios::out);
   if (!s) cerr << "error: couldn't create file "<<filename<<endl;
