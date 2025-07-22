@@ -27,6 +27,8 @@
 ////
 //// Report bugs to steve@physics.drexel.edu.
 
+#ifdef TOOLBOX
+
 #include "dyn.h"
 #include <vector>
 #include <algorithm>
@@ -84,3 +86,6 @@ int main(int argc, char *argv[])
 	rmtree(b);
     }
 }
+
+#endif
+
