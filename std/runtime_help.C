@@ -99,7 +99,9 @@ void get_runtime_help(const char* source_file,
     // or "//++ " (level 2).
 
 //    PRL(cmd);
-    system(cmd);
+    if (system(cmd) != 0) {
+	cout << "ERROR: grep or sed not available";
+    }
     cout<< endl;
 
     // Now check for level-2 help.
@@ -109,7 +111,9 @@ void get_runtime_help(const char* source_file,
 	strcat(cmd, src);
 	strcat(cmd, " | sed s%//++%\"    + \"%");
 
-	system(cmd);
+    if (system(cmd) != 0) {
+	cout << "ERROR: grep or sed not available";
+    }
 	cerr << endl;
     }
 
