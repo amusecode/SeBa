@@ -47,5 +47,32 @@ Example:
 #include "util_math.h
 #include <gtest/gtest.h>
 
-TEST(Math, Add) { EXPECT_EQ(add(2, 2), 4); }
+TEST(Basic, Add) { EXPECT_EQ(add(2, 2), 4); }
+```
+
+## Running Tests
+
+Run all tests:
+
+``` sh
+make test
+```
+
+Run a specific test suite or test case:
+
+``` sh
+make test_[pattern]
+```
+
+E.g., run all tests marked `UtilMath`, run:
+
+``` sh
+make test_UtilMath
+
+```
+
+Run a specific test case within a suite:
+
+``` sh
+make test_UtilMath.Twiddles
 ```

@@ -64,6 +64,11 @@ test: $(TESTBIN)
 	@echo "Running unit tests..."
 	@./$(TESTBIN)
 
+# Run specific tests matching a pattern
+test_%: $(TESTBIN)
+	@echo "Running tests matching '$*'..."
+	@./$(TESTBIN) --gtest_filter=*${*}*
+
 # Optional cleanup
 clean-tests:
 	/bin/rm -rf $(BUILDDIR)
