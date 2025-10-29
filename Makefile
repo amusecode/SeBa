@@ -24,7 +24,7 @@ clean:	Makefile.inc
 	/bin/rm -f *~ $(EXE) Makefile.inc
 
 # --- Test support ---
-CXXFLAGS  += -std=c++23
+TEST_CXXFLAGS = $(CXXFLAGS) -std=c++23
 TESTDIR   = tests
 BUILDDIR  = build
 TESTBIN   = $(BUILDDIR)/run_tests
@@ -35,28 +35,35 @@ GTEST_DIR = third_party/googletest/googletest
 GTEST_SRC = $(GTEST_DIR)/src/gtest-all.cc
 GTEST_OBJ = $(BUILDDIR)/gtest-all.o
 GTEST_INC = -I$(GTEST_DIR)/include -I$(GTEST_DIR)
+GTEST_MAIN_SRC = $(GTEST_DIR)/src/gtest_main.cc
+GTEST_MAIN_OBJ = $(BUILDDIR)/gtest_main.o
 
-# Ensure build directory exists
+# Create build directory
 $(BUILDDIR):
 	mkdir -p $(BUILDDIR)
 
-# Compile gtest from source
+# Compile Google Test source
 $(GTEST_OBJ): $(GTEST_SRC) | $(BUILDDIR)
-	$(CXX) $(CXXFLAGS) $(GTEST_INC) -c $< -o $@
+	$(CXX) $(TEST_CXXFLAGS) $(GTEST_INC) -c $< -o $@
 
 # Compile test sources
 $(BUILDDIR)/%.o: $(TESTDIR)/%.cpp | $(BUILDDIR)
-	$(CXX) $(CXXFLAGS) $(GTEST_INC) -I./include -c $< -o $@
+	$(CXX) $(TEST_CXXFLAGS) $(GTEST_INC) -I./include -c $< -o $@
+
+# Compile Google Test main
+$(GTEST_MAIN_OBJ): $(GTEST_MAIN_SRC) | $(BUILDDIR)
+	$(CXX) $(TEST_CXXFLAGS) $(GTEST_INC) -c $< -o $@
 
 # Link final test binary
-$(TESTBIN): $(TESTOBJ) $(GTEST_OBJ)
-	$(CXX) $(CXXFLAGS) $(GTEST_INC) -I./include $^ $(LDLIBS) -lpthread -o $@
+$(TESTBIN): $(TESTOBJ) $(GTEST_OBJ) $(GTEST_MAIN_OBJ)
+	$(CXX) $(TEST_CXXFLAGS) $(GTEST_INC) -I./include $^ \
+	    $(LDLIBS) -lpthread -o $@
 
 # Run tests
 test: $(TESTBIN)
 	@echo "Running unit tests..."
 	@./$(TESTBIN)
 
-# Clean test artifacts
+# Optional cleanup
 clean-tests:
 	/bin/rm -rf $(BUILDDIR)
