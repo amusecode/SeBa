@@ -427,8 +427,11 @@ real super_giant::zeta_thermal() {
   real z = 0.; // (GN+SPZ Apr 29 1999) was -10 in 1998; 
                // was -0.64 somewhere in the past (~1992 or so).
 
-      return z;
-   }
+  // (GN Jan 2025) test method to ensure thermal time scale mass transfer until radius back to equilibrium radius
+  if (effective_radius < 0.98*radius) z = -10;
+
+  return z;
+}
 
 real super_giant::gyration_radius_sq() {
 

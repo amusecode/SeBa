@@ -375,6 +375,9 @@ real hertzsprung_gap::zeta_thermal() {
       else              // Changed to current values
          z = -2;	// by (SPZ+GN: 1 Oct 1998)
 
+      // (GN Jan 2025) test method to ensure thermal time scale mass transfer until radius back to equilibrium radius
+      if (effective_radius < 0.98*radius) z = -10;  
+
       return z;
    }
  

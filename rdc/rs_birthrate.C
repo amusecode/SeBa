@@ -311,7 +311,7 @@ local int extract_population(SeBa_hist *hi, real snap_time,
 //  main  --  driver to reduce SeBa short dump data
 //----------------------------------------------------------------------------
 
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
     real normalize = -1;
     real snap_time = 0;

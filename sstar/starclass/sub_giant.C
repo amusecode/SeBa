@@ -715,6 +715,9 @@ real sub_giant::zeta_thermal() {
   else 
     z = 0; // (GN+SPZ Apr 28 1999) radius determined by core only (was -1) 
 
+  // (GN Jan 2025) test method to ensure thermal time scale mass transfer until radius back to equilibrium radius
+  if (effective_radius < 0.98*radius) z = -10;
+
   return z;
 }
 

@@ -98,7 +98,7 @@ local int count_supernova_types(SeBa_hist *hi, bool normalize) {
 //  main  --  driver to reduce SeBa short dump data
 //----------------------------------------------------------------------------
 
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
   bool normalize = false;
     real snap_time = 0;

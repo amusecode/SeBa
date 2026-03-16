@@ -149,7 +149,7 @@ local int reorder_binaries(SeBa_hist *hi, const real end_time) {
 //  main  --  driver to reduce SeBa short dump data
 //----------------------------------------------------------------------------
 
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
     real end_time = VERY_LARGE_NUMBER;
 

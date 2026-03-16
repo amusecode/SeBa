@@ -258,7 +258,7 @@ int main(int argc, char ** argv) {
 
     int input_seed=0; 
     char seedlog[64];
-    char paramlog[110];
+    char paramlog[120];
 
     //check_help();
 

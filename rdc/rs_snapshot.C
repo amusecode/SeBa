@@ -295,7 +295,7 @@ cerr<<"assuming solar metallicity in extract_snapshot in rs_snapshot.C"<<endl;
 //  main  --  driver to reduce SeBa short dump data
 //----------------------------------------------------------------------------
 
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
   bool normalize = false;
     real snap_time = 0;
