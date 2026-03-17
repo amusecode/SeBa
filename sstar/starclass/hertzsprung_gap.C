@@ -206,10 +206,10 @@ real hertzsprung_gap::add_mass_to_accretor(real mdot, bool hydrogen, const real 
         real t_bgb = base_giant_branch_time(relative_mass, metalicity);
         relative_age = t_ms + tau * (t_bgb - t_ms);
         last_update_age = t_ms;
-
+        
         if (tau < 0.){
             real (single_star::*fptr)(const real, real) = &single_star::initial_hertzsprung_gap_core_mass;                   
-            real m_rel = linear_function_inversion(fptr, relative_mass, core_mass, metalicity);     
+            real m_rel = linear_function_inversion(fptr, relative_mass, core_mass, metalicity, cnsts.parameters(minimum_main_sequence), 300);     
             update_relative_mass(m_rel);
             last_update_age = main_sequence_time(relative_mass, metalicity);
             relative_age = last_update_age;     
@@ -217,7 +217,7 @@ real hertzsprung_gap::add_mass_to_accretor(real mdot, bool hydrogen, const real 
         }
         if (tau > 1.){
             real (single_star::*fptr)(const real, real) = &single_star::terminal_hertzsprung_gap_core_mass;        
-            real m_rel = linear_function_inversion(fptr, relative_mass, core_mass, metalicity);     
+            real m_rel = linear_function_inversion(fptr, relative_mass, core_mass, metalicity, cnsts.parameters(minimum_main_sequence), 300);     
             update_relative_mass(m_rel);
             last_update_age = main_sequence_time(relative_mass, metalicity);
             relative_age = next_update_age;            

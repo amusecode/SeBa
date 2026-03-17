@@ -375,7 +375,8 @@ void double_star::dump(ostream & s, bool brief) {
 
       if(bin_type!=Merged) {
 
-      int n_elements = no_of_elements();
+      //int n_elements = no_of_elements(); // Gijs March26: 2 stars are printed in this dump so better to make that clear at the start of the dump
+      int n_elements = 2
 
       s << n_elements
         << "\n " << identity

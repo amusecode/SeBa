@@ -877,7 +877,6 @@ star* single_star::merge_elements(star* str) {
 
   real m_conserved = get_total_mass() + str->get_total_mass();
 
-
   if (str->get_element_type()!=Main_Sequence) {
     // adding two cores of giants together should not result in
     // rejuvenation.

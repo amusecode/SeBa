@@ -118,68 +118,69 @@ real super_giant::add_mass_to_accretor(real mdot, bool hydrogen, const real dt) 
 
       if (relative_age < t_du_old){
             
-	//EAGB
-	//part to adjust age using the co_core_mass
-	real A_He = AGB_A_He_estimator();
-	real l_bagb = base_AGB_luminosity(relative_mass, metalicity);    
-	real t_bagb = base_AGB_time(relative_mass, metalicity);
-	relative_age = determine_age(COcore_mass, relative_mass, metalicity, A_He, t_bagb, l_bagb);
-	last_update_age = t_bagb;
-	real t_du = dredge_up_time(relative_mass, metalicity);    
+	    //EAGB
+	    //part to adjust age using the co_core_mass
+	    real A_He = AGB_A_He_estimator();
+	    real l_bagb = base_AGB_luminosity(relative_mass, metalicity);    
+	    real t_bagb = base_AGB_time(relative_mass, metalicity);
+	    relative_age = determine_age(COcore_mass, relative_mass, metalicity, A_He, t_bagb, l_bagb);
+	    last_update_age = t_bagb;
+	    real t_du = dredge_up_time(relative_mass, metalicity);    
 	
-	if(relative_age < last_update_age){
-	  relative_age = last_update_age;
-	  real mco = determine_core_mass(relative_age, relative_mass, metalicity, 
+	    if(relative_age < last_update_age){
+	        relative_age = last_update_age;
+	        real mco = determine_core_mass(relative_age, relative_mass, metalicity, 
 					 A_He, t_bagb, l_bagb);
-	  if(mco >= COcore_mass && mco <= core_mass) {
-	    McL_core_mass = mco;
-	    if(!update_COcore_mass(mco)) {
-	      cerr << "Update COcore mass failed in super_giant()"<<endl;
-	    }   
-	  }
-	}
-	if(relative_age > t_du){
-	  //this should not be possible
-	  cerr<<"EAGB helium accretion add_mass_to_accretor mc_co > mc_du ?"<<endl;
-	  exit(-1);
-	}
+	        if(mco >= COcore_mass && mco <= core_mass) {
+	            McL_core_mass = mco;
+	            if(!update_COcore_mass(mco)) {
+	                cerr << "Update COcore mass failed in super_giant()"<<endl;
+	            }   
+	        } 
+	    }
+	    if(relative_age > t_du){
+	        //this should not be possible
+	        cerr<<"EAGB helium accretion add_mass_to_accretor mc_co > mc_du ?"<<endl;
+	        //exit(-1);
+            //very dirty fix for mergers
+            relative_age = t_du;
+	    }
       }
       else{
 
-	//TPAGB
-	//part to adjust age using the co_core_mass
-	real mc_du = dredge_up_core_mass(relative_mass, metalicity);
-	real lambda =  min(0.9, 0.3+0.001*pow(relative_mass, 5)); // Eq.73
-	McL_core_mass = (core_mass - mc_du) / (1 - lambda) + mc_du;
+	    //TPAGB
+	    //part to adjust age using the co_core_mass
+	    real mc_du = dredge_up_core_mass(relative_mass, metalicity);
+	    real lambda =  min(0.9, 0.3+0.001*pow(relative_mass, 5)); // Eq.73
+	    McL_core_mass = (core_mass - mc_du) / (1 - lambda) + mc_du;
         
-	real L_du = dredge_up_luminosity(relative_mass, metalicity);
-	real L_x = FGB_x_luminosity(relative_mass, metalicity);
-	real AH_He = TPAGB_AH_He_estimator();
-	real t_bagb = base_AGB_time(relative_mass, metalicity);
-	real t_du = dredge_up_time(relative_mass, metalicity);    
+	    real L_du = dredge_up_luminosity(relative_mass, metalicity);
+	    real L_x = FGB_x_luminosity(relative_mass, metalicity);
+	    real AH_He = TPAGB_AH_He_estimator();
+	    real t_bagb = base_AGB_time(relative_mass, metalicity);
+	    real t_du = dredge_up_time(relative_mass, metalicity);    
         
-	if (L_du <= L_x){
-	  relative_age = determine_age(McL_core_mass, relative_mass, metalicity, AH_He, t_du, L_du);
-	  last_update_age = t_bagb; 
-	}
-	else{
+	    if (L_du <= L_x){
+	        relative_age = determine_age(McL_core_mass, relative_mass, metalicity, AH_He, t_du, L_du);
+	        last_update_age = t_bagb; 
+	    }
+	    else{
 	  
-	  real q = sub_giant_q_parameter(relative_mass, metalicity);
-	  real B = sub_giant_B_factor(relative_mass);
-	  real t_inf2 = specific_time_limit(AH_He, t_du,
+	        real q = sub_giant_q_parameter(relative_mass, metalicity);
+	        real B = sub_giant_B_factor(relative_mass);
+	        real t_inf2 = specific_time_limit(AH_He, t_du,
 					    B, L_du, q);
-	  relative_age = t_inf2 - pow(McL_core_mass, 1.-q)/AH_He/B/(q-1.);
-	  last_update_age = t_bagb;
-	  
-	}
+	        relative_age = t_inf2 - pow(McL_core_mass, 1.-q)/AH_He/B/(q-1.);
+	        last_update_age = t_bagb;
+	    }
                                 
-	if(relative_age < t_du){
-	  //this should not be possible
-	  cerr<<"TPAGB helium accretion add_mass_to_accretor mc_co < mc_du ?"<<endl;
-	  //exit(-1);
-	  //very dirty fix for mergers
-	  relative_age = t_du;
-	}
+	    if(relative_age < t_du){
+	        //this should not be possible
+	        cerr<<"TPAGB helium accretion add_mass_to_accretor mc_co < mc_du ?"<<endl;
+	        //exit(-1);
+	        //very dirty fix for mergers
+	        relative_age = t_du;
+	    }
 //                // for now nothing, the next time evolve_element is entered, star makes the transition to the next phase  
 //            if(relative_age > next_update_age){
 //            }
