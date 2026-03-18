@@ -369,6 +369,10 @@ real horizontal_branch::zeta_adiabatic() {
 real horizontal_branch::zeta_thermal() {
 
 //      return 15;
+   // (GN Jan 2025) test method to ensure thermal time scale mass transfer until radius back to equilibrium radius
+    if (effective_radius < 0.98*radius) {
+        return -10;
+    }
 
     // (SilT 25 October 2010) new tracks require new zeta
     // definition of horizontal branch changed
