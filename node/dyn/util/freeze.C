@@ -33,7 +33,7 @@ local void freeze(dyn * b, real fac)
 	bi->scale_vel(fac);
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     char  *comment;

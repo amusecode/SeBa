@@ -27,7 +27,7 @@ local real find_neighbors(dyn *bi, dyn **list, int n)	// note: this n is n+1!
 {
     dyn *root = bi->get_root();
 
-    real *dr2 = new real[n];
+    real *dr2 = new real[static_cast<std::size_t>(n)];
     for (int i = 0; i < n; i++) {
 	list[i] = NULL;
 	dr2[i] = VERY_LARGE_NUMBER;
@@ -75,7 +75,7 @@ void plot_stars(dyn * bi,
     // Make a list of the n (actual, not projected) nearest neighbors of bi.
     // Convenient to keep bi at location 0.
 
-    dyn **list = new dynptr[n+1];
+    dyn **list = new dynptr[static_cast<std::size_t>(n+1)];
     real scale = find_neighbors(bi, list, n+1);
     if (scale <= 0) return;
 
@@ -139,9 +139,9 @@ void plot_stars(dyn * bi,
 		|| i == 0 || i == HBINS-1
 		|| j == 0 || j == VBINS-1) {
 		if (m < 10)
-		    disp[i][j] = '0' + m;
+		    disp[i][j] = '0' + static_cast<char>(m);
 		else
-		    disp[i][j] = 'a' + m - 10;
+		    disp[i][j] = 'a' - 10 + static_cast<char>(m);
 	    } else
 		disp[i][j] = '*';
 
@@ -224,7 +224,7 @@ void plot_stars(dyn * bi,
 
 	  PRL(nnodes);
 
-	  dyn ** nodes = new dynptr[nnodes];
+	  dyn ** nodes = new dynptr[static_cast<std::size_t>(nnodes)];
 
 	  int i = 0;
 	  for (m = 0; m <= n; m++) {
@@ -238,7 +238,7 @@ void plot_stars(dyn * bi,
 
 	    // Label placement is Steve's aesthetic judgement (6/00)...
 
-	    int len = strlen(nodes[i]->format_label());
+	    int len = static_cast<int>(strlen(nodes[i]->format_label()));
 	    if (len > 9) len = 9;
 	    int ind = 7-len;
 	    if (len > 3) ind = 6 - (1+len)/2;
@@ -268,7 +268,7 @@ void plot_stars(dyn * bi,
 
 #else
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  k = 3;
     int n = 5;

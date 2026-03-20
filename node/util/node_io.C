@@ -107,7 +107,7 @@ ostream& node::print_dyn_story(ostream& s,
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.13 $", _SRC_);

@@ -119,7 +119,7 @@ double_state make_state(dyn* b) {
 #else
 
 
-main() {
+int main() {
   cerr <<"Hello"<<endl;
 }
 

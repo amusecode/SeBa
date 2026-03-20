@@ -181,7 +181,7 @@ star* brown_dwarf::merge_elements(star* str) {
      real merger_core = str->get_core_mass();
 
      add_mass_to_accretor(str->get_envelope_mass(), 
-			  cnsts.parameters(spiral_in_time), str->hydrogen_envelope_star());
+			  cnsts.parameters(spiral_in_time) != 0.0, str->hydrogen_envelope_star());
 
      if (relative_mass < get_total_mass() + merger_core)
        relative_mass=get_total_mass() + merger_core;

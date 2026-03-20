@@ -28,6 +28,7 @@
 //.............................................................................
 
 #include "dyn.h"
+#include <cstddef>
 
 #ifdef TOOLBOX
 
@@ -1540,7 +1541,7 @@ local void  print_binary_parameters(char node_report[BUFF_LENGTH],
 				    real struct_table[NNODE_MAX][N_STRUCT],
 				    int member)
     {
-    int  offset_in_node_report;
+    std::ptrdiff_t  offset_in_node_report;
     real  semimajor_axis;
 
     offset_in_node_report = end_of_string(node_report) - node_report;
@@ -1613,7 +1614,7 @@ local void  print_binary_parameters(char node_report[BUFF_LENGTH],
 local void  print_radius(char node_report[BUFF_LENGTH],
 			 real struct_table[NNODE_MAX][N_STRUCT], int member)
     {
-    int  offset_in_node_report;
+    std::ptrdiff_t  offset_in_node_report;
     real  r_node;
 
     offset_in_node_report = end_of_string(node_report) - node_report;
@@ -2034,7 +2035,7 @@ local void  wrap_string(char substring[BUFF_LENGTH],
     substring[++i] = '\0';
     }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.8 $", _SRC_);

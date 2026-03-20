@@ -89,7 +89,7 @@ void compute_mcom(dyn *b,
     int n = 0;
     for_all_daughters(dyn, b, bb) n++;
 
-    rp_pair_ptr rp = new rp_pair[n];
+    rp_pair_ptr rp = new rp_pair[static_cast<std::size_t>(n)];
 
     if (rp == NULL) {
 	cerr << "compute_mcom: "
@@ -179,7 +179,7 @@ void compute_mcom(dyn *b,
 //  main  --  driver to use compute_mcom() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

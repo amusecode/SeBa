@@ -6,7 +6,7 @@ LIB = ../libsstar.a
 
 lib:	$(LIB)($(OBJ))
 
-$(LIB)($(OBJ)):	$(OBJ)
+$(LIB):	$(OBJ)
 	ar -cr $(LIB) $(OBJ)
 
 clean:

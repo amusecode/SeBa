@@ -198,9 +198,11 @@ void put_state(double_state d,
  *  make_profile --
  *-----------------------------------------------------------------------------
  */
+/* Disabled because get_new_binary returns NULL, so this is broken
 void  make_profile(int id, real start_time,
                    double_profile& binary, double_init& init) {
 
+  
   cerr<<"double_support make_profile"<<endl;
   real dt = (init.end_time - start_time)/init.n_steps; 
 
@@ -233,6 +235,7 @@ void  make_profile(int id, real start_time,
   }
 
 }
+*/
 
 void double_profile::init_double_profile(double_star* b,
                                          star_state& p, star_state& s) {

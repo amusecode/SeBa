@@ -72,7 +72,7 @@ void construct_node_name(node* b)
 	for_all_daughters(node, b, b1)
 	    construct_node_name(b1);
 
-	char** list = new char*[b->n_daughters()];
+	char** list = new char*[static_cast<std::size_t>(b->n_daughters())];
 
 	int n = 0;
 	for_all_daughters(node, b, b2) {
@@ -95,12 +95,12 @@ void construct_node_name(node* b)
 
 	temp[0] = '(';
 	temp[1] = '\0';
-	int length = 2;
+	std::size_t length = 2;
 
 	for (int i = 0; i < n; i++) {
 
-	    int sl = strlen(list[i]);
-	    if (length + sl > 1024)
+	    std::size_t sl = strlen(list[i]);
+	    if (length + sl > 1024u)
 		err_exit("construct_node: buffer overflow.");
 
 	    strcat(temp, list[i]);
@@ -134,7 +134,7 @@ char* get_normal_form(node* b)	// Unused...
  *  main  --  driver to directly print out a tree structure
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
     {
     int i = 0;
     node *root;    // root node

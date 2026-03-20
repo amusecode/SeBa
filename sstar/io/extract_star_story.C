@@ -20,7 +20,6 @@
 #include "main_sequence.h"
 #include "util_io.h"
 
-#ifndef TOOLBOX
 
 void dump_line_text(ostream& str, story& s)
     {
@@ -188,13 +187,13 @@ void  addstar1(node * b, real t_rel, stellar_type type,
 #  define  FALSE  0
 #  define  TRUE   1
 
-#else
+#ifdef TOOLBOX
 
 /*-----------------------------------------------------------------------------
  *  main  --
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  c;
     bool  t_flag = FALSE;

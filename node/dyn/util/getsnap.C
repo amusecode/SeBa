@@ -22,6 +22,8 @@
 
 //   version 1:  July 2002   Simon Portieges Zwart
 
+#ifdef TOOLBOX
+
 #include "dyn.h"
 
 /*-----------------------------------------------------------------------------
@@ -70,5 +72,7 @@ int main(int argc, char ** argv)
 	rmtree(b);
     }
 }
+
+#endif
 
 /* endof: snapprune.c */

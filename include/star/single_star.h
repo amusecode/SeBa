@@ -26,6 +26,9 @@
 #include "star.h"
 #include "star_state.h"
 
+#include <stdexcept>
+
+
 /*-----------------------------------------------------------------------------
  *  star  --  the standard class for stellar evolution, with core and envelope
  *-----------------------------------------------------------------------------
@@ -47,7 +50,7 @@ class  single_star : public star
 // AMUSE
         real time_offset;
 // AMUSE
-        real CHE_flag; // (AD Oct 4 2022)
+        bool CHE_flag; // (AD Oct 4 2022)
 
 	real  relative_mass;
 	real relative_helium_mass;
@@ -207,7 +210,7 @@ class  single_star : public star
         void read_element();
         void put_element();
         void dump(ostream&, bool brief = true);
-        void dump(char*, bool brief = true);
+        void dump(const char*, bool brief = true);
         void print_status();
         void print_roche();
         void put_state();
@@ -234,9 +237,9 @@ class  single_star : public star
                         const real x_guess, const real y_value, const real z = 0, 
                                    const real xmin = cnsts.parameters(minimum_main_sequence), 
                                    const real xmax = cnsts.parameters(maximum_main_sequence));
-      real update_core_and_envelope_mass(const real m_core);
-      real update_core_and_envelope_mass_TPAGB(const real m_core);
-      real update_COcore_mass(const real mco_core);
+      bool update_core_and_envelope_mass(const real m_core);
+      bool update_core_and_envelope_mass_TPAGB(const real m_core);
+      bool update_COcore_mass(const real mco_core);
 
         // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
       // ++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -362,10 +365,20 @@ class  single_star : public star
 //      real small_envelope_core_luminosity(){return 0;};
 //      real small_envelope_core_radius(){return 0;};
 //      real helium_core_radius(){return 0;};
-        
-        virtual real small_envelope_core_luminosity(){};
-        virtual real small_envelope_core_radius(){};
-        virtual real helium_core_radius(){};        
+// don't do this either, as it returns an arbitrary value that could mess up your result:
+//      real small_envelope_core_luminosity() {};
+//      real small_envelope_core_radius() {};
+//      real helium_core_radius() {};
+
+        virtual real small_envelope_core_luminosity() {
+            throw std::logic_error("Invalid call to small_envelope_core_luminosity()");
+        };
+        virtual real small_envelope_core_radius() {
+            throw std::logic_error("Invalid call to small_envelope_core_radius()");
+        };
+        virtual real helium_core_radius() {
+            throw std::logic_error("Invalid call to helium_core_radius()");
+        };
         
         
       //white dwarf      

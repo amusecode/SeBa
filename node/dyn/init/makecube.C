@@ -84,7 +84,7 @@ local void makecube(dyn *root, int n,
 
 #define  SEED_STRING_LENGTH  60
 
-main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
     int  i;
     int  n;
     int  input_seed, actual_seed;

@@ -124,7 +124,7 @@ void dyn::offset_com()
 
 #else
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     char  *comment;

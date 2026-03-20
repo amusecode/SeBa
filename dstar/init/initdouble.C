@@ -641,7 +641,7 @@ void  adddouble(node * b, real dyn_time,
 		real e_min, real e_max)
 {
   if (REPORT_ADD_DOUBLE) {
-    int p = cerr.precision(HIGH_PRECISION);
+    std::streamsize p = cerr.precision(HIGH_PRECISION);
     cerr<<"adddouble: "<<b<<" "<<dyn_time;
     cerr.precision(p);
     cerr <<" "<<a_min<<" "<<a_max<<" "<<e_min<<" "<<e_max << endl;
@@ -701,7 +701,7 @@ cerr << "addstar(node... called from adddouble(node ..." << endl;
    }
 #else
 
-void main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
     bool F_flag = false;
     bool P_flag = false;
@@ -820,7 +820,7 @@ void main(int argc, char ** argv) {
 			q_min, q_max, qf, q_exp, 
 			a_min, a_max, af, a_exp, 
 			e_min, e_max, ef, e_exp, 
-			m_prim, m_sec, sma, ecc);
+			m_prim, m_sec, sma, ecc, 1.0);
 	cerr << "\t" << m_prim 
 	     << "\t" << m_sec 
 	     << "\t" << sma

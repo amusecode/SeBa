@@ -55,7 +55,7 @@ local bool  contains_white(char * s)
  *                  eff_length("hi there") = 10
  *-----------------------------------------------------------------------------
  */
-local int  eff_length(char * s)
+local std::size_t  eff_length(char * s)
     {
     if (contains_white(s))
         return(strlen(s) + 2);
@@ -108,7 +108,7 @@ local int  eff_length(char * s)
 char *gethist(int argc, char ** argv)
     {
     int  i, j, k;
-    int  n;
+    std::size_t  n;
     long int  clock;              /* will contain time in seconds since 1970 */
     char *hist_string;            /* will point to newly allocated string    */
 /*
@@ -117,13 +117,13 @@ char *gethist(int argc, char ** argv)
     n = DATE_TOT_LENGTH;
     for (i = 0; i < argc; i++)    /* total length, apart from the white      */
         n += eff_length(argv[i]); /* spaces separating the commands          */
-    n += argc;                    /* one for each white space delimiter,     */
+    n += static_cast<unsigned int>(argc);   /* one for each white space delimiter, */
 				  /* and a final NULL to end the hist_string */
 
     // Added by Steve (7/01):
 
     char *user_part = getenv("USER");
-    int user_length = 0;
+    std::size_t user_length = 0u;
 
     if (user_part) user_length = strlen(user_part) + strlen(USER_HEAD) + 1;
     //									')'
@@ -167,7 +167,7 @@ char *gethist(int argc, char ** argv)
 /*
  * write the command line:
  */
-    j = DATE_TOT_LENGTH + user_length;
+    j = static_cast<int>(DATE_TOT_LENGTH + user_length);
     for (i = 0; i < argc; i++)
 	{
 	k = 0;
@@ -197,7 +197,7 @@ char *gethist(int argc, char ** argv)
 //                gethist these are words "but this is a single string"
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.5 $", _SRC_);

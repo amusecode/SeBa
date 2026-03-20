@@ -546,7 +546,7 @@ void single_star::dump(ostream & s, bool brief) {
     }
 }
 
-void single_star::dump(char * filename, bool brief) {
+void single_star::dump(const char * filename, bool brief) {
 
   ofstream s(filename, ios::app|ios::out);
   if (!s) cerr << "error: couldn't create file "<<filename<<endl;
@@ -710,7 +710,7 @@ real single_star::mass_ratio_mdot_limit(real mdot) {
 	mdot = mdot_max;
     }
 
-    int p = cerr.precision(HIGH_PRECISION);
+    std::streamsize p = cerr.precision(HIGH_PRECISION);
     PRC(accretor_mass);PRL(get_total_mass());
     cerr.precision(p);
   
@@ -3119,7 +3119,7 @@ real single_star::white_dwarf_radius(real mass, real time) {
 // Miscellaneous
 //
     
-real single_star::update_core_and_envelope_mass(const real m_core) {
+bool single_star::update_core_and_envelope_mass(const real m_core) {
   
   bool successful_update = false;
   real dm_core = m_core-core_mass;
@@ -3145,7 +3145,7 @@ real single_star::update_core_and_envelope_mass(const real m_core) {
   return successful_update;
 }
 
-real single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
+bool single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
     //difference with update_core_and_envelope_mass is in the fact that on the TPAGB
     // the core mass can decrease during the second dredge_up 
     bool successful_update = false;
@@ -3165,7 +3165,7 @@ real single_star::update_core_and_envelope_mass_TPAGB(const real m_core) {
     return successful_update;
 }
 
-real single_star::update_COcore_mass(const real mco_core) {
+bool single_star::update_COcore_mass(const real mco_core) {
     
     bool successful_update = false;    
     if(mco_core>=COcore_mass- cnsts.safety(tiny) &&

@@ -64,7 +64,7 @@ local void get_default_precision()
 	precision = 18;
 }
 
-int set_starlab_precision(ostream &s)
+std::streamsize set_starlab_precision(ostream &s)
 {
     if (precision < 0) get_default_precision();
     return s.precision(precision);	// convenient to return the
@@ -83,7 +83,7 @@ int adjust_starlab_precision(int p)
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.4 $", _SRC_);

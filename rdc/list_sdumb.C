@@ -331,7 +331,7 @@ local void print_integrated_cluster(hdyn *b, vec dc_pos,
   }
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
 

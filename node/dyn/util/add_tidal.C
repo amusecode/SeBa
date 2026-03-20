@@ -32,7 +32,7 @@
 
 #include "dyn.h"
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     bool c_flag = false;
     char *comment;		// comment string

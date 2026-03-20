@@ -117,7 +117,7 @@ int dyn::flatten_node()
 //  main  --  driver to use  flatten_node() as a tool.
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = false;
     bool  C_flag = false;

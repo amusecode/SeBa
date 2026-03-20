@@ -157,7 +157,7 @@ local void do_the_adding(hdyn *bi, real stellar_time,	// bi is binary CM
     }
 
     if (REPORT_ADD_DOUBLE) {
-	int p = cerr.precision(HIGH_PRECISION);
+	std::streamsize p = cerr.precision(HIGH_PRECISION);
 	cerr << "Before adddouble: at " << stellar_time << " to: ";
 	bi->pretty_print_tree(cerr);
 	cerr << " a=" << sma << " e=" << ecc << endl;
@@ -204,7 +204,7 @@ local void do_the_adding(hdyn *bi, real stellar_time,	// bi is binary CM
 	    new_double->set_star_story(old_story);
 
 	    if (REPORT_ADD_DOUBLE) {
-		int p = cerr.precision(HIGH_PRECISION);
+		std::streamsize p = cerr.precision(HIGH_PRECISION);
 		cerr<<"After adddouble: at "<<stellar_time<< " to: ";
 		new_double->dump(cerr);
 		od->get_kepler()->print_all(cerr);
@@ -231,7 +231,7 @@ void adddouble(hdyn *b,					// b is binary CM
 	       real e_min, real e_max)
 {
     if (REPORT_ADD_DOUBLE) {
-	int p = cerr.precision(HIGH_PRECISION);
+	std::streamsize p = cerr.precision(HIGH_PRECISION);
 	cerr<<"adddouble: "<<b<<" at T="<<dyn_time<<endl;
 	cerr.precision(p);
     }
@@ -315,7 +315,7 @@ void adddouble(hdyn *b,					// b is binary CM
  *  main  --
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
     {
     int  c;
     bool  A_flag = FALSE;

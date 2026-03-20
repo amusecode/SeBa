@@ -88,7 +88,7 @@ void compute_mean_cod(dyn *b, vec& pos, vec& vel)
 	    && !twiddles(dens_time, (real) b->get_system_time(), TTOL)) {
 	    warning("compute_mean_cod: using out-of-date densities.");
 	    PRL(d->format_label());
-	    int p = cerr.precision(HIGH_PRECISION);
+	    std::streamsize p = cerr.precision(HIGH_PRECISION);
 	    PRL(b->get_system_time());
 	    PRL(dens_time);
 	    cerr.precision(p);
@@ -140,7 +140,7 @@ void compute_mean_cod(dyn *b)
 //  main  --  driver to use compute_mean_cod() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

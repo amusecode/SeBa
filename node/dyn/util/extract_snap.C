@@ -29,7 +29,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     bool  c_flag = FALSE;	// if TRUE, a comment given on command line

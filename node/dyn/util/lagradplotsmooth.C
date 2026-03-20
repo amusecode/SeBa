@@ -240,7 +240,7 @@ char in_screen[MAX_NUMBER_OF_INPUT_LINES][MAX_NUMBER_OF_COLUMNS], int w)
 //  main
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     bool  c_flag = FALSE;      /* if TRUE: a comment given on command line   */
@@ -298,7 +298,7 @@ main(int argc, char ** argv)
             c = getchar();
             while (c != '\n' && c != EOF)
                 {
-                in_screen[i][j++] = c;
+                in_screen[i][j++] = static_cast<char>(c);
                 c = getchar();
                 }
             i++;

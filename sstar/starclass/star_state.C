@@ -273,7 +273,7 @@ void put_short_state(star_state st, ostream & s) {
      }
 }
 
-char* type_dominant_state(star_state sts) {
+const char* type_dominant_state(star_state sts) {
 
   if (sts.class_spec[Blue_Straggler])
     return type_string(Blue_Straggler);

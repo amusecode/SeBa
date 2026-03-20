@@ -24,6 +24,8 @@
 
 //   version 1:  Nov 1994   Piet Hut
 
+#ifdef TOOLBOX
+
 #include "node.h"
 
 /*-----------------------------------------------------------------------------
@@ -89,5 +91,7 @@ int main(int argc, char ** argv)
     }
     return 0;
 }
+
+#endif
 
 /* endof: snapprune.c */
