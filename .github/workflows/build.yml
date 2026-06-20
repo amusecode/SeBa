@@ -1,4 +1,4 @@
-name: Build SeBa
+name: Build and test SeBa
 
 on:
   push:
@@ -19,3 +19,7 @@ jobs:
       run: |
         cd dstar
         make
+    - name: Build and run unit tests
+      run: |
+        git submodule update --init --recursive
+        make test

@@ -1,0 +1,9 @@
+Makefile.inc
+dstar/Makefile.inc
+**/*.o
+**/*.a
+starev
+dstar/Normalisation
+dstar/SeBa
+**/*.data
+build/
