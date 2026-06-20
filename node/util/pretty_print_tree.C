@@ -29,7 +29,7 @@
 //  main  --  driver to directly print out a tree structure
 //---------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     node *root;    // root node
 

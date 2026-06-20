@@ -146,7 +146,7 @@ local bool  evolve_binary(dyn * bi,
                           real start_time, real end_time,
 			  bool stop_at_merger_or_disruption,
 			  bool stop_at_remnant_formation,
-			  char* SeBa_outfile) { 
+			  const char* SeBa_outfile) { 
 
 
   double_star* ds = dynamic_cast(double_star*, 
@@ -251,10 +251,9 @@ int main(int argc, char ** argv) {
     real start_time = 0;
     real end_time   = 13500;//35;
 
-    char* input_filename;
-    char* output_filename;
+    const char* input_filename;
+    const char* output_filename;
     output_filename = "SeBa.data";
-    //char output_filename = new char "SeBa.data";
 
     int input_seed=0; 
     char seedlog[64];

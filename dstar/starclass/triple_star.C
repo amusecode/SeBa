@@ -192,8 +192,8 @@ cerr<<"real double_star::add_mass_to_accretor(mdot="<<mdot
       real mdot_p = mdot*mtt_b/mtt_p;
       real mdot_s = mdot*mtt_b/mtt_s;
 
-      mdot_p = get_primary()->add_mass_to_accretor(mdot_p, dt, hydrogen);
-      mdot_s = get_secondary()->add_mass_to_accretor(mdot_s, dt, hydrogen);
+      mdot_p = get_primary()->add_mass_to_accretor(mdot_p, dt != 0.0, hydrogen);
+      mdot_s = get_secondary()->add_mass_to_accretor(mdot_s, dt != 0.0, hydrogen);
 
       real mdot_left = mdot - (mdot_p + mdot_s);
 

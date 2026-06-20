@@ -118,7 +118,7 @@ int get_std_center(dyn *b,
 //  main  --  driver to use get_std_center() as a tool
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

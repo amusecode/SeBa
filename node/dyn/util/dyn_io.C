@@ -148,7 +148,7 @@ bool dyn::check_and_correct_node(bool verbose)	// default = false
 istream & dyn::scan_dyn_story(istream& s)
 {
     char input_line[MAX_INPUT_LINE_LENGTH];
-    real last_real = false;
+    bool last_real = false;
 
     while (get_line(s,input_line), !matchbracket(END_DYNAMICS, input_line)) {
 
@@ -294,6 +294,7 @@ dyn *get_dyn(istream & s,		// default = cin
     format = ungetc(getc(ifp), ifp) == '(' ? DYN : COL;
     return get_dyn(s, the_hbpfp, the_sbpfp, use_stories);
   }
+  return NULL;
 }
 
 // Called by get_dyn when input format is columns of numbers.
@@ -455,7 +456,7 @@ void put_col(dyn* root, ostream& s, bool put_time) {
 
   } else {
 
-    int oldp = s.precision(p);
+    std::streamsize oldp = s.precision(p);
 
     // Special treatment to preserve the root node member data
     // and Log and Dyn stories.
@@ -488,7 +489,7 @@ void put_col(dyn* root, ostream& s, bool put_time) {
 
 
 #else
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.32 $", _SRC_);

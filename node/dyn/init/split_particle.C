@@ -137,7 +137,7 @@ local void scale_energy(real energy, int N, real M, real E)
 
 //----------------------------------------------------------------------
 
-void main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     real energy = 0.0;
     real eccentricity = -1;
@@ -202,7 +202,7 @@ void main(int argc, char ** argv)
 	// Thus, if the total system energy is known, 'energy' is specified
 	// in "kT" units.  If not, 'energy' is the binary kinetic energy.
 
-	char* energy_string = "initial_total_energy";
+	const char* energy_string = "initial_total_energy";
 
 	if (find_qmatch(b->get_log_story(), energy_string))
 	    scale_energy(energy, b->n_daughters(), b->get_mass(),

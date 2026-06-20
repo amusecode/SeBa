@@ -86,7 +86,7 @@ local void  evolve_the_stellar_system(node* b, real time) {
       }
    }
 
-void main(int argc, char ** argv) {
+int main(int argc, char ** argv) {
 
     bool A_flag = false;
     bool a_flag = false;

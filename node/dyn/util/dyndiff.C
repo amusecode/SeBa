@@ -79,7 +79,7 @@ real  dyndiff(dyn * b1, dyn * b2, bool r_flag)
 	return sqrt(sum_sq_diff / (6 * n1));
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  r_flag = FALSE;      // if TRUE: check only spatial differences
 

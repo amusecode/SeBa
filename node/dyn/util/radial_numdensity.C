@@ -78,7 +78,7 @@ vector<real>& get_radial_numdensities(dyn *b, vec cpos, vector<real>& r,
     vector<real>& rho = *(new vector<real>(r.size()));
     real rj2 = r[0]*r[0];
 
-    for (int i = 0, j = 0; i < table->size(); i++) {
+    for (std::size_t i = 0u, j = 0u; i < table->size(); i++) {
 	real ri_sq = (*table)[i].r_sq;
 	while (ri_sq > rj2) {
 	    if (++j >= r.size()) break;
@@ -90,7 +90,7 @@ vector<real>& get_radial_numdensities(dyn *b, vec cpos, vector<real>& r,
     delete table;
 
     real v0 = 0;	// assume that the first zone extends in to r = 0
-    for (int j = 0; j < r.size(); j++) {
+    for (std::size_t j = 0u; j < r.size(); j++) {
 	real v1 = pow(r[j], 3);
 	rho[j] /= (4*M_PI/3) * (v1 - v0);	// dM --> dM/dV
 	v0 = v1;
@@ -106,7 +106,7 @@ vector<real>& get_radial_numdensities(dyn *b, vec cpos, vector<real>& r,
 
 #define N_DEFAULT 100
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int n_zones = N_DEFAULT;
     real r_max = 0;

@@ -24,7 +24,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     dyn *root;
     int  e_flag = 0;

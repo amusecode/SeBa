@@ -1,6 +1,6 @@
 CXXFLAGS  += -I../include -I../include/star \
 	     -D_SRC_='"no_source_available"' \
-	     -DHAVE_CONFIG_H  -DTOOLBOX 
+	     -DHAVE_CONFIG_H
 LDLIBS	  += \
 	     -L. -ldstar \
 	     -L../sstar -lsstar \
@@ -16,6 +16,15 @@ EXE	= SeBa Normalisation
 DIRS	= init io starclass stardyn util
 
 all:	lib $(EXE)
+
+%.o: %.C
+	$(CXX) -o $@ $(CPPFLAGS) $(CXXFLAGS) -DTOOLBOX -c $<
+
+SeBa: SeBa.o
+	$(CXX) -o $@ $(LDFLAGS) $^ $(LDLIBS)
+
+Normalisation: Normalisation.o
+	$(CXX) -o $@ $(LDFLAGS) $^ $(LDLIBS)
 
 Makefile.inc:	Makefile.inc.conf
 	@sed s#__BASE__#$(PWD)#g Makefile.inc.conf >Makefile.inc

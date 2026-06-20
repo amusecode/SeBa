@@ -120,7 +120,7 @@ local void makedisk(dyn* b, int n,
 
 #define  SEED_STRING_LENGTH  60
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool c_flag = false;
     bool C_flag = false;

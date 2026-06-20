@@ -71,7 +71,7 @@ void renumber(node* b, int istart, bool mass_order,
       // Highest mass gets smallest number (strange choise, but).
 
       int n = b->n_leaves();
-      nm_pair_ptr nm_table = new nm_pair[n];
+      nm_pair_ptr nm_table = new nm_pair[static_cast<std::size_t>(n)];
       if (nm_table == NULL) {
 	cerr << "renumber: "
 	     << "not enough memory left for nm_table\n";

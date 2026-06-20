@@ -36,7 +36,7 @@ void write_unformatted_real( ostream & s, real v )
 
 void write_unformatted32_real( ostream & s, real v )
 {
-    float f = v;
+    float f = static_cast<float>(v);
 #if WORDS_BIGENDIAN
     s.write( (char *)&f, 4 );
 #else

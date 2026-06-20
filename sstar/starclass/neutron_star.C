@@ -628,7 +628,7 @@ bool neutron_star::propeller(const real mdot, const real dt) {
      if (DEBUG)
        cerr<<"neutron_star::propeller"<<endl;
 
-     real propellor = TRUE;
+     bool propellor = true;
      real eddington = eddington_limit(radius, dt); 
 
      //Take the propeller effect into account, by allowing accretion
@@ -646,7 +646,7 @@ bool neutron_star::propeller(const real mdot, const real dt) {
 
          // no accterion, neutron star spins too rapidly.
          if (mdot>propeller_limit*dt)
-	              propellor=FALSE;
+	              propellor=false;
      }
 
      if (DEBUG)

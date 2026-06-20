@@ -37,7 +37,7 @@
  *  main  --  driver to create directly a single node
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     bool  i_flag = FALSE;

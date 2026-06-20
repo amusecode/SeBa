@@ -212,10 +212,10 @@ local void print_numbers_and_masses_by_radial_zone(dyn* b, int which)
 
         // Make a list of previously computed lagrangian radii.
 
-        int n_lagr = getiq(b->get_dyn_story(), "n_lagr");
+        std::size_t n_lagr = static_cast<std::size_t>(getiq(b->get_dyn_story(), "n_lagr"));
 	real *r_lagr = new real[n_lagr];
 
-	getra(b->get_dyn_story(), "r_lagr", r_lagr, n_lagr);
+	getra(b->get_dyn_story(), "r_lagr", r_lagr, static_cast<int>(n_lagr));
 
 	// Numbers of top-level nodes (leaves in multiple case):
 
@@ -271,7 +271,7 @@ local void print_numbers_and_masses_by_radial_zone(dyn* b, int which)
 
 	        // Find which zone we are in.
 
-	        int i = which_zone(bi, center_pos, n_lagr, r_lagr);
+	        int i = which_zone(bi, center_pos, static_cast<int>(n_lagr), r_lagr);
 
 		// Update statistics.
 
@@ -339,9 +339,9 @@ local void print_anisotropy_by_radial_zone(dyn* b, int which)
 
         // Make a list of previously computed lagrangian radii.
 
-        int n_lagr = getiq(b->get_dyn_story(), "n_lagr");
+        std::size_t n_lagr = static_cast<std::size_t>(getiq(b->get_dyn_story(), "n_lagr"));
 	real *r_lagr = new real[n_lagr];
-	getra(b->get_dyn_story(), "r_lagr", r_lagr, n_lagr);
+	getra(b->get_dyn_story(), "r_lagr", r_lagr, static_cast<int>(n_lagr));
 
 	real *total_weight = new real[n_lagr+1];
 	real *vr2_sum = new real[n_lagr+1];
@@ -388,7 +388,7 @@ local void print_anisotropy_by_radial_zone(dyn* b, int which)
 
 	        // Find which zone we are in.
 
-	        int i = which_zone(bi, center_pos, n_lagr, r_lagr);
+	        int i = which_zone(bi, center_pos, static_cast<int>(n_lagr), r_lagr);
 
 		// Update statistics.
 
@@ -523,7 +523,7 @@ local void print_energies(dyn* b,
     real external_pot = get_external_pot(b);
     e_total = total_int_energy + external_pot;
 
-    int ppp = cerr.precision(STD_PRECISION);
+    std::streamsize ppp = cerr.precision(STD_PRECISION);
 
     vec com_pos, com_vel;
     compute_com(b, com_pos, com_vel);
@@ -539,7 +539,7 @@ local void print_energies(dyn* b,
     com_vel -= b->get_vel();
 
     real pot_int = potential_energy, kin_int = kinetic_energy;
-    kT = kin_int / (1.5*b->n_daughters());
+    kT = kin_int / (1.5*static_cast<real>(b->n_daughters()));
     real virial_ratio = -kin_int / (pot_int + get_external_virial(b));
 
     real pot_tot = potential_energy, kin_tot = kinetic_energy;
@@ -562,13 +562,13 @@ local void print_energies(dyn* b,
     kin_tot += kin_com;
     e_total += external_pot + kin_com;
 
-    int p = cerr.precision(INT_PRECISION);
+    std::streamsize p = cerr.precision(INT_PRECISION);
     cerr << endl
 	 << "    Energies: " << pot_tot << " " << kin_tot << " " << e_total
 	 << endl;
     cerr.precision(p);
 
-    if (external_pot) {
+    if (external_pot != 0.0) {
 	cerr << "        external potential = " << external_pot << " (";
 	print_external(b->get_external_field());
 	cerr << ")" << endl;
@@ -862,7 +862,7 @@ local void print_binaries(dyn* b, real kT,
 		cerr << bi->format_label();
 	    }
 
-	    int init_indent = BIN_INDENT - 4 - strlen(bi->format_label());
+	    int init_indent = BIN_INDENT - 4 - static_cast<int>(strlen(bi->format_label()));
 
 	    if (bi->n_leaves() > 2) {
 
@@ -1056,7 +1056,7 @@ local void print_dominated_lagrangian_radii(dyn* b, dyn* b_dom)
 
     if (!b_dom) return;
 
-    int n = 0;
+    std::size_t n = 0;
     { for_all_daughters(dyn, b, bi)
 	if (bi != b_dom) n++;
     }
@@ -1259,7 +1259,7 @@ void sys_stats(dyn* b,
 // other hdyn programs.
 
 {
-    int p = cerr.precision(STD_PRECISION);
+    std::streamsize p = cerr.precision(STD_PRECISION);
 
     if (print_time) {
 
@@ -1586,7 +1586,7 @@ void sys_stats(dyn* b,
 
 #else
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     check_help();
 

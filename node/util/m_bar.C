@@ -27,7 +27,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char *argv[])
+int main(int argc, char *argv[])
 {
     real ml = -1.0, mu = -1.0, x = -2.35, factor = 1;
     bool verbose = 0;

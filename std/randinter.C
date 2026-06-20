@@ -353,7 +353,7 @@ real gausrand(real mean, real sdev)
 //        is given, a random seed is used; otherwise the second argument
 //        is used as the seed for the random number generator.
 
-main(int argc, char **argv) {
+int main(int argc, char **argv) {
 
     check_help();
     extern char *poptarg;

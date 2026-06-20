@@ -280,7 +280,7 @@ local void reshuffle_all(dyn* b, int n)
 //            the extent of the Plummer realization.
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  i;
     int  n;

@@ -1038,9 +1038,15 @@ void main_sequence::instantaneous_element() {
 //  if (relative_age > 0.2*main_sequence_time()){// to force entering CHE
 //      rotation_period = cnsts.mathematics(pi)/critical_angular_freq;}   
 
-  if ((cnsts.parameters(include_CHE)) && get_rotation_period() != 0 && relative_mass >= 20 && angular_freq >= critical_angular_freq && relative_age < 0.3 * main_sequence_time()){
+  if (
+          (cnsts.parameters(include_CHE) != 0.0) &&
+          get_rotation_period() != 0 &&
+          relative_mass >= 20 &&
+          angular_freq >= critical_angular_freq &&
+          relative_age < 0.3 * main_sequence_time()
+  ) {
     		CHE_flag = true;
-    	}
+  }
   
   if (CHE_flag){
        	luminosity       = max(luminosity, main_sequence_luminosity(0, relative_mass, metalicity));

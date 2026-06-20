@@ -59,10 +59,9 @@ char  tmp_string[SEED_STRING_LENGTH];
 // Global stuff:
 // ------------
 
-real pi = M_PI;
-real twopi = 2.0 * pi;
-real four3pi = 4.0 * pi / 3.0;
-real fourpi = 4.0 * pi; 
+real twopi = 2.0 * M_PI;
+real four3pi = 4.0 * M_PI / 3.0;
+real fourpi = 4.0 * M_PI; 
 real zero = 0.0;
 real one = 1.0;
 real quarter = 0.25;
@@ -847,7 +846,7 @@ local void makeking(dyn * b, int n, real w0, bool n_flag, bool u_flag, int test)
     }
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int  n;
     int  input_seed, actual_seed;

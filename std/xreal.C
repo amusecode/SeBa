@@ -552,7 +552,7 @@ void identify_xreal(ostream &s)	// default = cerr
 
 #else
 
-main()
+int main()
 {
     identify_xreal();
 

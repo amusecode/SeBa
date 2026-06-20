@@ -55,7 +55,7 @@ local void jiggle(dyn * b, real f)
     }
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool c_flag = false, s_flag = false;
     char *comment;

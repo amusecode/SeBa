@@ -253,7 +253,7 @@ local void make_aniso_king(dyn * b, int n, real w0, real alpha1, real alpha3,
 	((4*M_PI*RHO_G + 2*(OORT_A*OORT_A - OORT_B*OORT_B)) \
 			 / (-4*OORT_A*(OORT_A-OORT_B)))
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     real w0;
     int  n = 0;

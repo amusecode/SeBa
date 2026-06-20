@@ -187,11 +187,6 @@ story* get_chapter(istream& str, const char* line)
 	    add_story_line(chap, new_line);
     }
 
-    if (new_line == NULL) {
-	cerr << "get_chapter: new_line == NULL before end of chapter\n";
-	exit(1);
-    }
-
     if (!streq(new_line+1, chap->get_text())) {
 	cerr << "get_chapter: closing title ``" << new_line+1
 	     << "'' differs from opening title ``" << chap->get_text()
@@ -371,7 +366,7 @@ local void  write_iq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -392,7 +387,7 @@ local void  write_ulq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -413,7 +408,7 @@ local void  write_ullq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_INT_LENGTH;
     new_string  = new char[new_string_length];
@@ -434,7 +429,7 @@ local void  write_rq(story * a_story_line, const char * name, real value,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     char format[128];
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_REAL_LENGTH;
@@ -461,7 +456,7 @@ local void  write_sq(story * a_story_line, const char * name,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     
     new_string_length = EXTRA_LENGTH + strlen(name)
 				     + strlen(value) + SAFE_STRING_LENGTH;
@@ -489,7 +484,7 @@ local void write_vq(story * a_story_line, const char * name, vec & value,
     if (!a_story_line || !name) return;
 
     char * new_string;
-    int  new_string_length;
+    std::size_t  new_string_length;
     char format[128];
     
     new_string_length = EXTRA_LENGTH + strlen(name) + SAFE_VECTOR_LENGTH;
@@ -531,12 +526,12 @@ local void write_vq(story * a_story_line, const char * name, vec & value,
  *-----------------------------------------------------------------------------
  */
 local void  write_ra(story * a_story_line, const char * name,
-		     real * value, int n)
+		     real * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_REAL_LENGTH + 2);
@@ -563,12 +558,12 @@ local void  write_ra(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     int * value, int n)
+		     int * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);
@@ -594,12 +589,12 @@ local void  write_ia(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     unsigned long * value, int n)
+		     unsigned long * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);
@@ -610,7 +605,7 @@ local void  write_ia(story * a_story_line, const char * name,
 
     for (int i = 0; i < n; i++) {
 
-	sprintf(tmp, " %d", value[i]);
+	sprintf(tmp, " %lu", value[i]);
 
 	strcat(new_string, tmp);
     }
@@ -625,12 +620,12 @@ local void  write_ia(story * a_story_line, const char * name,
  *-----------------------------------------------------------------------------
  */
 local void  write_ia(story * a_story_line, const char * name,
-		     unsigned long long * value, int n)
+		     unsigned long long * value, std::size_t n)
 {
     if (!a_story_line || !name) return;
 
     char *new_string, *tmp;
-    int  new_string_length;
+    std::size_t  new_string_length;
 
     new_string_length = EXTRA_LENGTH + strlen(name)
       				+ n * (SAFE_INT_LENGTH + 2);
@@ -641,7 +636,7 @@ local void  write_ia(story * a_story_line, const char * name,
 
     for (int i = 0; i < n; i++) {
 
-	sprintf(tmp, " %d", value[i]);
+	sprintf(tmp, " %llu", value[i]);
 
 	strcat(new_string, tmp);
     }
@@ -975,7 +970,7 @@ local void get_array(char * sin, unsigned long * x, int n)  // overloaded!
 	    char save = *s2;
 
 	    *s2 = '\0';
-	    x[i++] = atoi(s1);				// <-- only change!
+	    x[i++] = static_cast<unsigned long>(atoi(s1));				// <-- only change!
 	    *s2 = save;
 
 	    if (i >= n) break;
@@ -1203,7 +1198,7 @@ void putrq(story * a_story, const char * name, real value,
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putra(story * a_story, const char * name, real * value, int n)
+void putra(story * a_story, const char * name, real * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1224,7 +1219,7 @@ void putra(story * a_story, const char * name, real * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, int * value, int n)
+void putia(story * a_story, const char * name, int * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1245,7 +1240,7 @@ void putia(story * a_story, const char * name, int * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, unsigned long * value, int n)
+void putia(story * a_story, const char * name, unsigned long * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1266,7 +1261,7 @@ void putia(story * a_story, const char * name, unsigned long * value, int n)
  *             overwrite the line containing that quantity.
  *-----------------------------------------------------------------------------
  */
-void putia(story * a_story, const char * name, unsigned long long * value, int n)
+void putia(story * a_story, const char * name, unsigned long long * value, std::size_t n)
 {
     if (!a_story || !name) return;
 
@@ -1335,7 +1330,7 @@ int  rmq(story *  a_story, const char * name)
 
     story * story_line;
 
-    if (story_line = find_qmatch(a_story, name)) {
+    if ((story_line = find_qmatch(a_story, name))) {
 	rm_daughter_story(a_story, story_line);
 	return 1;
     } else
@@ -1362,7 +1357,7 @@ int  is_quantity_name(story * a_story, const char * name)
 
 #else
 
-main(int argc, char** argv)
+int main(int argc, char** argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.15 $", _SRC_);

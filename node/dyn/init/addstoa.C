@@ -55,7 +55,7 @@ local void  addstoa(dyn * b, int m_flag)
     }
 }
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int m_flag = false;
     extern char *poptarg;

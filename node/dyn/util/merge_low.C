@@ -80,7 +80,7 @@ void merge_low_level_nodes(dyn * b,	    // root node
 //  main  --  driver to use  flatten_node() as a tool.
 //-----------------------------------------------------------------------------
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  c_flag = FALSE;
     char  *comment;

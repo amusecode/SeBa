@@ -30,7 +30,7 @@
 
 #define  SCALE_FACTOR   0.1
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     bool  c_flag = false;

@@ -75,7 +75,7 @@ void  rm_all_star_q(node * n, char * qname)
  *   -s option: "rmq -s -q name" removes quantity from hydro story
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     bool  h_flag = FALSE;
     bool  s_flag = FALSE;

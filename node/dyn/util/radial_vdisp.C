@@ -67,7 +67,7 @@ int get_radial_vdisp(dyn *b, vec cpos, vec cvel,
 
     // Set up an array of (r_sq, mass, vel) triples.
 
-    int n = b->n_daughters();	// (NB implicit loop through the entire system)
+    std::size_t n = static_cast<std::size_t>(b->n_daughters());	// (NB implicit loop through the entire system)
 
     // Would be possible to determine n and set up the array simultaneously
     // using malloc and realloc.  Not so easy with new...
@@ -132,7 +132,7 @@ int get_radial_vdisp(dyn *b, vec cpos, vec cvel,
 
 #define N_DEFAULT 100
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     int n_zones = N_DEFAULT;
     real r_max = 0;

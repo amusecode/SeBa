@@ -126,7 +126,7 @@ starbase::starbase(starbase& sb)
 
 #else
 
-void main()
+int main()
 {
     cerr << "Seems to work..." << endl;
 }

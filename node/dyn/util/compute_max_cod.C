@@ -124,7 +124,7 @@ void compute_max_cod(dyn *b)
  *  main  --  driver to use compute_max_cod() as a tool
  *-----------------------------------------------------------------------------
  */
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     char  *comment;
     dyn * b;

@@ -12,7 +12,7 @@
 
 #ifdef TOOLBOX
 
-main(int argc, char ** argv)
+int main(int argc, char ** argv)
 {
     check_help();
 

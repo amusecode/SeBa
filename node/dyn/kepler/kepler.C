@@ -143,7 +143,7 @@ local int check_trig_limit(kepler* k, real &c, const char *s)
 	    }
 	} else {
 	    if (print_trig_warning) {
-		int p = cerr.precision(HIGH_PRECISION);
+		std::streamsize p = cerr.precision(HIGH_PRECISION);
 		cerr << "warning: " << s << ": c = " << c << endl;
 		cerr.precision(p);
 	    }
@@ -477,7 +477,7 @@ void  kepler::kep_to_dyn_story(story * s)
 
 void  kepler::print_all(ostream & s)
 {
-    int p = s.precision(HIGH_PRECISION);
+    std::streamsize p = s.precision(HIGH_PRECISION);
 
     s << "  time             = " << time << endl;
     s.precision(8);
@@ -526,7 +526,7 @@ void  kepler::print_dyn(ostream & s)
 
 void  kepler::print_elements(ostream & s)
 {
-    int p = s.precision(8);
+    std::streamsize p = s.precision(8);
 
     s << "  time             = " << time << endl;
     s << "  separation       = " << separation << endl;
@@ -1665,7 +1665,7 @@ local void rr(real r)
     k.print_dyn();
 }
 
-main(int argc, char **argv)
+int main(int argc, char **argv)
 {
     check_help();
     pgetopt(argc, argv, "", "$Revision: 1.17 $", _SRC_);
