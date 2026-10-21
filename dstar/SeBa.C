@@ -1,7 +1,7 @@
 //// SeBa:        Binary evolution program SeBa.
-////              computes the evolution of a binary given any 
+////              computes the evolution of a binary given any
 ////              initial conditions (M, m, a, e).
-////             
+////
 //// Output:      in the form of the following files:
 ////              -init.dat           contains selected initial conditons.
 ////              -SeBa.data           contains binary evolution histories
@@ -18,7 +18,7 @@
 ////              routines incuded can be found in double_star.h.
 ////              The mass function routines are adoped from mkmass.C
 ////              and are defined in starbase.h
-//// 
+////
 ////              externally visible routines are:
 ////              -get_random_mass_ratio
 ////              -get_random_semi_major_axis
@@ -29,8 +29,8 @@
 ////              -type_string(char*)
 ////
 ////              The executable takes initial conditions (see Options)
-////              and returns randomized binary parameters.                 
-////                 
+////              and returns randomized binary parameters.
+////
 //// Options:   -M    upper primary mass limit [100[Msun]]
 ////            -m    lower limit to primary mass [0.1[Msun]]
 ////            -x    mass function exponent in case of power law [-2.35]
@@ -42,8 +42,8 @@
 ////            Option -F requires one of the following strings:
 ////                      (mf_Power_Law, Miller_Scalo, Scalo, Kroupa)
 ////                   -f requires the appropriate integer (see mkmass.C)
-////             -A   maximum semi-major axis limit [1000000[Rsun]]   
-////             -a   minimum semi-major axis limit [0] 
+////             -A   maximum semi-major axis limit [1000000[Rsun]]
+////             -a   minimum semi-major axis limit [0]
 ////             -y   exponent for a power-law distribution [0] (flat in log)
 ////             -G/g Semi major axis option: 0) Equal_sma
 ////                                          1) Power Law [default]
@@ -53,11 +53,11 @@
 ////            Option -G requires one of the following strings:
 ////                      (Equal_sma, sma_Power_Law, Duquennoy_Mayor, Raghavan, Eggleton)
 ////                   -g requires appropriate integer (see starbase.h)
-////             -E   maximum eccentricity [1] 
-////             -e   minimum eccentricity [0] 
-////             -v   exponent for a power-law distribution 
+////             -E   maximum eccentricity [1]
+////             -e   minimum eccentricity [0]
+////             -v   exponent for a power-law distribution
 ////             -U/u eccentricity option: 0) Equal eccentricity
-////                                       1) Power Law 
+////                                       1) Power Law
 ////                                       2) Thermal distribution [default]
 ////            Option -U requires one of the following strings:
 ////                      (Equal_ecc, ecc_Power_Law, Thermal_Distribution)
@@ -65,10 +65,10 @@
 ////             -Q   maximum mass ratio [1]
 ////             -q   minimum mass ratio [0]
 ////                    extra option: q_min<0 : q_min=0.1/selected primary mass
-////             -w   exponent for a power-law distribution  
+////             -w   exponent for a power-law distribution
 ////             -P/p mass ratio option: 0) constant mass ratio
 ////                                       1) Flat_q
-////                                       2) Power Law 
+////                                       2) Power Law
 ////                                       3) Hogeveen (1992)
 ////            Option -P requires one of the following strings:
 ////                      (Equal_q, Flat_q, qf_Power_Law, Hogeveen)
@@ -77,19 +77,19 @@
 ////            -I select input file for reading initial conditions.
 ////               -uses: double_star::dump as input format.  [no default]
 ////            -R select random initial conditions    [false]
-////               with parameters as discribed above.   
+////               with parameters as discribed above.
 ////            -n number of binaries to be simulated.  [1]
 ////               Options: -I all binaries in input file are computed.
 ////                        -R the number of binaries indicated.
 ////                        oterwise one binary is simulated with
 ////                        -M, -m, -a, -e as initial conditions.
-////            -N initial ID number of first simulated binary 
+////            -N initial ID number of first simulated binary
 ////            -T or -t  binary end time. [13500] Myr
 ////            -s Random seed
 ////            -z select metallicity of binaries to be simulated. [0.02] Solar
 ////            -C Initial stellar type primary star [default is main_sequence]
 ////            -c Initial stellar type secondary star [default is main_sequence]
-//   Note:  libnode.a is referenced for the routines which produce the 
+//   Note:  libnode.a is referenced for the routines which produce the
 //          mass function
 //
 //	version 1.0	Simon Portegies Zwart, Utrecht, 1992
@@ -102,7 +102,7 @@
 //	version 4.0	Simon Portegies Zwart, Amsterdam, February 2003
 //
 
-#include "dyn.h" 
+#include "dyn.h"
 #include "double_star.h"
 #include "main_sequence.h"
 //#include "dstar_to_dyn.h"
@@ -111,7 +111,7 @@
 
 #ifdef TOOLBOX
 
-local bool read_binary_params(ifstream& in, real &m_prim, 
+local bool read_binary_params(ifstream& in, real &m_prim,
 			      real &m_sec, real &sma, real &ecc, real &z) {
 
     m_prim = 1000;
@@ -119,19 +119,19 @@ local bool read_binary_params(ifstream& in, real &m_prim,
     sma = 0;
     ecc = 0;
     z = 1;
-    while (m_prim>100.0 || m_sec>100.0 || ecc<0 || ecc>1 || z < 0.0001 || z > 0.03){   
+    while (m_prim>100.0 || m_sec>100.0 || ecc<0 || ecc>1 || z < 0.0001 || z > 0.03){
       if(in.eof())
         return false;
-    
+
       // reading from input file
-    //  int id, tpp, tps; 
+    //  int id, tpp, tps;
     //  real time, Rlp, Rls;
-    
+
       in >> sma >> ecc >> m_prim >> m_sec >> z;
-      //  in >>id >> time >> sma >> ecc 
+      //  in >>id >> time >> sma >> ecc
       //     >> tpp >> m_prim >> Rlp >> tps >> m_sec >> Rls;
     }
-    
+
     //PRC(m_prim);PRC(m_sec);PRC(sma);PRC(ecc);PRL(z);
   return true;
 }
@@ -146,22 +146,22 @@ local bool  evolve_binary(dyn * bi,
                           real start_time, real end_time,
 			  bool stop_at_merger_or_disruption,
 			  bool stop_at_remnant_formation,
-			  char* SeBa_outfile) { 
+			  char* SeBa_outfile) {
 
 
-  double_star* ds = dynamic_cast(double_star*, 
+  double_star* ds = dynamic_cast(double_star*,
 				 bi->get_starbase());
-  
+
   //		Setup star from input data.
   real dt, time=start_time;
   ds->evolve_element(time);
-  
+
   //char SeBa_outfile[] = "SeBa.data";
   //char SeBa_outfile[] = SeBa_Filename();
   ds->dump(SeBa_outfile, true);
 
   if (!bi->is_root() &&
-      bi->get_parent()->is_root()) 
+      bi->get_parent()->is_root())
 
     do {
 
@@ -174,7 +174,7 @@ local bool  evolve_binary(dyn * bi,
       ds->evolve_element(time);
 
       if (stop_at_merger_or_disruption &&
-	  (ds->get_bin_type() == Merged || 
+	  (ds->get_bin_type() == Merged ||
 	   ds->get_bin_type() == Disrupted))
 	return false;
       if (stop_at_remnant_formation &&
@@ -186,7 +186,7 @@ local bool  evolve_binary(dyn * bi,
 
   ds->dump(SeBa_outfile, true);
   ds->set_star_story(NULL);
-    
+
   rmtree(bi, false);
   return true;
 
@@ -231,7 +231,7 @@ int main(int argc, char ** argv) {
     mass_function mf = mf_Power_Law;
     real m_min = 0.1;
     real m_max = 100;
-    real m_exp = -2.35;    
+    real m_exp = -2.35;
     char *qfc = new char[64];
     mass_ratio_distribution qf = Flat_q;
     real q_min = 0;
@@ -240,8 +240,8 @@ int main(int argc, char ** argv) {
     char *afc = new char[64];
     sma_distribution af = sma_Power_Law;
     real a_min = 0;
-    real a_max = 1.e+6; 
-    real a_exp = -1;                           
+    real a_max = 1.e+6;
+    real a_exp = -1;
     char *efc = new char[64];
     ecc_distribution ef = Thermal_Distribution;
     real e_min = 0;    // allow detection of constant eccentricity
@@ -251,12 +251,12 @@ int main(int argc, char ** argv) {
     real start_time = 0;
     real end_time   = 13500;//35;
 
-    char* input_filename;
+    char* input_filename = NULL;
     char* output_filename;
     output_filename = "SeBa.data";
     //char output_filename = new char "SeBa.data";
 
-    int input_seed=0; 
+    int input_seed=0;
     char seedlog[64];
     char paramlog[120];
 
@@ -313,7 +313,7 @@ int main(int argc, char ** argv) {
 		      break;
             case 'q': q_min = atof(poptarg);
 		      break;
-            case 't': 
+            case 't':
             case 'T': end_time = atof(poptarg);
 		      break;
             case 'I': I_flag = true;
@@ -377,17 +377,18 @@ int main(int argc, char ** argv) {
     actual_seed = srandinter(input_seed);
     sprintf(seedlog, "       random number generator seed = %d",actual_seed);
 
-    ifstream infile(input_filename, ios::in);
-    if(I_flag) {
-      if (!infile) cerr << "error: couldn't read file "
+    ifstream infile;
+		if(I_flag) {
+			infile.open(input_filename, ios::in);
+			if (!infile) cerr << "error: couldn't read file "
 	                << input_filename <<endl;
-	cerr << "Reading input from file "<< input_filename <<endl;
+									cerr << "Reading input from file "<< input_filename <<endl;
     }
 
     dyn *root, *the_binary;
     double_star *ds;
 
-    // Create flat tree 
+    // Create flat tree
     root = mkdyn(1);
     root->log_history(argc, argv);
     root->log_comment(seedlog);
@@ -402,18 +403,18 @@ int main(int argc, char ** argv) {
     for (int i=0; i<n; i++) {
 
       if(I_flag) {
-	if(read_binary_params(infile, m_prim, m_sec, sma, ecc, z)) 
+	if(read_binary_params(infile, m_prim, m_sec, sma, ecc, z))
 	  n=i+2;
 	else
 	  break;
       }
       else if (random_initialization) {
     	if (metal < 0.0001 || metal > 0.03){
-                cerr<<"Parameters are not within valid range"<<endl;    
+                cerr<<"Parameters are not within valid range"<<endl;
                 cerr<<"0.0001 <= z <= 0.03"<<endl;
-                return 0; 
-    	   }    	   
-    	   
+                return 0;
+    	   }
+
         z = metal;
 
 	mkrandom_binary(m_min, m_max, mf, m_exp,
@@ -421,15 +422,15 @@ int main(int argc, char ** argv) {
 			a_min, a_max, af, a_exp,
 			e_min, e_max, ef, e_exp,
     		m_prim, m_sec, sma, ecc, z);
-        	while (m_prim>100.0 || m_sec>100.0 || ecc<0 || ecc>1){   
+        	while (m_prim>100.0 || m_sec>100.0 || ecc<0 || ecc>1){
             	mkrandom_binary(m_min, m_max, mf, m_exp,
             			q_min, q_max, qf, q_exp,
             			a_min, a_max, af, a_exp,
             			e_min, e_max, ef, e_exp,
                 		m_prim, m_sec, sma, ecc, z);
         	}
-      }		
-      else {        
+      }
+      else {
            if (m_max<=100.0 && m_min<=100.0 && e_min >= 0 && e_min <= 1 && metal >= 0.0001 && metal <= 0.03){
             	m_prim = m_max;
             	m_sec  = m_min;
@@ -439,7 +440,7 @@ int main(int argc, char ** argv) {
             	z = metal;
             }
             else{
-                cerr<<"Parameters are not within valid range"<<endl;    
+                cerr<<"Parameters are not within valid range"<<endl;
                 cerr<<"0.1 <= M <= 100 "<<endl;
                 cerr<<"0.0001 <= z <= 0.03"<<endl;
                 cerr<<" 0 <= e <= 1"<<endl;
@@ -462,7 +463,7 @@ int main(int argc, char ** argv) {
 //      pp(root, cerr);
 //      cerr << endl;
 
-      ds = new_double_star(the_binary, sma, ecc, start_time, 
+      ds = new_double_star(the_binary, sma, ecc, start_time,
 			   i + n_init, bin_type);
 
 //            PRL(((star*)the_binary->get_oldest_daughter()->get_starbase())->get_companion());
@@ -479,7 +480,7 @@ int main(int argc, char ** argv) {
       //      node *b      = root->get_oldest_daughter();
       //      starbase *s  = b->get_starbase();
       //      star *st     = dynamic_cast(star*, b->get_starbase());
-      bool reached_end = evolve_binary(the_binary, start_time, end_time, 
+      bool reached_end = evolve_binary(the_binary, start_time, end_time,
 		    stop_at_merger_or_disruption, stop_at_remnant_formation, output_filename);
 
       //cerr << ds << endl;
@@ -490,7 +491,7 @@ int main(int argc, char ** argv) {
 
 //	  the_binary->get_starbase()->dump(cerr, false);
 	  the_binary->get_starbase()->set_star_story(NULL);
-    
+
 	  rmtree(the_binary, false);
       }
 
@@ -515,14 +516,14 @@ int main(int argc, char ** argv) {
       //      delete ds->get_secondary();
       //      delete ds;
       //      delete root->get_oldest_daughter()->get_younger_sister();
-	
+
     }
 
-    root->log_history(argc, argv);
-    root->log_comment(seedlog);
-    root->log_comment(paramlog);
-    root->print_log_story(cout);
-//    rmtree(root, false);
+//     root->log_history(argc, argv);
+//     root->log_comment(seedlog);
+//     root->log_comment(paramlog);
+//     root->print_log_story(cout);
+// //    rmtree(root, false);
     return 0;
 }
 
