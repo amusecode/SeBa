@@ -221,7 +221,7 @@ class node
 	    if (!a_string)
 		name = NULL;
 	    else {
-		name = new char[strlen(a_string)+1];
+		name = new char[strlen(a_string)+2]; //SilT 21Okt26 at least 2 need to be added
 		strcpy(name, a_string);
 	    }
 	}
