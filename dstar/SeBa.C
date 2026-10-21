@@ -44,7 +44,7 @@
 ////                   -f requires the appropriate integer (see mkmass.C)
 ////             -A   maximum semi-major axis limit [1000000[Rsun]]
 ////             -a   minimum semi-major axis limit [0]
-////             -y   exponent for a power-law distribution [0] (flat in log)
+////             -y   exponent for a power-law distribution [-1] (flat in log)
 ////             -G/g Semi major axis option: 0) Equal_sma
 ////                                          1) Power Law [default]
 ////                                          2) Duquennoy & Mayor (1987)
