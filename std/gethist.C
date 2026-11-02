@@ -142,7 +142,7 @@ char *gethist(int argc, char ** argv)
     strcpy(hist_string, INTRO_PART);
     clock = time(0);                 /* see time(2), UNIX manual   */
     const char *date = ctime(&clock);
-    strcpy(hist_string + INTRO_LENGTH, date ? date :"unknown date \n");
+    strcpy(hist_string + INTRO_LENGTH, date ? date :"unknown date            \n");
 					       /* see ctime(3C), UNIX manual */
     strcpy(hist_string + INTRO_LENGTH + DATE_STR_LENGTH, DATE_SEPARATOR);
     strcpy(hist_string + INTRO_LENGTH + DATE_STR_LENGTH + DATE_SEP_LENGTH,
