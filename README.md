@@ -109,7 +109,7 @@ cd run1; ../SeBa -R -n 100000 -N 0      -s 1001 > log.txt 2>&1; cd ..
 cd run2; ../SeBa -R -n 100000 -N 100000 -s 1002 > log.txt 2>&1; cd ..
 cat run1/SeBa.data run2/SeBa.data > all.data
 ```
-The binaries in `all.data` then have the IDs 0 to 199999, each exactly once.
+The binaries in `all.data` then have the IDs 0 to 199999, each exactly once. Instead of separate directories, you can also give each part its own output file with `-O`.
 
 ## Options
 
@@ -124,8 +124,10 @@ The binaries in `all.data` then have the IDs 0 to 199999, each exactly once.
 | `-T` or `-t` | end time of the simulation in Myr, the same for all binaries | 13500 | > 0 |
 | `-z` | metallicity, the same for all binaries; to vary the metallicity, run several simulations | 0.02 | 0.0001 – 0.03 |
 | `-I` | read the initial conditions from a file (columns a e M m z); binaries outside the allowed range are skipped | | |
+| `-O` | name of the output file | `SeBa.data` | |
 | `-D` | stop the evolution of a binary when it merges or is disrupted | off | |
 | `-S` | stop the evolution of a binary when one of the stars becomes a remnant | off | |
+| `-K`, `-k` | stellar type of the primary and the secondary at the start, by name (for example `main_sequence`) | main_sequence | |
 
 ### Initial parameters (with `-R`)
 
@@ -155,12 +157,58 @@ Instead of the numbers, the distributions can also be given by name with the cap
 
 Note on the minimum separation: SeBa makes sure that the two stars do not touch at the start. The actual minimum is the larger of the value given with `-a` and the separation at which the two zero-age main-sequence stars touch at pericentre. So with `-a 0` (the default), the actual minimum is set by the sizes of the stars.
 
+### Model parameters
+
+These parameters of the binary evolution can only be set with a word, not with a letter, for example `./SeBa -R -n 1000 --alpha 1 --ce-method 3 --SN_kick hobbs`. Without them SeBa uses its standard model. The values used are printed at the start of the log.
+
+| Option | Meaning | Default | Valid range |
+|---|---|---|---|
+| `--alpha` | common-envelope efficiency α | 4.0 | > 0 |
+| `--lambda` | envelope binding-energy parameter λ | 0.5 | > 0 |
+| `--gamma` | γ of the γ common-envelope formalism | 1.75 | > 0 |
+| `--beta` | specific angular momentum loss β | 2.5 | |
+| `--ce-method` | common-envelope prescription: 1 = α-γ, 2 = γ-γ, 3 = α-α | 1 | 1 – 3 |
+| `--jloss-method` | angular momentum loss during mass transfer: 1 = SeBa standard (with β), 2 = specific angular momentum of the orbit, 3 = of the donor (Jeans mode), 4 = of the accretor (isotropic re-emission) | 1 | 1 – 4 |
+| `--bh-mass-method` | black hole mass: 1 = SeBa (based on Fryer & Kalogera 2001), 2 = Fryer et al. (2012) delayed, 3 = Fryer et al. (2012) rapid, 4 = Fryer et al. (2012) StarTrack | 2 | 1 – 4 |
+| `--SN_kick` | supernova kick distribution, by name or number: 0 = standard (Verbunt et al. 2017), 1 = `none`, 2 = `maxwellian`, 3 = `paczynski`, 4 = `hobbs` (Hobbs et al. 2005), 5 = `arzoumanian` (Arzoumanian et al. 2002), 6 = `verbunt` (Verbunt et al. 2017), 7 = `delta` (every kick the same) | 0 | 0 – 7 |
+| `--SN_kick_dispersion` | velocity dispersion of the kick in km/s; used by `maxwellian` and `paczynski`, and the kick itself for `delta` | 600 | ≥ 0 |
+
+### Long option names
+
+Most letter options also have a long name, which makes scripts easier to read. These two commands do the same:
+```
+./SeBa -R -n 1000 -s 5 -O pop.data
+./SeBa --random --number 1000 --seed 5 --output pop.data
+```
+
+| Long name | Letter |
+|---|---|
+| `--random` | `-R` |
+| `--number` | `-n` |
+| `--first-id` | `-N` |
+| `--seed` | `-s` |
+| `--time` | `-T` |
+| `--metallicity` | `-z` |
+| `--input`, `--output` | `-I`, `-O` |
+| `--stop-at-merger`, `--stop-at-remnant` | `-D`, `-S` |
+| `--type1`, `--type2` | `-K`, `-k` |
+| `--mass1` or `--max-mass`, `--mass2` or `--min-mass` | `-M`, `-m` |
+| `--mass-function`, `--mass-function-name`, `--mass-exponent` | `-f`, `-F`, `-x` |
+| `--min-q`, `--max-q` | `-q`, `-Q` |
+| `--q-distribution`, `--q-distribution-name`, `--q-exponent` | `-p`, `-P`, `-w` |
+| `--separation` or `--min-separation`, `--max-separation` | `-a`, `-A` |
+| `--separation-distribution`, `--separation-distribution-name`, `--separation-exponent` | `-g`, `-G`, `-y` |
+| `--eccentricity` or `--min-eccentricity`, `--max-eccentricity` | `-e`, `-E` |
+| `--eccentricity-distribution`, `--eccentricity-distribution-name`, `--eccentricity-exponent` | `-u`, `-U`, `-v` |
+
+A long name is followed by its value after a space (`--seed 5`); the form `--seed=5` is not understood.
+
 
 ## Understanding the SeBa output
 
 ### The output file
 
-When you run SeBa, the output is written to a file called `SeBa.data` in the current directory. If this file already exists, SeBa does not overwrite it but adds the new output at the end. So remove or rename an old `SeBa.data` before a new run, unless you want to add to it.
+When you run SeBa, the output is written to a file called `SeBa.data` in the current directory. If this file already exists, SeBa does not overwrite it but adds the new output at the end. So remove or rename an old `SeBa.data` before a new run, unless you want to add to it. With `-O name` SeBa writes to the file `name` instead (with the same rule: an existing file is added to).
 
 SeBa adds the evolutionary history of each binary in the SeBa.data file. Every line represents a moment in the evolution of the binary when something interesting happened, for example one of the stars transitions from the main-sequence to the hertzsprung gap, or mass transfer starts or stops. So the lines are written at these events, not at fixed time steps. The meaning of the columns is defined below. The first column represents a unique identifier for each binary.
 

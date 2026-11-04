@@ -869,7 +869,7 @@ void double_star::perform_mass_transfer(const real dt,
 // (GN+SilT Mar  2 2011) new dumping regime
     if (!first_contact) {
 
-        dump("SeBa.data", true);
+        dump(cnsts.output_file, true);
         first_contact = true;
     }
 
@@ -1693,7 +1693,7 @@ void double_star::double_spiral_in() {
 
        // (GN+SilT Mar  2 2011) new dumping regime
        bin_type = Double_Spiral_In;
-       dump("SeBa.data", true);
+       dump(cnsts.output_file, true);
        current_mass_transfer_type = Unknown;
 
 
@@ -1850,7 +1850,7 @@ void double_star::spiral_in(star* larger,
 
       // (GN+SilT Mar  2 2011) new dumping regime
       bin_type = Spiral_In;
-      dump("SeBa.data", true);
+      dump(cnsts.output_file, true);
       current_mass_transfer_type = Unknown;
 
 
@@ -1967,7 +1967,7 @@ void double_star::merge_elements(star* consumer,
 //cerr<<"bin: "<<identity<<endl;
   bin_type = Merged;
 //  dump(cerr, false);
-  dump("SeBa.data", true);
+  dump(cnsts.output_file, true);
 
   if (!get_use_hdyn()) {
     consumer->set_velocity(velocity);
@@ -1987,7 +1987,7 @@ void double_star::merge_elements(star* consumer,
 //  dump("binev.data", false);
 cerr << "Merger is: "<<endl;
   dump(cerr, false);
-  dump("SeBa.data", true);
+  dump(cnsts.output_file, true);
 
   //get_seba_counters()->mergers++;
 }
@@ -2233,7 +2233,7 @@ void double_star::contact_binary(real dt) {
     if (!first_contact) {
 
         bin_type = Contact;
-        dump("SeBa.data", true);
+        dump(cnsts.output_file, true);
         first_contact = true;
     }
 
@@ -2277,7 +2277,7 @@ void double_star::angular_momentum_envelope_ejection(star* larger,
 //  cerr << "double_star::angular_momentum_envelope_ejection()"<<endl;
   // (GN+SilT Mar  2 2011) new dumping regime
   bin_type = Common_Envelope;
-  dump("SeBa.data", true);
+  dump(cnsts.output_file, true);
   current_mass_transfer_type = Unknown;
 
 

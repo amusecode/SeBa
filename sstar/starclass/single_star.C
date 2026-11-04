@@ -185,7 +185,7 @@ void single_star::post_constructor() {
       get_binary()->set_first_contact(false);
 
     if (is_binary_component()){
-        get_binary()->dump("SeBa.data", true);
+        get_binary()->dump(cnsts.output_file, true);
     }
     else {
     }
@@ -238,7 +238,7 @@ void single_star::post_constructor() {
 
   if (is_binary_component() && 
       get_binary()->roche_radius(this) > radius) {
-    get_binary()->dump("SeBa.data", true);
+    get_binary()->dump(cnsts.output_file, true);
   }
 
   if (remnant()) {

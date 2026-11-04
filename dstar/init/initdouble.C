@@ -689,7 +689,7 @@ cerr << "addstar(node... called from adddouble(node ..." << endl;
                          type);
 
 	    // added spz:8Aug2002
-	    new_double->dump("SeBa.data", true);
+	    new_double->dump(cnsts.output_file, true);
 
 	    if (REPORT_ADD_DOUBLE) {
 	      cerr<<"double: "<<new_double<<endl;

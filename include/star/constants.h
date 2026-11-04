@@ -204,13 +204,19 @@ enum dynamics_update_parameter {stellar_mass_update_limit,
 extern
 class stellar_evolution_constants {  // Easy to have a name for compiling.
   public:
-  stellar_evolution_constants() {
-    pk = internally_decided_velocity_kick;
-    v_disp = 600;
-  }
+  stellar_evolution_constants();    // sets the default values, see constants.C
 
   super_nova_kick_distribution pk;
   real v_disp;
+
+  char * output_file;
+  real alpha_ce;
+  real lambda_ce;
+  real beta;
+  real gamma;
+  int ce_method;
+  int jloss_method;
+  int bh_mass_method;
 
   real mathematics(mathematical_constant);
   real physics(physics_constants);
