@@ -3,8 +3,25 @@
 
 stellar_evolution_constants cnsts;
 
-// constructor for constant class.
-// Currently there are not functionalities.
+// SilT 4 November 2026
+// constructor for constant class: the default values of the members.
+// The run-time settable ones can be changed on the command line of SeBa
+// (see SeBa.C: -O and the word options --alpha, --lambda, etc.).
+stellar_evolution_constants::stellar_evolution_constants() {
+
+    output_file = (char *) "SeBa.data";  // -O
+    alpha_ce = 4.0;       // --alpha: common-envelope efficiency
+    lambda_ce = 0.5;      // --lambda: envelope binding energy
+    beta = 2.5;           // --beta: specific angular momentum loss
+    gamma = 1.75;         // --gamma: gamma common-envelope formalism
+    ce_method = 1;        // --ce-method: 1: alpha-gamma, 2: gamma-gamma, 3: alpha-alpha
+    jloss_method = 1;     // --jloss-method: 1: SeBa default, 2: orbit, 3: donor (Jeans), 4: accretor
+
+    bh_mass_method = 2;   // --bh-mass-method: 1: SeBa (Fryer 2001), 2: Fryer 2012 delayed, 3: rapid, 4: Startrack
+    pk = internally_decided_velocity_kick;  // --kick: SN kick distribution (internally decided = Verbunt 2017)
+    v_disp = 600;         // --kick-dispersion: in km/s, for the Maxwellian, Paczynski and delta-function kicks
+
+}
 
 //stellar_evolution_constants::stellar_evolution_constants() {
 //  //Dummy function in order to allow compilation.
@@ -92,8 +109,6 @@ real stellar_evolution_constants::super_nova_kick() {
 
   // selected kick distribution imparted to a newly formed neutron star
   // in a supernova.
-PRC(pk);
-  PRL(v_disp);
     switch(pk) {
     case no_velocity_kick:              return 0;
              break;
@@ -143,30 +158,34 @@ real stellar_evolution_constants::common_envelope_lambda() {
 
 // SilT 8June 2022
 int stellar_evolution_constants::use_jloss_method() {
-    int jloss_parameter = 1; // SeBa default model
-//    jloss_parameter = 2; // specific J of orbit
-//    jloss_parameter = 3; // specific J of donor i.e. Jeans mode
-//    jloss_parameter = 4; // specific J of accretor i.e isotropic re-emission
 
-  return jloss_parameter;
+  return jloss_method;
+  //    default 1 = SeBa default model, set with --jloss-method
+  //    jloss_parameter = 2; // specific J of orbit
+  //    jloss_parameter = 3; // specific J of donor i.e. Jeans mode
+  //    jloss_parameter = 4; // specific J of accretor i.e isotropic re-emission
+
 }
 
 // SilT&AD 28January 2022
 int stellar_evolution_constants::use_black_hole_mass_method() {
-    int bhm_parameter = 1; // SeBa model based on Fryer 2001
-    bhm_parameter = 2; // Fryer 2012 delayed model
-//    bhm_parameter = 3; // Fryer 2012 rapid model
-//    bhm_parameter = 4; // Fryer 2012 Startrack model
 
-  return bhm_parameter;
+  return bh_mass_method;
+  //    set with --bh-mass-method
+  //    bhm_parameter = 1; // SeBa model based on Fryer 2001
+  //    bhm_parameter = 2; // Fryer 2012 delayed model (default)
+  //    bhm_parameter = 3; // Fryer 2012 rapid model
+  //    bhm_parameter = 4; // Fryer 2012 Startrack model
+
 }
 
 
 int stellar_evolution_constants::use_common_envelope_method() {
-  int cc_parameter = 1; // default (use alpha-gamma)
+
+  return ce_method;
+  // default 1 (use alpha-gamma), set with --ce-method
   // cc_parameter = 2;     // default (use gamma-gamma)
   //cc_parameter = 3;     // default (use alpha-alpha)
-  return cc_parameter;
 }
 
 // SilT 27March 2023
@@ -407,13 +426,13 @@ real stellar_evolution_constants::parameters(model_parameter pm) {
 	      break;                          // overshoot fraction.
         case hydrogen_fraction:                        return 0.7;
               break;                          // X
- 	case common_envelope_efficiency:               return 4.0;
+ 	case common_envelope_efficiency:               return alpha_ce;
 	      break;                          // (alpha_ce)
-        case envelope_binding_energy:                  return 0.5;
+        case envelope_binding_energy:                  return lambda_ce;
 	      break;                          // (lambda)
-	case specific_angular_momentum_loss:           return 2.5;
+	case specific_angular_momentum_loss:           return beta;
 	      break;                          // (beta)
-        case dynamic_mass_transfer_gamma:               return 1.75;
+        case dynamic_mass_transfer_gamma:               return gamma;
               break;			      // (gamma)
         case non_massive_star_envelope_fraction_lost:  return 0.03;
 	      break;

@@ -5,7 +5,7 @@
  *                           Institute for Advanced Study, Princeton, NJ, USA
  *    version 2:  Dec 1992   Piet Hut  --  adopted to the new C++-based starlab
  *.............................................................................
- *  non-local function: 
+ *  non-local function:
  *    gethist
  *.............................................................................
  *     A string is returned which contains the date at which a command is
@@ -45,12 +45,12 @@ local bool  contains_white(char * s)
 /*-----------------------------------------------------------------------------
  *  eff_length  --  effective length, needed to stored a command line argument:
  *                  one for each character, and two extra for the surrounding
- *                  "" quotes, in case the string contains one or more 
+ *                  "" quotes, in case the string contains one or more
  *                  internal white spaces.
  *          example:
  *                  "hi"        --> hi
  *                  "hi there"  --> "hi there"
- *                
+ *
  *                  eff_length("hi") = 2
  *                  eff_length("hi there") = 10
  *-----------------------------------------------------------------------------
@@ -67,7 +67,7 @@ local int  eff_length(char * s)
  *  DATE_TOT_LENGTH  --  total length, in characters, of the date plus the
  *                       date separator; this is the length reserved in total
  *                       for the date information by gethist().
- *  DATE_STR_LENGTH  --  The fixed standard length of the date containing 
+ *  DATE_STR_LENGTH  --  The fixed standard length of the date containing
  *                       string, as returned by the UNIX operating system,
  *                       apart from the last NULL character;
  *  DATE_SEPARATOR  --  This string can be changed whenever desired:
@@ -96,7 +96,7 @@ local int  eff_length(char * s)
  *               the command of the calling program was given, and the full
  *               command line.
  *          note:
- *               simply printing successive command line arguments does not 
+ *               simply printing successive command line arguments does not
  *               provide the full information, since the following two commands
  *                 gobble this thing   and   gobble "this thing"
  *               would both be printed as   gobble this thing  .
@@ -109,7 +109,7 @@ char *gethist(int argc, char ** argv)
     {
     int  i, j, k;
     int  n;
-    long int  clock;              /* will contain time in seconds since 1970 */
+    time_t clock;              /* will contain time in seconds since 1970 */
     char *hist_string;            /* will point to newly allocated string    */
 /*
  * determine length of new character array, and allocate memory for it:
@@ -130,7 +130,7 @@ char *gethist(int argc, char ** argv)
 
     n += user_length;
     hist_string = new char[n];
-    
+
     if (hist_string == NULL)
 	{
 	cerr << "gethist: not enough memory left for hist_string\n";
@@ -140,8 +140,9 @@ char *gethist(int argc, char ** argv)
  * write the date:
  */
     strcpy(hist_string, INTRO_PART);
-    clock = (long int)time(0);                 /* see time(2), UNIX manual   */
-    strcpy(hist_string + INTRO_LENGTH, ctime((time_t*)&clock));
+    clock = time(0);                 /* see time(2), UNIX manual   */
+    const char *date = ctime(&clock);
+    strcpy(hist_string + INTRO_LENGTH, date ? date :"unknown date            \n");
 					       /* see ctime(3C), UNIX manual */
     strcpy(hist_string + INTRO_LENGTH + DATE_STR_LENGTH, DATE_SEPARATOR);
     strcpy(hist_string + INTRO_LENGTH + DATE_STR_LENGTH + DATE_SEP_LENGTH,

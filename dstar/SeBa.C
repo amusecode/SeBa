@@ -194,11 +194,109 @@ local bool  evolve_binary(dyn * bi,
 
 int main(int argc, char ** argv) {
 
+    // Model parameters: these are set only with a word, e.g. "--alpha 2",
+    // and have no one-letter option. They are read here and taken out of
+    // argv, so pgetopt never sees them.
+    struct { const char *name; real *value; int *method; } word_options[] = {
+        {"--alpha", &cnsts.alpha_ce, NULL},    // common-envelope efficiency
+        {"--lambda", &cnsts.lambda_ce, NULL},  // envelope binding energy
+        {"--beta", &cnsts.beta, NULL},         // specific angular momentum loss
+        {"--gamma", &cnsts.gamma, NULL},       // gamma common-envelope formalism
+        {"--ce-method", NULL, &cnsts.ce_method},       // 1: alpha-gamma, 2: gamma-gamma, 3: alpha-alpha
+        {"--jloss-method", NULL, &cnsts.jloss_method}, // 1: SeBa default, 2: orbit, 3: donor, 4: accretor
+        {"--bh-mass-method", NULL, &cnsts.bh_mass_method}, // 1: SeBa (Fryer 2001), 2: Fryer 2012 delayed, 3: rapid, 4: Startrack
+        {"--SN_kick_dispersion", &cnsts.v_disp, NULL},    // km/s, for the maxwellian, paczynski and delta kicks
+    };
+    // --SN_kick: the supernova kick distribution, by name or by number
+    // (the number is the value in enum super_nova_kick_distribution, constants.h)
+    const char *kick_names[] = {"standard", "none", "maxwellian", "paczynski",
+                                "hobbs", "arzoumanian", "verbunt", "delta"};
+    const int n_kick = sizeof(kick_names) / sizeof(kick_names[0]);
+    const int n_word = sizeof(word_options) / sizeof(word_options[0]);
+    int kept = 1;
+    for (int i = 1; i < argc; i++) {
+        if (strcmp(argv[i], "--SN_kick") == 0) {
+            if (i + 1 >= argc) {
+                cerr << "error: --SN_kick needs a value" << endl;
+                exit(1);
+            }
+            const char *v = argv[++i];
+            int kick = -1;
+            for (int n = 0; n < n_kick; n++)
+                if (strcmp(v, kick_names[n]) == 0) kick = n;
+            if (kick < 0 && v[0] >= '0' && v[0] <= '9') kick = atoi(v);
+            if (kick < 0 || kick >= n_kick) {
+                cerr << "error: --SN_kick must be one of 0-7 or none, maxwellian, paczynski,"
+                     << " hobbs, arzoumanian, verbunt, delta" << endl;
+                exit(1);
+            }
+            cnsts.pk = (super_nova_kick_distribution) kick;
+            continue;
+        }
+        int k = 0;
+        while (k < n_word && strcmp(argv[i], word_options[k].name) != 0) k++;
+        if (k == n_word) {             // not a model parameter: keep it
+            argv[kept++] = argv[i];
+            continue;
+        }
+        if (i + 1 >= argc) {
+            cerr << "error: " << argv[i] << " needs a value" << endl;
+            exit(1);
+        }
+        if (word_options[k].value) *word_options[k].value = atof(argv[++i]);
+        else *word_options[k].method = atoi(argv[++i]);
+    }
+    argv[kept] = NULL;
+    argc = kept;
+    if (cnsts.ce_method < 1 || cnsts.ce_method > 3)
+        err_exit("--ce-method must be 1, 2 or 3");
+    if (cnsts.jloss_method < 1 || cnsts.jloss_method > 4)
+        err_exit("--jloss-method must be 1, 2, 3 or 4");
+    if (cnsts.bh_mass_method < 1 || cnsts.bh_mass_method > 4)
+        err_exit("--bh-mass-method must be 1, 2, 3 or 4");
+    if (cnsts.v_disp < 0)
+        err_exit("--SN_kick_dispersion must be 0 or larger");
+
+    // Long option names: each --name is translated into its one-letter
+    // option before pgetopt reads the command line. The letters keep working.
+    // Only the form "--alpha 2" is understood, not "--alpha=2".
+    static const char *long_options[][2] = {
+        {"--random", "-R"}, {"--number", "-n"}, {"--first-id", "-N"},
+        {"--seed", "-s"}, {"--time", "-T"}, {"--metallicity", "-z"},
+        {"--mass1", "-M"}, {"--max-mass", "-M"},
+        {"--mass2", "-m"}, {"--min-mass", "-m"},
+        {"--separation", "-a"}, {"--min-separation", "-a"},
+        {"--max-separation", "-A"},
+        {"--eccentricity", "-e"}, {"--min-eccentricity", "-e"},
+        {"--max-eccentricity", "-E"},
+        {"--min-q", "-q"}, {"--max-q", "-Q"},
+        {"--mass-function", "-f"}, {"--mass-function-name", "-F"},
+        {"--mass-exponent", "-x"},
+        {"--q-distribution", "-p"}, {"--q-distribution-name", "-P"},
+        {"--q-exponent", "-w"},
+        {"--separation-distribution", "-g"},
+        {"--separation-distribution-name", "-G"},
+        {"--separation-exponent", "-y"},
+        {"--eccentricity-distribution", "-u"},
+        {"--eccentricity-distribution-name", "-U"},
+        {"--eccentricity-exponent", "-v"},
+        {"--input", "-I"}, {"--output", "-O"},
+        {"--stop-at-merger", "-D"}, {"--stop-at-remnant", "-S"},
+        {"--type1", "-K"}, {"--type2", "-k"},
+    };
+    const int n_long = sizeof(long_options) / sizeof(long_options[0]);
+    for (int i = 1; i < argc; i++)
+        for (int k = 0; k < n_long; k++)
+            if (strcmp(argv[i], long_options[k][0]) == 0) {
+                argv[i] = (char *) long_options[k][1];
+                break;
+            }
+
     bool e_flag = false;
     bool R_flag = false;
     bool F_flag = false;
     bool I_flag = false;
-    bool O_flag = false;//doesn't work fully as "SeBa.data" is written in the code multiple times
+    bool O_flag = false;
     bool P_flag = false;
     bool U_flag = false;
     bool G_flag = false;
@@ -258,7 +356,7 @@ int main(int argc, char ** argv) {
 
     int input_seed=0;
     char seedlog[64];
-    char paramlog[120];
+    char paramlog[400];
 
     //check_help();
 
@@ -266,7 +364,7 @@ int main(int argc, char ** argv) {
 
     extern char *poptarg;
     int c;
-    const char *param_string = "n:N:RDSM:m:x:F:f:A:a:y:G:g:E:e:v:U:u:Q:q:T:t:I:O:w:P:p:n:s:z:C:c:";
+    const char *param_string = "n:N:RDSM:m:x:F:f:A:a:y:G:g:E:e:v:U:u:Q:q:T:t:I:O:w:P:p:n:s:z:K:k:";
 
     while ((c = pgetopt(argc, argv, param_string)) != -1)
 	switch(c) {
@@ -321,6 +419,7 @@ int main(int argc, char ** argv) {
 		      break;
             case 'O': O_flag = true;
 		      output_filename = poptarg;
+		      cnsts.output_file = poptarg;
 		      break;
             case 'w': q_exp = atof(poptarg);
 		      break;
@@ -337,26 +436,30 @@ int main(int argc, char ** argv) {
 		      break;
            case 'z': metal = atof(poptarg);
                 break;
-           case 'C': strcpy(star_type_string, poptarg);
+           case 'K': strcpy(star_type_string, poptarg);
 	           primary_type = extract_stellar_type_string(star_type_string);
                 break;
-           case 'c': strcpy(star_type_string, poptarg);
+           case 'k': strcpy(star_type_string, poptarg);
 	           secondary_type = extract_stellar_type_string(star_type_string);
                 break;
             case '?': params_to_usage(cerr, argv[0], param_string);
+		      cerr << "Model parameters (only as a word): --alpha --lambda --beta --gamma"
+		           << " --ce-method --jloss-method --bh-mass-method --SN_kick --SN_kick_dispersion" << endl;
 		      exit(1);
 	}
 
     int actual_seed = srandinter(input_seed);
     cerr << "random number generator seed = " << actual_seed << endl;
     sprintf(paramlog,
-	   "   alpha  = %3.1f\n   lambda = %3.1f\n   beta   = %3.1f\n   gamma  = %4.2f\n   CE_method = %d\n   Jloss_method = %d \n",
+	   "   alpha  = %3.1f\n   lambda = %3.1f\n   beta   = %3.1f\n   gamma  = %4.2f\n   CE_method = %d\n   Jloss_method = %d \n   BH_mass_method = %d\n   SN_kick = %s (%d), dispersion = %.0f km/s\n",
 	    cnsts.parameters(common_envelope_efficiency),
 	    cnsts.parameters(envelope_binding_energy),
 	    cnsts.parameters(specific_angular_momentum_loss),
 	    cnsts.parameters(dynamic_mass_transfer_gamma),
             cnsts.use_common_envelope_method(),
-            cnsts.use_jloss_method()
+            cnsts.use_jloss_method(),
+            cnsts.use_black_hole_mass_method(),
+            kick_names[cnsts.pk], (int) cnsts.pk, cnsts.v_disp
           );
 
     if (n <= 0) err_exit("mknodes: N > 0 required!");
